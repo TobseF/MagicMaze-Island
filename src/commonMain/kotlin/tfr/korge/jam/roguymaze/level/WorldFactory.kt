@@ -100,7 +100,7 @@ class WorldFactory {
         }
         undiscoveredRooms.shuffle()
         val start = roomFactory.createRoom(0)
-        return World(mutableListOf(start), players, maxRooms)
+        return World(mutableListOf(start), players, maxRooms, factory = this)
     }
 
 

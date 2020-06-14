@@ -28,7 +28,6 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
 
 
     init {
-        visible = false
 
         bus.register<OpenSettingsEvent> {
             this.visible = !visible
@@ -84,6 +83,7 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
                 }
             }
         }
+        visible = false
     }
 
 

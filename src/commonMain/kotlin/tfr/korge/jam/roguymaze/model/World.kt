@@ -1,11 +1,16 @@
 package tfr.korge.jam.roguymaze.model
 
+import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.math.PositionGrid.Position
 
 
-class World(val rooms: MutableList<Room>, val players: Players, val totalRooms: Int) {
+class World(val rooms: MutableList<Room>,
+        val players: Players,
+        val totalRooms: Int,
+        val factory: WorldFactory? = null) {
 
     var selectedPlayer = 1
+    var selectedPlayersCount = 1
 
     fun getPlayer(playerNumber: Int) = players[playerNumber]
 

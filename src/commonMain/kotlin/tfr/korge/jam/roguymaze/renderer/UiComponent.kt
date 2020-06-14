@@ -10,6 +10,7 @@ import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.degrees
 import tfr.korge.jam.roguymaze.*
 import tfr.korge.jam.roguymaze.InputEvent.Action
+import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
@@ -293,6 +294,26 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             alignBottomToTopOf(movePlayerRight, -38.0)
 
             onClick { sendUiEvent(Action.ActionSearch) }
+        }
+
+        bus.register<ChangePlayerEvent> {
+            val actionSet: WorldFactory.ActionSet? = world.factory?.actionSets?.get(world.selectedPlayersCount)
+            val newActionSet = actionSet?.allowed?.get(it.playerId)
+            if (newActionSet != null) {
+                movePlayerDown.visible = newActionSet.contains(Action.PlayerDown)
+            }
+            if (newActionSet != null) {
+                movePlayerLeft.visible = newActionSet.contains(Action.PlayerLeft)
+            }
+            if (newActionSet != null) {
+                movePlayerRight.visible = newActionSet.contains(Action.PlayerRight)
+            }
+            if (newActionSet != null) {
+                movePlayerUp.visible = newActionSet.contains(Action.PlayerUp)
+            }
+            if (newActionSet != null) {
+                actionSearch.visible = newActionSet.contains(Action.ActionSearch)
+            }
         }
     }
 
