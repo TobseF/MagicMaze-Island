@@ -78,8 +78,10 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
 
     private fun addRoomCounter() {
         text("1/12", font = res.fontBubble, textSize = 38.0) {
-            bus.register<FoundNewRoomEvent> {
-                text = "${world.rooms.size}/${world.totalRooms}"
+            bus.register<InputEvent> {
+                if (it.action == Action.FoundNextRoom) {
+                    text = "${world.rooms.size}/${world.totalRooms}"
+                }
             }
 
             position(80.0, 16.0)

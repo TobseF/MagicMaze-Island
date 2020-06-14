@@ -8,10 +8,7 @@ import com.soywiz.korio.net.ws.WebSocketClient
 import com.soywiz.korio.net.ws.readString
 import com.soywiz.korio.util.OS
 import kotlinx.coroutines.CoroutineScope
-import tfr.korge.jam.roguymaze.ChangePlayerEvent
-import tfr.korge.jam.roguymaze.ChangeRoomEvent
-import tfr.korge.jam.roguymaze.GameMechanics
-import tfr.korge.jam.roguymaze.InputEvent
+import tfr.korge.jam.roguymaze.*
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.World
@@ -25,7 +22,7 @@ class NetworkBridge(val bus: EventBus,
         var userName: String = "unknown") : AsyncDependency {
 
     val allowedEvents = setOf(
-            Action.PlayerLeft, Action.PlayerRight, Action.PlayerUp, Action.PlayerDown, Action.ActionSearch)
+            Action.PlayerLeft, Action.PlayerRight, Action.PlayerUp, Action.PlayerDown, Action.FoundNextRoom)
 
     var roomName = "A"
 
@@ -33,6 +30,11 @@ class NetworkBridge(val bus: EventBus,
      * 1-5
      */
     var playerId = 1
+
+    /**
+     * 1-5
+     */
+    var playersCount = 1
 
     var socket: WebSocketClient? = null
 
@@ -46,7 +48,32 @@ class NetworkBridge(val bus: EventBus,
         bus.register<ChangePlayerEvent> {
             this.playerId = it.playerId
         }
+        bus.register<ChangePlayersEvent> {
+            this.playersCount = it.playersCount
+        }
+        bus.register<InputEvent> {
+            if (!it.networkEvent) {
+                handleInputEvent(it)
+            }
+        }
     }
+
+    private suspend fun handleInputEvent(event: InputEvent) {
+        if (allowedEvents.contains(event.action)) {
+            log.debug { "handleInputEvent$event" }
+
+            broadcastCommand("InputEvent", roomName, userName, event.toDataString())
+        }
+    }
+
+    fun InputEvent.toDataString(): String {
+        var data = "${this.action}>${this.playerNumber}"
+        if (this.room != null) {
+            data += ";" + this.playerNumber
+        }
+        return data
+    }
+
 
     suspend fun broadcastCommand(command: String, room: String, sender: String, message: String) {
         broadcast("@$room#$sender->/$command:$message")
@@ -103,6 +130,8 @@ class NetworkBridge(val bus: EventBus,
         }
     }
 
+    fun nameId() = "$playersCount-$playerId"
+
     suspend fun handleData(networkData: String) {
         log.debug { "handleData: $networkData" }
 
@@ -116,7 +145,7 @@ class NetworkBridge(val bus: EventBus,
 
             log.debug { "parsed:room=$room,sender=$sender,action=$action,message=$message" }
 
-            if (sender == playerId.toString()) {
+            if (sender == nameId()) {
                 log.debug { "Ignoring own command $networkData" }
             } else if (action == Update.action) {
                 executePlayerUpdate(message)
@@ -133,13 +162,22 @@ class NetworkBridge(val bus: EventBus,
     fun executeInputEvent(message: String) {
         val eventAction = message.substringBefore(">")
         val eventData = message.substringAfter(">")
+        val eventDataValues = eventData.split(";")
+        var playerNumber: Int? = null
+        var roomNumber: Int? = null
+        if (eventDataValues.isNotEmpty()) {
+            playerNumber = eventDataValues[0].toIntOrNull()
+        }
+        if (eventDataValues.size >= 2) {
+            roomNumber = eventDataValues[1].toIntOrNull()
+        }
 
-        val playerNumber = eventData.toIntOrNull()
-
-        val action = InputEvent.Action.parseValue(eventAction)
+        val action = Action.parseValue(eventAction)
 
         if (allowedEvents.contains(action) && playerNumber != null) {
-            bus.send(InputEvent(action, playerNumber))
+            bus.send(InputEvent(action, playerNumber, room = roomNumber, networkEvent = true))
+        } else {
+            log.info { "Ignoring event: $action ($playerNumber)" }
         }
 
     }
@@ -174,5 +212,6 @@ class NetworkBridge(val bus: EventBus,
         }
 
     }
+
 
 }

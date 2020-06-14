@@ -44,11 +44,13 @@ data class FoundMaskEvent(val playerNumber: Int = 0)
 
 data class FoundHomeEvent(val playerNumber: Int = 0)
 
-data class FoundNewRoomEvent(val nextRoom: Int = 0)
 
-data class InputEvent(val action: InputEvent.Action, val playerNumber: Int = 0) {
+data class InputEvent(val action: InputEvent.Action,
+        val playerNumber: Int = 0,
+        val room: Int? = null,
+        val networkEvent: Boolean = false) {
     enum class Action {
-        MapMoveUp, MapMoveDown, MapMoveLeft, MapMoveRight, MapZoomIn, MapZoomOut, SelectPlayer, PlayerLeft, PlayerRight, PlayerUp, PlayerDown, ActionSearch, Unknown;
+        MapMoveUp, MapMoveDown, MapMoveLeft, MapMoveRight, MapZoomIn, MapZoomOut, SelectPlayer, PlayerLeft, PlayerRight, PlayerUp, PlayerDown, ActionSearch, FoundNextRoom, Unknown;
 
         companion object {
             fun parseValue(actioName: String): Action {

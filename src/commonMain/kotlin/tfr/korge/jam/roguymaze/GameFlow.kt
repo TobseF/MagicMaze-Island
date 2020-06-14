@@ -2,6 +2,7 @@ package tfr.korge.jam.roguymaze
 
 import com.soywiz.klogger.Logger
 import com.soywiz.korinject.AsyncInjector
+import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.audio.SoundMachine
 import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.lib.EventBus
@@ -28,26 +29,42 @@ class GameFlow(private val world: World,
     init {
         bus.register<DragTileEvent> { it.onDragTileEvent() }
         bus.register<InputEvent> { handleInput(it) }
+        bus.register<ChangePlayersEvent> { handleChangePlayerCount(it) }
+        bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
+
+    }
+
+    private fun handleChangePlayerId(event: ChangePlayerEvent) {
+        log.info { "handleChangePlayerId $event" }
+    }
+
+    private fun handleChangePlayerCount(event: ChangePlayersEvent) {
+        log.info { "handleChangePlayerCount $event" }
     }
 
     private fun handleInput(inputEvent: InputEvent) {
         when (inputEvent.action) {
-            InputEvent.Action.MapMoveUp -> mechanics.moveMapUp()
-            InputEvent.Action.MapMoveDown -> mechanics.moveMapDown()
-            InputEvent.Action.MapMoveLeft -> mechanics.moveMapLeft()
-            InputEvent.Action.MapMoveRight -> mechanics.moveMapRight()
-            InputEvent.Action.MapZoomIn -> mechanics.zoomIn()
-            InputEvent.Action.MapZoomOut -> mechanics.zoomOut()
-            InputEvent.Action.SelectPlayer -> selectPlayer(inputEvent.playerNumber)
-            InputEvent.Action.PlayerLeft -> movePlayer(
-                    GameFlow.Direction.Left)
-            InputEvent.Action.PlayerRight -> movePlayer(
-                    GameFlow.Direction.Right)
-            InputEvent.Action.PlayerUp -> movePlayer(
-                    GameFlow.Direction.Up)
-            InputEvent.Action.PlayerDown -> movePlayer(
-                    GameFlow.Direction.Down)
-            InputEvent.Action.ActionSearch -> findNewRoom()
+            Action.MapMoveUp -> mechanics.moveMapUp()
+            Action.MapMoveDown -> mechanics.moveMapDown()
+            Action.MapMoveLeft -> mechanics.moveMapLeft()
+            Action.MapMoveRight -> mechanics.moveMapRight()
+            Action.MapZoomIn -> mechanics.zoomIn()
+            Action.MapZoomOut -> mechanics.zoomOut()
+            Action.SelectPlayer -> selectPlayer(inputEvent.playerNumber)
+            Action.PlayerLeft -> movePlayer(
+                    Direction.Left)
+            Action.PlayerRight -> movePlayer(
+                    Direction.Right)
+            Action.PlayerUp -> movePlayer(
+                    Direction.Up)
+            Action.PlayerDown -> movePlayer(
+                    Direction.Down)
+            Action.ActionSearch -> findNewRoom()
+            Action.FoundNextRoom -> {
+                if (inputEvent.room != null && inputEvent.playerNumber != 0) {
+                    findNewRoom(inputEvent.playerNumber, inputEvent.room)
+                }
+            }
         }
     }
 
@@ -197,7 +214,7 @@ class GameFlow(private val world: World,
         rush = 1
     }
 
-    fun findNewRoom(playerNumber: Int = world.selectedPlayer) {
+    fun findNewRoom(playerNumber: Int = world.selectedPlayer, nextRoomId: Int? = null) {
         val playerModel: Player = world.getPlayer(playerNumber)
         val playerPos = playerModel.pos()
         val playerItem = world.getItemTileCellAbsolute(playerPos)
@@ -215,46 +232,46 @@ class GameFlow(private val world: World,
                 val nextTile = world.getGroundTileAbsolute(nextAbsolutePos)
 
                 if (nextTile == Tile.OutOfSpace) {
-                    val nextRoom = worldFactory.getUndiscoveredRoom(direction.opposite())
+                    val nextRoom = if (nextRoomId == null) worldFactory.getUndiscoveredRoom(
+                            direction.opposite()) else worldFactory.getUndiscoveredById(nextRoomId)
                     if (nextRoom != null) {
-                        addNewRoom(nextRoom, currentRoom, direction)
-
+                        addNewRoom(nextRoom, currentRoom, direction, playerNumber)
                     } else {
-                        GameFlow.Companion.log.info { "Failed finding next room for direction: $direction" }
+                        log.info { "Failed finding next room for direction: $direction" }
                     }
                 } else {
-                    GameFlow.Companion.log.info { "Next room location is already occupied: $nextAbsolutePos" }
+                    log.info { "Next room location is already occupied: $nextAbsolutePos" }
                 }
             } else {
-                GameFlow.Companion.log.info { "No Exit on the current tile: $playerPos" }
+                log.info { "No Exit on the current tile: $playerPos" }
             }
         } else {
-            GameFlow.Companion.log.info { "Tried to unlock door with wrong player: $playerNumber -> ${playerItem.tile}" }
+            log.info { "Tried to unlock door with wrong player: $playerNumber -> ${playerItem.tile}" }
         }
     }
 
-    private fun addNewRoom(nextRoom: Room, currentRoom: Room, direction: GameFlow.Direction) {
-        GameFlow.Companion.log.info { "Adding new room to map: ${nextRoom.id}" }
+    private fun addNewRoom(nextRoom: Room, currentRoom: Room, direction: Direction, playerNumber: Int) {
+        log.info { "Adding new room to map: ${nextRoom.id}" }
         nextRoom.offsetX = currentRoom.offsetX
         nextRoom.offsetY = currentRoom.offsetY
         nextRoom.removeExit(direction.opposite())
         when (direction) {
-            GameFlow.Direction.Up -> {
+            Direction.Up -> {
                 nextRoom.offsetY -= Room.size
             }
-            GameFlow.Direction.Down -> {
+            Direction.Down -> {
                 nextRoom.offsetY += Room.size
             }
-            GameFlow.Direction.Left -> {
+            Direction.Left -> {
                 nextRoom.offsetX -= Room.size
             }
-            GameFlow.Direction.Right -> {
+            Direction.Right -> {
                 nextRoom.offsetX += Room.size
             }
         }
         world.rooms += nextRoom
         worldComponent.addRoom(nextRoom)
-        bus.send(FoundNewRoomEvent(nextRoom.id))
+        bus.send(InputEvent(Action.FoundNextRoom, playerNumber = playerNumber, room = nextRoom.id))
     }
 
 }

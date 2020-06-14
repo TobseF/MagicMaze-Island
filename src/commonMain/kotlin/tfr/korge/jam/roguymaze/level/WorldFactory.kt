@@ -56,6 +56,14 @@ class WorldFactory {
 
     }
 
+    fun getUndiscoveredById(nextRoomId: Int): Room? {
+        val next = undiscoveredRooms.firstOrNull { it.id == nextRoomId }
+        if (next != null) {
+            undiscoveredRooms.remove(next)
+        }
+        return next
+    }
+
     fun getUndiscoveredRoom(enterDirection: GameFlow.Direction): Room? {
         val next = undiscoveredRooms.firstOrNull { it.hasExit(enterDirection) }
         if (next != null) {
