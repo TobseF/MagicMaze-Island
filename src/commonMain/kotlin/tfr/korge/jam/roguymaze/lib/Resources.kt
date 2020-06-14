@@ -37,6 +37,8 @@ class Resources : AsyncDependency {
     lateinit var worldLand: Bitmap
     lateinit var worldWater: Bitmap
 
+    lateinit var table: Bitmap
+
     lateinit var player1: Bitmap
     lateinit var player2: Bitmap
     lateinit var player3: Bitmap
@@ -98,6 +100,12 @@ class Resources : AsyncDependency {
     lateinit var uiPanelBottomLeft: Bitmap
     lateinit var uiPanelTopLeft: Bitmap
     lateinit var uiPanelTopRight: Bitmap
+
+    lateinit var buttonSettings: Bitmap
+    lateinit var buttonInfo: Bitmap
+
+    lateinit var helpPage1: Bitmap
+    lateinit var helpPage2: Bitmap
 
 
     lateinit var uiMaskEmpty: Bitmap
@@ -164,6 +172,13 @@ class Resources : AsyncDependency {
 
     override suspend fun init() {
         imageButton = loadImage("button.png")
+        table = loadImage("table.png")
+
+        buttonSettings = loadImage("settings.png")
+        buttonInfo = loadImage("faq.png")
+
+        helpPage1 = loadImage("help_1.png")
+        helpPage2 = loadImage("help_2.png")
 
         player1 = loadImage("player_1.png")
         player2 = loadImage("player_2.png")

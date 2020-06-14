@@ -8,10 +8,7 @@ import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.degrees
-import tfr.korge.jam.roguymaze.FoundHomeEvent
-import tfr.korge.jam.roguymaze.FoundMaskEvent
-import tfr.korge.jam.roguymaze.FoundNewRoomEvent
-import tfr.korge.jam.roguymaze.InputEvent
+import tfr.korge.jam.roguymaze.*
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
@@ -38,13 +35,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
                 position(20, 7)
             }
         }
-        text("1/12", font = res.fontBubble, textSize = 38.0) {
-            bus.register<FoundNewRoomEvent> {
-                text = "${world.rooms.size}/${world.totalRooms}"
-            }
-
-            position(80.0, 16.0)
-        }
+        addRoomCounter()
         image(res.uiPanelTopRight) {
             alignRightToRightOf(rootView)
             image(res.uiTimer) {
@@ -55,6 +46,47 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             alignBottomToBottomOf(rootView)
         }
 
+        addPlayerControls()
+
+        addMovePlayer()
+
+        addMoveMap()
+
+        addZoomMap()
+
+        addRightMenuButtons()
+
+
+    }
+
+    private fun addRightMenuButtons() {
+        val settingsButton = image(res.buttonSettings) {
+            alignRightToRightOf(rootView, 8.0)
+            alignTopToTopOf(rootView, 120.0)
+            onClick {
+                bus.send(OpenSettingsEvent)
+            }
+        }
+        image(res.buttonInfo) {
+            alignRightToRightOf(settingsButton)
+            alignTopToTopOf(settingsButton, 90.0)
+            onClick {
+                bus.send(OpenFaqEvent)
+            }
+        }
+    }
+
+    private fun addRoomCounter() {
+        text("1/12", font = res.fontBubble, textSize = 38.0) {
+            bus.register<FoundNewRoomEvent> {
+                text = "${world.rooms.size}/${world.totalRooms}"
+            }
+
+            position(80.0, 16.0)
+        }
+    }
+
+    private fun addPlayerControls() {
         for (playerNumber in 1..4) {
             val playerControl = PlayerControl(playerNumber, playerControls, rootView, res, bus)
             addChild(playerControl)
@@ -63,12 +95,6 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
                 playerControl.checkPlayer.select()
             }
         }
-
-        addMovePlayer()
-
-        addMoveMap()
-
-        addZoomMap()
     }
 
     class PlayerControl(val playerNumber: Int,

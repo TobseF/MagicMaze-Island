@@ -25,8 +25,8 @@ class GameOverComponent(bus: EventBus, res: Resources, resolution: Resolution) :
         val textPos = Point(center.x - shadowCorrection, messageBox.pos.y)
         textCentered(text = "Game Over", textSize = 64.0, font = res.fontBubble, center = textPos.moveDown(80))
 
-        addChild(CandyButton("Restart", ResetGameEvent(), bus, res, textPos.moveDown(200), this::hide))
-        addChild(CandyButton("Next", NextLevelEvent(), bus, res, textPos.moveDown(310), this::hide))
+        addChild(CandyButton("Restart", ResetGameEvent, bus, res, textPos.moveDown(200), this::hide))
+        addChild(CandyButton("Next", NextLevelEvent, bus, res, textPos.moveDown(310), this::hide))
     }
 
     companion object {

@@ -8,7 +8,11 @@ import com.soywiz.korio.net.ws.WebSocketClient
 import com.soywiz.korio.net.ws.readString
 import com.soywiz.korio.util.OS
 import kotlinx.coroutines.CoroutineScope
+import tfr.korge.jam.roguymaze.ChangePlayerEvent
+import tfr.korge.jam.roguymaze.ChangeRoomEvent
 import tfr.korge.jam.roguymaze.GameMechanics
+import tfr.korge.jam.roguymaze.InputEvent
+import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.World
 import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
@@ -20,12 +24,28 @@ class NetworkBridge(val bus: EventBus,
         val tileAnimator: TileAnimator,
         var userName: String = "unknown") : AsyncDependency {
 
+    val allowedEvents = setOf(
+            Action.PlayerLeft, Action.PlayerRight, Action.PlayerUp, Action.PlayerDown, Action.ActionSearch)
+
+    var roomName = "A"
+
+    /**
+     * 1-5
+     */
+    var playerId = 1
+
     var socket: WebSocketClient? = null
 
     val log = Logger<NetworkBridge>()
 
     init {
         bus.register<Update> { handleUpdate(it) }
+        bus.register<ChangeRoomEvent> {
+            this.roomName = it.roomName
+        }
+        bus.register<ChangePlayerEvent> {
+            this.playerId = it.playerId
+        }
     }
 
     suspend fun broadcastCommand(command: String, room: String, sender: String, message: String) {
@@ -39,7 +59,7 @@ class NetworkBridge(val bus: EventBus,
 
     suspend fun handleUpdate(update: Update) {
         log.debug { "Handle update$update" }
-        broadcastCommand(update.action, Room.Demo.name, userName, update.playerUpdate())
+        broadcastCommand(update.action, roomName, userName, update.playerUpdate())
     }
 
     companion object {
@@ -69,15 +89,13 @@ class NetworkBridge(val bus: EventBus,
                 handleData(it)
             }
         }
-        //socket.onAnyMessage.add { println("received any:" + it) }
         socket.onError.add { println("failed" + it) }
 
-        socket.send("hello")
-        socket.send("world")
+        socket.send("New Client!")
         println("socket:" + socket.readString())
-        println("socket:" + socket.readString())
+
         socket.onOpen.add {
-            println("connected")
+            log.info { "connected" }
             scope.launch {
                 socket.send("hallo 42")
             }
@@ -98,15 +116,31 @@ class NetworkBridge(val bus: EventBus,
 
             log.debug { "parsed:room=$room,sender=$sender,action=$action,message=$message" }
 
-            if (sender == userName) {
+            if (sender == playerId.toString()) {
                 log.debug { "Ignoring own command $networkData" }
             } else if (action == Update.action) {
                 executePlayerUpdate(message)
+            } else if (action == "InputEvent") {
+                executeInputEvent(message)
             } else {
                 log.info { "Unknown action: $action" }
             }
         }
 
+
+    }
+
+    fun executeInputEvent(message: String) {
+        val eventAction = message.substringBefore(">")
+        val eventData = message.substringAfter(">")
+
+        val playerNumber = eventData.toIntOrNull()
+
+        val action = InputEvent.Action.parseValue(eventAction)
+
+        if (allowedEvents.contains(action) && playerNumber != null) {
+            bus.send(InputEvent(action, playerNumber))
+        }
 
     }
 

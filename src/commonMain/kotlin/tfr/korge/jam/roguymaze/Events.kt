@@ -23,12 +23,22 @@ data class SwapTileEvent(val start: Position, val end: Position)
  */
 data class DragTileEvent(val start: Position, val end: Position)
 
-class GameOverEvent
+object GameOverEvent
 
-class ResetGameEvent
+object ResetGameEvent
 
-class NextLevelEvent
+object NextLevelEvent
 
+
+data class ChangePlayerEvent(val playerId: Int = 0)
+
+object OpenSettingsEvent
+
+object OpenFaqEvent
+
+data class ChangePlayersEvent(val playersCount: Int = 0)
+
+data class ChangeRoomEvent(val roomName: String)
 
 data class FoundMaskEvent(val playerNumber: Int = 0)
 
@@ -37,5 +47,17 @@ data class FoundHomeEvent(val playerNumber: Int = 0)
 data class FoundNewRoomEvent(val nextRoom: Int = 0)
 
 data class InputEvent(val action: InputEvent.Action, val playerNumber: Int = 0) {
-    enum class Action { MapMoveUp, MapMoveDown, MapMoveLeft, MapMoveRight, MapZoomIn, MapZoomOut, SelectPlayer, PlayerLeft, PlayerRight, PlayerUp, PlayerDown, ActionSearch }
+    enum class Action {
+        MapMoveUp, MapMoveDown, MapMoveLeft, MapMoveRight, MapZoomIn, MapZoomOut, SelectPlayer, PlayerLeft, PlayerRight, PlayerUp, PlayerDown, ActionSearch, Unknown;
+
+        companion object {
+            fun parseValue(actioName: String): Action {
+                try {
+                    return valueOf(actioName)
+                } catch (e: Exception) {
+                    return Unknown
+                }
+            }
+        }
+    }
 }

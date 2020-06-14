@@ -131,6 +131,11 @@ suspend fun main() = Korge(
 
     addChild(TimerComponent(injector))
     addComponent(injector.get() as TimerComponent)
+
+    addChild(SettingsComponent(injector))
+    addChild(FaqComponent(injector))
+
+
 }
 
 

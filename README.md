@@ -4,6 +4,26 @@
 
 My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
 
+## 📖 Story
+Our four heroes wake up after a drunken night and have to find their way home. 
+Unfortunately they have lost their masks without which they are not allowed to enter their house anymore. 
+Your task:
+  1. Search for all masks - matching every character.
+  2. Find the right house for each player.
+  
+There are always four figures in the game:
+(yellow, red, purple, black)  
+Join a group of up to five players and complete the task. 
+But it is not as easy as it looks. Each player can move any piece at the same time! 
+However, only a limited number of movement options are available to each player! 
+Only as a team can you complete the task!
+
+#### Used Resources
+* [Greenland - Top-Down Game Tileset | GameArt2D](https://sellfy.com/pzuh/p/QvrD/)
+* [Free Jungle Cartoon GUI](https://free-game-assets.itch.io/free-jungle-cartoon-gui)
+* [Board Game Pack by Kenney | OpenGameArt](https://opengameart.org/content/boardgame-pack)
+* [Free icons designed by dDara \| Flaticon](https://www.flaticon.com/authors/ddara)
+
 --- 
 
 
