@@ -9,11 +9,13 @@ import com.soywiz.korinject.AsyncInjector
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.Room
+import tfr.korge.jam.roguymaze.model.World
 import tfr.korge.jam.roguymaze.renderer.WorldComponent
 import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 
 class KeyBindings(private val stage: Stage,
         private val bus: EventBus,
+        private val world: World,
         private val worldComponent: WorldComponent,
         private val animator: TileAnimator,
         private val gameFlow: GameFlow,
@@ -26,7 +28,7 @@ class KeyBindings(private val stage: Stage,
 
         suspend operator fun invoke(injector: AsyncInjector): KeyBindings {
             injector.mapSingleton {
-                KeyBindings(get(), get(), get(), get(), get(), get(), get())
+                KeyBindings(get(), get(), get(), get(), get(), get(), get(), get())
             }
             return injector.get()
         }
@@ -51,47 +53,52 @@ class KeyBindings(private val stage: Stage,
     }
 
     private fun shuffle() {
-        KeyBindings.Companion.log.debug { "Shuffle & Reset" }
+        log.debug { "Shuffle & Reset" }
         resetState()
         room.ground.shuffle()
     }
 
     private fun reloadLevel() {
-        KeyBindings.Companion.log.debug { "Reload level" }
+        log.debug { "Reload level" }
         resetState()
         room.reset()
     }
+
+    fun sendPlayerInputEvent(action: Action) {
+        bus.send(InputEvent(action, world.selectedPlayer))
+    }
+
 
     private fun onKeyDown(key: Key) {
         val move = 128.0
         when (key) {
             Key.PLUS, Key.KP_ADD -> {
-                bus.send(InputEvent(Action.MapZoomIn))
+                sendPlayerInputEvent(Action.MapZoomIn)
             }
             Key.MINUS, Key.KP_SUBTRACT -> {
-                bus.send(InputEvent(Action.MapZoomOut))
+                sendPlayerInputEvent(Action.MapZoomOut)
             }
             Key.P -> {
-                KeyBindings.Companion.log.debug { "Print Field Data" }
+                log.debug { "Print Field Data" }
                 println(room.ground)
             }
             Key.W -> {
-                bus.send(InputEvent(Action.PlayerUp))
+                sendPlayerInputEvent(Action.PlayerUp)
             }
             Key.A -> {
-                bus.send(InputEvent(Action.PlayerLeft))
+                sendPlayerInputEvent(Action.PlayerLeft)
             }
             Key.S -> {
-                bus.send(InputEvent(Action.PlayerDown))
+                sendPlayerInputEvent(Action.PlayerDown)
             }
             Key.D -> {
-                bus.send(InputEvent(Action.PlayerRight))
+                sendPlayerInputEvent(Action.PlayerRight)
             }
             Key.SPACE -> {
                 gameFlow.findNewRoom()
             }
             Key.D -> {
-                KeyBindings.Companion.log.debug { "Show Debug Letters" }
+                log.debug { "Show Debug Letters" }
             }
             Key.S -> {
                 shuffle()
@@ -99,6 +106,23 @@ class KeyBindings(private val stage: Stage,
             Key.R -> {
                 reloadLevel()
             }
+
+            Key.F1 -> {
+                bus.send(ChangePlayerEvent(1))
+            }
+            Key.F2 -> {
+                bus.send(ChangePlayerEvent(2))
+            }
+            Key.F3 -> {
+                bus.send(ChangePlayerEvent(3))
+            }
+            Key.F4 -> {
+                bus.send(ChangePlayerEvent(4))
+            }
+            Key.F4 -> {
+                bus.send(ChangePlayerEvent(5))
+            }
+
             Key.N1 -> {
                 bus.send(InputEvent(Action.SelectPlayer, playerNumber = 1))
             }
@@ -112,24 +136,24 @@ class KeyBindings(private val stage: Stage,
                 bus.send(InputEvent(Action.SelectPlayer, playerNumber = 4))
             }
             Key.LEFT -> {
-                bus.send(InputEvent(Action.MapMoveLeft))
+                sendPlayerInputEvent(Action.MapMoveLeft)
             }
             Key.RIGHT -> {
-                bus.send(InputEvent(Action.MapMoveRight))
+                sendPlayerInputEvent(Action.MapMoveRight)
             }
             Key.UP -> {
-                bus.send(InputEvent(Action.MapMoveUp))
+                sendPlayerInputEvent(Action.MapMoveUp)
             }
             Key.DOWN -> {
-                bus.send(InputEvent(Action.MapMoveDown))
+                sendPlayerInputEvent(Action.MapMoveDown)
             }
             Key.I -> {
-                KeyBindings.Companion.log.debug { "Print Image Data" }
+                log.debug { "Print Image Data" }
                 println(worldComponent)
                 //println("Renderer data is equal to field data: " + worldComponent.isEqualWithField())
             }
             else -> {
-                KeyBindings.Companion.log.debug { "Pressed unmapped key: $key" }
+                log.debug { "Pressed unmapped key: $key" }
             }
         }
     }

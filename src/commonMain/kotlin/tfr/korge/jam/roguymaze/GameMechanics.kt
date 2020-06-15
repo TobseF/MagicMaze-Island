@@ -77,17 +77,17 @@ class GameMechanics(val world: World, val worldComponent: WorldComponent) {
         fun distance() = target.distance(tile)
     }
 
-    data class InsertMove(val target: Position, val tile: Tile) : Comparable<GameMechanics.InsertMove> {
-        override fun compareTo(other: GameMechanics.InsertMove) = other.target.y - this.target.y
+    data class InsertMove(val target: Position, val tile: Tile) : Comparable<InsertMove> {
+        override fun compareTo(other: InsertMove) = other.target.y - this.target.y
     }
 
-    fun insert(moves: List<GameMechanics.InsertMove>) = moves.forEach { insert(it) }
+    fun insert(moves: List<InsertMove>) = moves.forEach { insert(it) }
 
-    fun insert(move: GameMechanics.InsertMove) {
+    fun insert(move: InsertMove) {
         ground[move.target] = move.tile
     }
 
-    fun move(move: GameMechanics.Move) {
+    fun move(move: Move) {
         ground[move.target] = ground[move.tile]
         ground[move.tile] = Tile.Grass
     }

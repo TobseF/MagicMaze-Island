@@ -52,24 +52,28 @@ class NetworkBridge(val bus: EventBus,
             this.playersCount = it.playersCount
         }
         bus.register<InputEvent> {
-            if (!it.networkEvent) {
+            if (!it.isNetworkEvent) {
                 handleInputEvent(it)
             }
         }
+    }
+
+    fun userId(): String {
+        return "$playersCount-$playerId"
     }
 
     private suspend fun handleInputEvent(event: InputEvent) {
         if (allowedEvents.contains(event.action)) {
             log.debug { "handleInputEvent$event" }
 
-            broadcastCommand("InputEvent", roomName, userName, event.toDataString())
+            broadcastCommand("InputEvent", roomName, userId(), event.toDataString())
         }
     }
 
     fun InputEvent.toDataString(): String {
         var data = "${this.action}>${this.playerNumber}"
-        if (this.room != null) {
-            data += ";" + this.playerNumber
+        if (this.roomId != null) {
+            data += ";" + this.roomId
         }
         return data
     }
@@ -175,7 +179,7 @@ class NetworkBridge(val bus: EventBus,
         val action = Action.parseValue(eventAction)
 
         if (allowedEvents.contains(action) && playerNumber != null) {
-            bus.send(InputEvent(action, playerNumber, room = roomNumber, networkEvent = true))
+            bus.send(InputEvent(action, playerNumber, roomId = roomNumber, isNetworkEvent = true))
         } else {
             log.info { "Ignoring event: $action ($playerNumber)" }
         }

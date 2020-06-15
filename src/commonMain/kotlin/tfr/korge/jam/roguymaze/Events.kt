@@ -45,10 +45,11 @@ data class FoundMaskEvent(val playerNumber: Int = 0)
 data class FoundHomeEvent(val playerNumber: Int = 0)
 
 
-data class InputEvent(val action: InputEvent.Action,
+data class InputEvent(val action: Action,
         val playerNumber: Int = 0,
-        val room: Int? = null,
-        val networkEvent: Boolean = false) {
+        val roomId: Int? = null,
+        val isNetworkEvent: Boolean = false) {
+
     enum class Action {
         MapMoveUp, MapMoveDown, MapMoveLeft, MapMoveRight, MapZoomIn, MapZoomOut, SelectPlayer, PlayerLeft, PlayerRight, PlayerUp, PlayerDown, ActionSearch, FoundNextRoom, Unknown;
 
@@ -62,4 +63,6 @@ data class InputEvent(val action: InputEvent.Action,
             }
         }
     }
+
+    fun isLocalEvent() = !isNetworkEvent
 }

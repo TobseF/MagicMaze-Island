@@ -31,8 +31,8 @@ class GameFlow(private val world: World,
         bus.register<InputEvent> { handleInput(it) }
         bus.register<ChangePlayersEvent> { handleChangePlayerCount(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
-
     }
+
 
     private fun handleChangePlayerId(event: ChangePlayerEvent) {
         log.info { "handleChangePlayerId $event" }
@@ -43,6 +43,13 @@ class GameFlow(private val world: World,
     }
 
     private fun handleInput(inputEvent: InputEvent) {
+        val playerId = inputEvent.playerNumber
+        if (playerId != 0) {
+            executeInput(inputEvent, playerId)
+        }
+    }
+
+    private fun executeInput(inputEvent: InputEvent, playerId: Int) {
         when (inputEvent.action) {
             Action.MapMoveUp -> mechanics.moveMapUp()
             Action.MapMoveDown -> mechanics.moveMapDown()
@@ -50,32 +57,27 @@ class GameFlow(private val world: World,
             Action.MapMoveRight -> mechanics.moveMapRight()
             Action.MapZoomIn -> mechanics.zoomIn()
             Action.MapZoomOut -> mechanics.zoomOut()
-            Action.SelectPlayer -> selectPlayer(inputEvent.playerNumber)
-            Action.PlayerLeft -> movePlayer(
-                    Direction.Left)
-            Action.PlayerRight -> movePlayer(
-                    Direction.Right)
-            Action.PlayerUp -> movePlayer(
-                    Direction.Up)
-            Action.PlayerDown -> movePlayer(
-                    Direction.Down)
+            Action.SelectPlayer -> selectPlayer(playerId)
+            Action.PlayerLeft -> movePlayer(playerId, Direction.Left)
+            Action.PlayerRight -> movePlayer(playerId, Direction.Right)
+            Action.PlayerUp -> movePlayer(playerId, Direction.Up)
+            Action.PlayerDown -> movePlayer(playerId, Direction.Down)
             Action.ActionSearch -> findNewRoom()
             Action.FoundNextRoom -> {
-                if (inputEvent.room != null && inputEvent.playerNumber != 0) {
-                    findNewRoom(inputEvent.playerNumber, inputEvent.room)
+                if (inputEvent.roomId != null && playerId != 0) {
+                    findNewRoom(playerId, inputEvent.roomId)
                 }
             }
         }
     }
 
-    fun movePlayer(direction: GameFlow.Direction) {
+    fun movePlayer(direction: Direction) {
         movePlayer(world.selectedPlayer, direction)
     }
 
     fun selectPlayer(playerNumber: Int) {
         world.selectedPlayer = playerNumber
     }
-
 
     companion object {
         val log = Logger("GameFlow")
@@ -92,7 +94,7 @@ class GameFlow(private val world: World,
 
     private fun DragTileEvent.onDragTileEvent() {
         if (animator.isAnimationRunning()) {
-            GameFlow.Companion.log.debug { "Skipping drag event because of moving tiles ($start. $end)" }
+            log.debug { "Skipping drag event because of moving tiles ($start. $end)" }
         }
         /*else if (field[posA].isNotTile() || field[posB].isNotTile()) {
             log.debug { "Skipping drag event because one tile wasn't a tile ($posA. $posB)" }
@@ -128,23 +130,23 @@ class GameFlow(private val world: World,
         Up, Down, Left, Right;
 
         fun opposite() = when (this) {
-            GameFlow.Direction.Up -> GameFlow.Direction.Down
-            GameFlow.Direction.Down -> GameFlow.Direction.Up
-            GameFlow.Direction.Left -> GameFlow.Direction.Right
-            GameFlow.Direction.Right -> GameFlow.Direction.Left
+            Up -> Down
+            Down -> Up
+            Left -> Right
+            Right -> Left
         }
     }
 
     var roomNumber = 0
 
-    fun Position.move(direction: GameFlow.Direction) = when (direction) {
-        GameFlow.Direction.Left -> Position(x - 1, y)
-        GameFlow.Direction.Right -> Position(x + 1, y)
-        GameFlow.Direction.Up -> Position(x, y - 1)
-        GameFlow.Direction.Down -> Position(x, y + 1)
+    fun Position.move(direction: Direction) = when (direction) {
+        Direction.Left -> Position(x - 1, y)
+        Direction.Right -> Position(x + 1, y)
+        Direction.Up -> Position(x, y - 1)
+        Direction.Down -> Position(x, y + 1)
     }
 
-    fun movePlayer(playerNumber: Int, direction: GameFlow.Direction) {
+    fun movePlayer(playerNumber: Int, direction: Direction) {
         val playerModel: Player = world.getPlayer(playerNumber)
         val playerComponent = worldComponent.getPlayer(playerModel)
         val playerPos = playerModel.pos()
@@ -161,35 +163,35 @@ class GameFlow(private val world: World,
             val currentItem = currentRoom.getItemTileCellRelative(nextField.position)
             if (currentItem.tile.isMask() && playerNumber == currentItem.tile.getPlayerNumber()) {
                 playerModel.collectedMask = true
-                GameFlow.Companion.log.info { "Player $playerNumber found mask ${currentItem.tile}!" }
+                log.info { "Player $playerNumber found mask ${currentItem.tile}!" }
                 currentRoom.removeItem(nextField.position)
                 bus.send(FoundMaskEvent(playerNumber))
             }
             if (currentItem.tile.isHome() && playerNumber == currentItem.tile.getPlayerNumber() && playerModel.collectedMask) {
                 playerModel.inHome = true
-                GameFlow.Companion.log.info { "Player $playerNumber found a sweet home on ${currentItem.tile}!" }
+                log.info { "Player $playerNumber found a sweet home on ${currentItem.tile}!" }
                 currentRoom.setFinish(nextField.position, playerModel)
                 bus.send(FoundHomeEvent(playerNumber))
             }
         } else {
             val taken = if (takenByPlayer) "taken by player" else ""
-            GameFlow.Companion.log.info { "Illegal Move: $nextAbsolutePos -> $nextField (taken: $taken, border: $blockedByWall" }
+            log.info { "Illegal Move: $nextAbsolutePos -> $nextField (taken: $taken, border: $blockedByWall" }
         }
     }
 
-    private fun isBlockedByWall(direction: GameFlow.Direction,
+    private fun isBlockedByWall(direction: Direction,
             currentRoom: Room?,
             playerPos: Position,
             nextRoom: Room?,
             nextAbsolutePos: Position): Boolean {
         return when (direction) {
-            GameFlow.Direction.Left -> currentRoom?.getBorderLeftAbsolute(
+            Direction.Left -> currentRoom?.getBorderLeftAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderRightAbsolute(nextAbsolutePos) == Tile.Border
-            GameFlow.Direction.Right -> currentRoom?.getBorderRightAbsolute(
+            Direction.Right -> currentRoom?.getBorderRightAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderLeftAbsolute(nextAbsolutePos) == Tile.Border
-            GameFlow.Direction.Up -> currentRoom?.getBorderTopAbsolute(
+            Direction.Up -> currentRoom?.getBorderTopAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderButtomAbsolute(nextAbsolutePos) == Tile.Border
-            GameFlow.Direction.Down -> currentRoom?.getBorderButtomAbsolute(
+            Direction.Down -> currentRoom?.getBorderButtomAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderTopAbsolute(nextAbsolutePos) == Tile.Border
         }
     }
@@ -232,6 +234,8 @@ class GameFlow(private val world: World,
                 val nextTile = world.getGroundTileAbsolute(nextAbsolutePos)
 
                 if (nextTile == Tile.OutOfSpace) {
+                    val isNetworkEvent = nextRoomId != null
+                    log.info { "Is Next Room a network event: $isNetworkEvent ($nextRoomId)" }
                     val nextRoom = if (nextRoomId == null) worldFactory.getUndiscoveredRoom(
                             direction.opposite()) else worldFactory.getUndiscoveredById(nextRoomId)
                     if (nextRoom != null) {
@@ -271,7 +275,7 @@ class GameFlow(private val world: World,
         }
         world.rooms += nextRoom
         worldComponent.addRoom(nextRoom)
-        bus.send(InputEvent(Action.FoundNextRoom, playerNumber = playerNumber, room = nextRoom.id))
+        bus.send(InputEvent(Action.FoundNextRoom, playerNumber = playerNumber, roomId = nextRoom.id))
     }
 
 }
