@@ -18,6 +18,11 @@ But it is not as easy as it looks. Each player can move any piece at the same ti
 However, only a limited number of movement options are available to each player! 
 Only as a team can you complete the task!
 
+### Multiplayer
+Play in a team with up to five players. To run it with multiplayer support, first start the gameserver. It's a separe project available here:  
+[RoguyIsleMaze-Server](https://github.com/TobseF/RoguyIsleMaze-Server)  
+> Only works on the Javascript build 
+
 #### Used Resources
 * [Greenland - Top-Down Game Tileset | GameArt2D](https://sellfy.com/pzuh/p/QvrD/)
 * [Free Jungle Cartoon GUI](https://free-game-assets.itch.io/free-jungle-cartoon-gui)
