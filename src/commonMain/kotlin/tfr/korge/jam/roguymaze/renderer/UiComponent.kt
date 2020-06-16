@@ -289,9 +289,8 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             onClick { sendUiEvent(Action.PlayerRight) }
         }
         val actionSearch = image(res.uiActionSearch) {
-            anchor(0.0, 1)
-            alignLeftToRightOf(movePlayerUp, -38.0)
-            alignBottomToTopOf(movePlayerRight, -38.0)
+            alignLeftToRightOf(movePlayerUp, 50.0)
+            alignBottomToTopOf(movePlayerRight, -35.0)
 
             onClick { sendUiEvent(Action.ActionSearch) }
         }

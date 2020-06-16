@@ -107,19 +107,19 @@ class KeyBindings(private val stage: Stage,
                 reloadLevel()
             }
 
-            Key.F1 -> {
+            Key.F1, Key.NUMPAD1 -> {
                 bus.send(ChangePlayerEvent(1))
             }
-            Key.F2 -> {
+            Key.F2, Key.NUMPAD2 -> {
                 bus.send(ChangePlayerEvent(2))
             }
-            Key.F3 -> {
+            Key.F3,Key.NUMPAD3 -> {
                 bus.send(ChangePlayerEvent(3))
             }
-            Key.F4 -> {
+            Key.F4, Key.NUMPAD4 -> {
                 bus.send(ChangePlayerEvent(4))
             }
-            Key.F4 -> {
+            Key.F5, Key.NUMPAD5 -> {
                 bus.send(ChangePlayerEvent(5))
             }
 
