@@ -37,7 +37,7 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
             centerOn(rootView)
         }
 
-        val labelPlayers = uiText("Players", width = 420.0) {
+        val labelPlayers = uiText("Number of Players", width = 420.0) {
             alignTopToTopOf(settings, 90.0)
             alignLeftToLeftOf(settings, 75.0)
         }
@@ -68,7 +68,7 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
         }
 
 
-        val room = uiText("Room", width = 420.0) {
+        val room = uiText("Network Game Channel", width = 420.0) {
             alignTopToBottomOf(labelPlayer, 100)
             alignLeftToLeftOf(labelPlayer)
         }

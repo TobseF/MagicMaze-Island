@@ -43,13 +43,16 @@ class NetworkBridge(val bus: EventBus,
     init {
         bus.register<Update> { handleUpdate(it) }
         bus.register<ChangeRoomEvent> {
-            this.roomName = it.roomName
+            roomName = it.roomName
+            log.info { "Changed room to $roomName" }
         }
         bus.register<ChangePlayerEvent> {
-            this.playerId = it.playerId
+            playerId = it.playerId
+            log.info { "Changed player Id to $playerId" }
         }
         bus.register<ChangePlayersEvent> {
-            this.playersCount = it.playersCount
+            playersCount = it.playersCount
+            log.info { "Changed player count to $playersCount" }
         }
         bus.register<InputEvent> {
             if (!it.isNetworkEvent) {

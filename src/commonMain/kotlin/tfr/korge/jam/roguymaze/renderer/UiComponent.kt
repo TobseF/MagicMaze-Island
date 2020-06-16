@@ -177,10 +177,12 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             }
 
             bus.register<InputEvent> {
-                if (it.playerNumber == playerNumber) {
-                    checkPlayer.select()
-                } else {
-                    checkPlayer.uncheck()
+                if (it.action == Action.SelectPlayer) {
+                    if (it.playerNumber == playerNumber) {
+                        checkPlayer.select()
+                    } else {
+                        checkPlayer.uncheck()
+                    }
                 }
             }
 
@@ -348,7 +350,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
 
     fun sendUiEvent(action: Action) {
         log.info { "New UI input Event $action" }
-        bus.send(InputEvent(action))
+        bus.send(InputEvent(action, world.selectedPlayer))
     }
 
 
