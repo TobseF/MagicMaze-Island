@@ -18,19 +18,49 @@ But it is not as easy as it looks. Each player can move any piece at the same ti
 However, only a limited number of movement options are available to each player! 
 Only as a team can you complete the task!
 
-### Multiplayer
-Play in a team with up to five players. To run it with multiplayer support, first start the gameserver. It's a separe project available here:  
+## 👉 Before Start
+ 1. Start the game server on a local network.
+ 2. Team up with 2-4 friends. Everybody opens the Game in the browser by its own.
+ 3. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
+ 4. Open the  **settings** dialog by clicking the gear icon.  
+    Adjust _Number of Players_ to the number of total players of the game.  
+    Adjust _Player_ to your player number. Every teammate needs to choose a different one.
+    Choose a _Network Game Channel_ and share it with your teammates, so everyone is in the same channel. 
+ 5. Check your available actions. Depending on the number of player and your chosen player you will have different
+    actions available (green buttons next to the hero selection).
+    
+## ⌨ Controls
+* <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between the four heros.  
+* <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>S</kbd> Move the selected hero.
+* <kbd>🡰</kbd><kbd>🡲</kbd><kbd>🡱</kbd><kbd>🡳</kbd> Move the map.
+* <kbd>SPACE</kbd> Discover the next room (only available if you can see the magnifier action icon).
+* <kbd>+</kbd><kbd>-</kbd> Zoom the map in or out.
+* <kbd>Numpad-1</kbd> - <kbd>Numpad-5</kbd> Switch between the player number. 
+* <kbd>F1</kbd> - <kbd>F5</kbd> Switch the number of player. 
+
+## 🌍 Multiplayer
+Play in a team with up to five players. To run it with multiplayer support, first start the gameserver. It's a separate project available here:  
 [RoguyIsleMaze-Server](https://github.com/TobseF/RoguyIsleMaze-Server)  
 > Only works on the Javascript build 
+Start the game and choose a player by pressing F1-F5. To get updates, have to set up another player for everyone (every Browser).  
 
-#### Used Resources
+### 🐞 Troubleshooting
+* To run the game in multiplayer. A game server instance have to run in the same network.
+Until I deploy a public one, you need to host the server by your own.
+
+* All player need a different player, the correct number of players, and the same game channel.
+  Otherwise it's not possible for the game to sync the game states. Choose the channel wisely, because only
+  your team should use it. If also other players have chosen this channel, the will interact with your game. 
+  Unfortunately, for now there is no possibility to see if a channel was already taken by others.
+
+#### 🖼 Used Assets
 * [Greenland - Top-Down Game Tileset | GameArt2D](https://sellfy.com/pzuh/p/QvrD/)
 * [Free Jungle Cartoon GUI](https://free-game-assets.itch.io/free-jungle-cartoon-gui)
 * [Board Game Pack by Kenney | OpenGameArt](https://opengameart.org/content/boardgame-pack)
 * [Free icons designed by dDara \| Flaticon](https://www.flaticon.com/authors/ddara)
 
 --- 
-
+### 🛠 Dev Info
 
 For Windows, change all the `./gradlew` for `gradlew.bat`.
 
