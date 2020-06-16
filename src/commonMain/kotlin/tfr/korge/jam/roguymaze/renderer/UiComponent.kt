@@ -10,7 +10,6 @@ import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.degrees
 import tfr.korge.jam.roguymaze.*
 import tfr.korge.jam.roguymaze.InputEvent.Action
-import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
@@ -159,13 +158,6 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             bus.register<FoundMaskEvent> {
                 if (it.playerNumber == playerNumber) {
                     mask.alpha = 1.0
-                    /**
-                    mask.scale(0.1,0.1)
-                    mask.animate {
-                    scaleTo(1.0,1.0, 800.milliseconds)
-                    show(300.milliseconds)
-                    }
-                     */
                 }
             }
             bus.register<FoundHomeEvent> {
@@ -297,24 +289,22 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             onClick { sendUiEvent(Action.ActionSearch) }
         }
 
+        fun updateActions() {
+            val newActionSet = world.getAllowedActions()
+            movePlayerDown.visible = newActionSet.contains(Action.PlayerDown)
+            movePlayerLeft.visible = newActionSet.contains(Action.PlayerLeft)
+            movePlayerRight.visible = newActionSet.contains(Action.PlayerRight)
+            movePlayerUp.visible = newActionSet.contains(Action.PlayerUp)
+            actionSearch.visible = newActionSet.contains(Action.ActionSearch)
+        }
+
         bus.register<ChangePlayerEvent> {
-            val actionSet: WorldFactory.ActionSet? = world.factory?.actionSets?.get(world.selectedPlayersCount)
-            val newActionSet = actionSet?.allowed?.get(it.playerId)
-            if (newActionSet != null) {
-                movePlayerDown.visible = newActionSet.contains(Action.PlayerDown)
-            }
-            if (newActionSet != null) {
-                movePlayerLeft.visible = newActionSet.contains(Action.PlayerLeft)
-            }
-            if (newActionSet != null) {
-                movePlayerRight.visible = newActionSet.contains(Action.PlayerRight)
-            }
-            if (newActionSet != null) {
-                movePlayerUp.visible = newActionSet.contains(Action.PlayerUp)
-            }
-            if (newActionSet != null) {
-                actionSearch.visible = newActionSet.contains(Action.ActionSearch)
-            }
+            world.selectedPlayer = it.playerId
+            updateActions()
+        }
+        bus.register<ChangePlayersCountEvent> {
+            world.playersCount = it.playersCount
+            updateActions()
         }
     }
 

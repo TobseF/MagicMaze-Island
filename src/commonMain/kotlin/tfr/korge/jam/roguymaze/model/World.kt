@@ -4,13 +4,10 @@ import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.math.PositionGrid.Position
 
 
-class World(val rooms: MutableList<Room>,
-        val players: Players,
-        val totalRooms: Int,
-        val factory: WorldFactory? = null) {
+class World(val rooms: MutableList<Room>, val players: Players, val totalRooms: Int, val factory: WorldFactory) {
 
     var selectedPlayer = 1
-    var selectedPlayersCount = 1
+    var playersCount = 1
 
     fun getPlayer(playerNumber: Int) = players[playerNumber]
 
@@ -45,5 +42,8 @@ class World(val rooms: MutableList<Room>,
     fun getItemTileCellAbsolute(pos: Position): TileCell {
         return getRoom(pos)?.getItemTileCellAbsolute(pos) ?: TileCell(Tile.OutOfSpace, pos)
     }
+
+    fun getActionSet() = factory.getActionSet(this.playersCount)
+    fun getAllowedActions() = getActionSet().getAllowedActions(this.selectedPlayer)
 
 }

@@ -21,26 +21,26 @@ class WorldFactory {
     init {
         val set1 = ActionSet(1)
         val allEvents = setOf(
-                PlayerLeft, PlayerRight, PlayerDown, PlayerUp, SelectPlayer)
+                PlayerLeft, PlayerRight, PlayerDown, PlayerUp, ActionSearch)
         for (player in 0..5) {
-            set1.getInputEvents(player).addAll(allEvents)
+            set1.addEvents(player, *allEvents.toTypedArray())
         }
         actionSets[0] = set1
         actionSets[1] = set1
 
         actionSets[2] = ActionSet(2).apply {
             addEvents(1, PlayerLeft, PlayerRight)
-            addEvents(2, PlayerUp, PlayerDown, SelectPlayer)
+            addEvents(2, PlayerUp, PlayerDown, ActionSearch)
         }
 
         actionSets[3] = ActionSet(3).apply {
-            addEvents(1, PlayerLeft, SelectPlayer)
+            addEvents(1, PlayerLeft, ActionSearch)
             addEvents(2, PlayerRight)
             addEvents(3, PlayerUp, PlayerDown)
         }
 
-        actionSets[4] = ActionSet(5).apply {
-            addEvents(1, PlayerLeft, SelectPlayer)
+        actionSets[4] = ActionSet(4).apply {
+            addEvents(1, PlayerLeft, ActionSearch)
             addEvents(2, PlayerRight)
             addEvents(3, PlayerUp)
             addEvents(4, PlayerDown)
@@ -51,7 +51,7 @@ class WorldFactory {
             addEvents(2, PlayerRight)
             addEvents(3, PlayerUp)
             addEvents(4, PlayerDown)
-            addEvents(5, SelectPlayer)
+            addEvents(5, ActionSearch)
         }
 
     }
@@ -103,15 +103,16 @@ class WorldFactory {
         return World(mutableListOf(start), players, maxRooms, factory = this)
     }
 
+    fun getActionSet(playersCount: Int): ActionSet = actionSets[playersCount] ?: actionSets[0]!!
 
-    class ActionSet(players: Int) {
+    data class ActionSet(val players: Int) {
 
         /**
          *  player number -> List<InputEvent>
          */
         val allowed = mutableMapOf<Int, MutableSet<Action>>()
 
-        fun getInputEvents(playerNumber: Int): MutableSet<Action> {
+        fun getAllowedActions(playerNumber: Int): MutableSet<Action> {
             return allowed[playerNumber] ?: mutableSetOf()
         }
 

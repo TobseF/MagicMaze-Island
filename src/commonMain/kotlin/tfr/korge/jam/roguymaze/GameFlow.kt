@@ -29,17 +29,19 @@ class GameFlow(private val world: World,
     init {
         bus.register<DragTileEvent> { it.onDragTileEvent() }
         bus.register<InputEvent> { handleInput(it) }
-        bus.register<ChangePlayersEvent> { handleChangePlayerCount(it) }
+        bus.register<ChangePlayersCountEvent> { handleChangePlayerCount(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
     }
 
 
     private fun handleChangePlayerId(event: ChangePlayerEvent) {
         log.info { "handleChangePlayerId $event" }
+        world.selectedPlayer = event.playerId
     }
 
-    private fun handleChangePlayerCount(event: ChangePlayersEvent) {
+    private fun handleChangePlayerCount(event: ChangePlayersCountEvent) {
         log.info { "handleChangePlayerCount $event" }
+        world.playersCount = event.playersCount
     }
 
     private fun handleInput(inputEvent: InputEvent) {

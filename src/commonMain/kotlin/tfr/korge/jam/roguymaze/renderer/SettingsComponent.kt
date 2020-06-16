@@ -6,7 +6,7 @@ import com.soywiz.korge.ui.uiText
 import com.soywiz.korge.view.*
 import com.soywiz.korinject.AsyncInjector
 import tfr.korge.jam.roguymaze.ChangePlayerEvent
-import tfr.korge.jam.roguymaze.ChangePlayersEvent
+import tfr.korge.jam.roguymaze.ChangePlayersCountEvent
 import tfr.korge.jam.roguymaze.ChangeRoomEvent
 import tfr.korge.jam.roguymaze.OpenSettingsEvent
 import tfr.korge.jam.roguymaze.lib.EventBus
@@ -47,7 +47,7 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
                 alignTopToBottomOf(labelPlayers, 18.0)
                 alignLeftToLeftOf(labelPlayers, (90 * playerCount))
                 onClick {
-                    bus.send(ChangePlayersEvent(playerCount + 1))
+                    bus.send(ChangePlayersCountEvent(playerCount + 1))
                 }
             }
         }

@@ -50,7 +50,7 @@ class NetworkBridge(val bus: EventBus,
             playerId = it.playerId
             log.info { "Changed player Id to $playerId" }
         }
-        bus.register<ChangePlayersEvent> {
+        bus.register<ChangePlayersCountEvent> {
             playersCount = it.playersCount
             log.info { "Changed player count to $playersCount" }
         }

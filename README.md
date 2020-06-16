@@ -30,7 +30,7 @@ Only as a team can you complete the task!
     actions available (green buttons next to the hero selection).
     
 ## ⌨ Controls
-* <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between the four heros.  
+* <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between the four heros. ⚠ Broken on current build.
 * <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>S</kbd> Move the selected hero.
 * <kbd>🡰</kbd><kbd>🡲</kbd><kbd>🡱</kbd><kbd>🡳</kbd> Move the map.
 * <kbd>SPACE</kbd> Discover the next room (only available if you can see the magnifier action icon).

@@ -37,7 +37,6 @@ class KeyBindings(private val stage: Stage,
     override suspend fun init() {
         bindKeys()
         bus.register<ResetGameEvent> { reloadLevel() }
-        bus.register<NextLevelEvent> { shuffle() }
     }
 
     private fun bindKeys() {
@@ -52,12 +51,6 @@ class KeyBindings(private val stage: Stage,
         levelCheck.reset()
     }
 
-    private fun shuffle() {
-        log.debug { "Shuffle & Reset" }
-        resetState()
-        room.ground.shuffle()
-    }
-
     private fun reloadLevel() {
         log.debug { "Reload level" }
         resetState()
@@ -70,8 +63,32 @@ class KeyBindings(private val stage: Stage,
 
 
     private fun onKeyDown(key: Key) {
-        val move = 128.0
         when (key) {
+            Key.W -> {
+                if (world.getAllowedActions().contains(Action.PlayerUp)) {
+                    sendPlayerInputEvent(Action.PlayerUp)
+                }
+            }
+            Key.A -> {
+                if (world.getAllowedActions().contains(Action.PlayerLeft)) {
+                    sendPlayerInputEvent(Action.PlayerLeft)
+                }
+            }
+            Key.S -> {
+                if (world.getAllowedActions().contains(Action.PlayerDown)) {
+                    sendPlayerInputEvent(Action.PlayerDown)
+                }
+            }
+            Key.D -> {
+                if (world.getAllowedActions().contains(Action.PlayerRight)) {
+                    sendPlayerInputEvent(Action.PlayerRight)
+                }
+            }
+            Key.SPACE -> {
+                if (world.getAllowedActions().contains(Action.ActionSearch)) {
+                    gameFlow.findNewRoom()
+                }
+            }
             Key.PLUS, Key.KP_ADD -> {
                 sendPlayerInputEvent(Action.MapZoomIn)
             }
@@ -82,30 +99,20 @@ class KeyBindings(private val stage: Stage,
                 log.debug { "Print Field Data" }
                 println(room.ground)
             }
-            Key.W -> {
-                sendPlayerInputEvent(Action.PlayerUp)
+
+            Key.LEFT -> {
+                sendPlayerInputEvent(Action.MapMoveLeft)
             }
-            Key.A -> {
-                sendPlayerInputEvent(Action.PlayerLeft)
+            Key.RIGHT -> {
+                sendPlayerInputEvent(Action.MapMoveRight)
             }
-            Key.S -> {
-                sendPlayerInputEvent(Action.PlayerDown)
+            Key.UP -> {
+                sendPlayerInputEvent(Action.MapMoveUp)
             }
-            Key.D -> {
-                sendPlayerInputEvent(Action.PlayerRight)
+            Key.DOWN -> {
+                sendPlayerInputEvent(Action.MapMoveDown)
             }
-            Key.SPACE -> {
-                gameFlow.findNewRoom()
-            }
-            Key.D -> {
-                log.debug { "Show Debug Letters" }
-            }
-            Key.S -> {
-                shuffle()
-            }
-            Key.R -> {
-                reloadLevel()
-            }
+
 
             Key.F1, Key.NUMPAD1 -> {
                 bus.send(ChangePlayerEvent(1))
@@ -113,7 +120,7 @@ class KeyBindings(private val stage: Stage,
             Key.F2, Key.NUMPAD2 -> {
                 bus.send(ChangePlayerEvent(2))
             }
-            Key.F3,Key.NUMPAD3 -> {
+            Key.F3, Key.NUMPAD3 -> {
                 bus.send(ChangePlayerEvent(3))
             }
             Key.F4, Key.NUMPAD4 -> {
@@ -134,23 +141,6 @@ class KeyBindings(private val stage: Stage,
             }
             Key.N4 -> {
                 bus.send(InputEvent(Action.SelectPlayer, playerNumber = 4))
-            }
-            Key.LEFT -> {
-                sendPlayerInputEvent(Action.MapMoveLeft)
-            }
-            Key.RIGHT -> {
-                sendPlayerInputEvent(Action.MapMoveRight)
-            }
-            Key.UP -> {
-                sendPlayerInputEvent(Action.MapMoveUp)
-            }
-            Key.DOWN -> {
-                sendPlayerInputEvent(Action.MapMoveDown)
-            }
-            Key.I -> {
-                log.debug { "Print Image Data" }
-                println(worldComponent)
-                //println("Renderer data is equal to field data: " + worldComponent.isEqualWithField())
             }
             else -> {
                 log.debug { "Pressed unmapped key: $key" }

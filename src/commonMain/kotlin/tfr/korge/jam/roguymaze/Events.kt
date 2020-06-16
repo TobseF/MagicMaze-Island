@@ -36,7 +36,7 @@ object OpenSettingsEvent
 
 object OpenFaqEvent
 
-data class ChangePlayersEvent(val playersCount: Int = 0)
+data class ChangePlayersCountEvent(val playersCount: Int = 0)
 
 data class ChangeRoomEvent(val roomName: String)
 
