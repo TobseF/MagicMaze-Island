@@ -113,23 +113,6 @@ class KeyBindings(private val stage: Stage,
                 sendPlayerInputEvent(Action.MapMoveDown)
             }
 
-
-            Key.F1, Key.NUMPAD1 -> {
-                bus.send(ChangePlayerEvent(1))
-            }
-            Key.F2, Key.NUMPAD2 -> {
-                bus.send(ChangePlayerEvent(2))
-            }
-            Key.F3, Key.NUMPAD3 -> {
-                bus.send(ChangePlayerEvent(3))
-            }
-            Key.F4, Key.NUMPAD4 -> {
-                bus.send(ChangePlayerEvent(4))
-            }
-            Key.F5, Key.NUMPAD5 -> {
-                bus.send(ChangePlayerEvent(5))
-            }
-
             Key.N1 -> {
                 bus.send(InputEvent(Action.SelectPlayer, playerNumber = 1))
             }
@@ -142,6 +125,7 @@ class KeyBindings(private val stage: Stage,
             Key.N4 -> {
                 bus.send(InputEvent(Action.SelectPlayer, playerNumber = 4))
             }
+
             else -> {
                 log.debug { "Pressed unmapped key: $key" }
             }

@@ -19,6 +19,10 @@ Join a group of up to five players and complete the task.
 But it is not as easy as it looks. Each player can move any piece at the same time! 
 However, only a limited number of movement options are available to each player! 
 Only as a team can you complete the task!
+Before you can reach the next part of the map, you have to use your magnifier to discover it:
+Move onto a way marker with a question mark with the same color. Then click the magnifier or press the shortcut space.
+You win the game if all heroes collected their mask and reached their home before the time end.
+To start a new game, simply reload the browser tab on all clients.
 
 ## 👉 Before Start
  1. Team up with 2-4 friends. Everybody opens the Game in the browser by its own:  [🎮 RoguyIsleMaze](https://tobsef.github.io/RoguyIsleMaze/)
@@ -33,13 +37,11 @@ Only as a team can you complete the task!
 > To get updates, you have to set up another player for everyone (every Browser).
 
 ## ⌨ Controls
-* <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between the four heros. ⚠ Broken on current build.
-* <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>S</kbd> Move the selected hero.
+* <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between your four heros.
+* <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move the selected hero.
 * <kbd>🡰</kbd><kbd>🡲</kbd><kbd>🡱</kbd><kbd>🡳</kbd> Move the map.
 * <kbd>SPACE</kbd> Discover the next room (only available if you can see the magnifier action icon).
 * <kbd>+</kbd><kbd>-</kbd> Zoom the map in or out.
-* <kbd>Numpad-1</kbd> - <kbd>Numpad-5</kbd> Switch between the player number. 
-* <kbd>F1</kbd> - <kbd>F5</kbd> Switch the number of player. 
 
 ### 🐞 Troubleshooting
 * All player need a different player, the correct number of players, and the same game channel.
