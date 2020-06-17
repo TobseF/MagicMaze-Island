@@ -2,24 +2,22 @@ package tfr.korge.jam.roguymaze.renderer
 
 import com.soywiz.klogger.Logger
 import com.soywiz.korge.input.onClick
-import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.View
-import com.soywiz.korge.view.centerOn
-import com.soywiz.korge.view.image
+import com.soywiz.korge.view.*
 import com.soywiz.korinject.AsyncInjector
 import tfr.korge.jam.roguymaze.OpenFaqEvent
 import tfr.korge.jam.roguymaze.lib.EventBus
+import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
 
-class FaqComponent(val world: World, val res: Resources, val rootView: View, val bus: EventBus) : Container() {
+class FaqComponent(val world: World, resolution: Resolution, val res: Resources, val rootView: View, val bus: EventBus) : Container() {
 
     companion object {
         val log = Logger("FaqComponent")
 
         suspend operator fun invoke(injector: AsyncInjector): FaqComponent {
             injector.mapSingleton {
-                FaqComponent(get(), get(), get(), get())
+                FaqComponent(get(), get(), get(), get(), get())
             }
             return injector.get()
         }
@@ -27,14 +25,12 @@ class FaqComponent(val world: World, val res: Resources, val rootView: View, val
 
 
     init {
-
-
         val page1 = image(res.helpPage1) {
-            centerOn(rootView)
+            position((resolution.width - res.helpPage1.width) / 2, (resolution.height - res.helpPage1.height) / 2)
             visible = false
         }
         val page2 = image(res.helpPage2) {
-            centerOn(rootView)
+            position((resolution.width - res.helpPage2.width) / 2, (resolution.height - res.helpPage2.height) / 2)
             visible = false
             onClick {
                 this@FaqComponent.visible = false

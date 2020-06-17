@@ -10,21 +10,23 @@ import tfr.korge.jam.roguymaze.ChangePlayersCountEvent
 import tfr.korge.jam.roguymaze.ChangeRoomEvent
 import tfr.korge.jam.roguymaze.OpenSettingsEvent
 import tfr.korge.jam.roguymaze.lib.EventBus
+import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
 
-class SettingsComponent(val world: World, val res: Resources, val rootView: View, val bus: EventBus) : Container() {
+class SettingsComponent(val world: World,resolution: Resolution,  val res: Resources, val rootView: View, val bus: EventBus) : Container() {
 
     companion object {
         val log = Logger("SettingsComponent")
 
         suspend operator fun invoke(injector: AsyncInjector): SettingsComponent {
             injector.mapSingleton {
-                SettingsComponent(get(), get(), get(), get())
+                SettingsComponent(get(), get(), get(), get(), get())
             }
             return injector.get()
         }
     }
+
 
 
     init {
@@ -34,8 +36,9 @@ class SettingsComponent(val world: World, val res: Resources, val rootView: View
         }
 
         val settings = image(res.table) {
-            centerOn(rootView)
+            position((resolution.width - res.table.width) / 2, (resolution.height - res.table.height) / 2)
         }
+
 
         val labelPlayers = uiText("Number of Players", width = 420.0) {
             alignTopToTopOf(settings, 90.0)
