@@ -17,9 +17,15 @@ import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 class NetworkBridge(val bus: EventBus,
         val scope: CoroutineScope,
         val world: World,
-        val mechanics: GameMechanics,
-        val tileAnimator: TileAnimator,
         var userName: String = "unknown") : AsyncDependency {
+
+
+    val dummyHost = "ws://echo.websocket.org"
+    val localHost = "localhost"
+    val publicHost = "clean-code.rocks"
+    var host =  publicHost
+
+
 
     val allowedEvents = setOf(
             Action.PlayerLeft, Action.PlayerRight, Action.PlayerUp, Action.PlayerDown, Action.FoundNextRoom)
@@ -99,7 +105,7 @@ class NetworkBridge(val bus: EventBus,
     companion object {
         suspend operator fun invoke(injector: AsyncInjector): NetworkBridge {
             injector.mapSingleton {
-                NetworkBridge(get(), get(), get(), get(), get())
+                NetworkBridge(get(), get(), get())
             }
             return injector.get()
         }
@@ -107,9 +113,7 @@ class NetworkBridge(val bus: EventBus,
 
     suspend fun openSocket() {
         val port = "8080"
-        val host = "localhost"
         val url = "ws://$host:$port/ws"
-        val urlsTest = "ws://echo.websocket.org"
         log.info { "Creating WebSocketClient: $url" }
         socket = WebSocketClient(url, debug = false)
         socket?.let {
