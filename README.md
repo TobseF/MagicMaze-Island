@@ -4,6 +4,8 @@
 
 My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
 
+# [🎮 Start RoguyIsleMaze WebApp](https://tobsef.github.io/RoguyIsleMaze/)
+
 ## 📖 Story
 Our four heroes wake up after a drunken night and have to find their way home. 
 Unfortunately they have lost their masks without which they are not allowed to enter their house anymore. 
@@ -19,16 +21,17 @@ However, only a limited number of movement options are available to each player!
 Only as a team can you complete the task!
 
 ## 👉 Before Start
- 1. Start the game server on a local network.
- 2. Team up with 2-4 friends. Everybody opens the Game in the browser by its own.
- 3. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
- 4. Open the  **settings** dialog by clicking the gear icon.  
+ 1. Team up with 2-4 friends. Everybody opens the Game in the browser by its own:  [🎮 RoguyIsleMaze](https://tobsef.github.io/RoguyIsleMaze/)
+ 2. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
+ 3. Open the  **settings** dialog by clicking the gear icon.  
     Adjust _Number of Players_ to the number of total players of the game.  
-    Adjust _Player_ to your player number. Every teammate needs to choose a different one.
-    Choose a _Network Game Channel_ and share it with your teammates, so everyone is in the same channel. 
- 5. Check your available actions. Depending on the number of player and your chosen player you will have different
+    Adjust _Player_ to your player number. Every teammate needs to choose a different one.  
+    Choose a _Network Game Channel_ and share it with your teammates, so everyone is in the same channel.  
+ 4. Check your available actions. Depending on the number of player, and your chosen player you will have different
     actions available (green buttons next to the hero selection).
-    
+   
+> To get updates, you have to set up another player for everyone (every Browser).
+
 ## ⌨ Controls
 * <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> Switch between the four heros. ⚠ Broken on current build.
 * <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>S</kbd> Move the selected hero.
@@ -38,20 +41,12 @@ Only as a team can you complete the task!
 * <kbd>Numpad-1</kbd> - <kbd>Numpad-5</kbd> Switch between the player number. 
 * <kbd>F1</kbd> - <kbd>F5</kbd> Switch the number of player. 
 
-## 🌍 Multiplayer
-Play in a team with up to five players. To run it with multiplayer support, first start the gameserver. It's a separate project available here:  
-[RoguyIsleMaze-Server](https://github.com/TobseF/RoguyIsleMaze-Server)  
-> Only works on the Javascript build 
-Start the game and choose a player by pressing F1-F5. To get updates, have to set up another player for everyone (every Browser).  
-
 ### 🐞 Troubleshooting
-* To run the game in multiplayer. A game server instance have to run in the same network.
-Until I deploy a public one, you need to host the server by your own.
-
 * All player need a different player, the correct number of players, and the same game channel.
   Otherwise it's not possible for the game to sync the game states. Choose the channel wisely, because only
   your team should use it. If also other players have chosen this channel, the will interact with your game. 
   Unfortunately, for now there is no possibility to see if a channel was already taken by others.
+
 
 #### 🖼 Used Assets
 * [Greenland - Top-Down Game Tileset | GameArt2D](https://sellfy.com/pzuh/p/QvrD/)
@@ -61,6 +56,15 @@ Until I deploy a public one, you need to host the server by your own.
 
 --- 
 ### 🛠 Dev Info
+
+## Manual Multiplayer Setup
+
+## 🌍 Multiplayer - On private host
+> To run the game by your own on a local network with a private server, you have to start the game server.
+It's a separate project available here:  
+[RoguyIsleMaze-Server](https://github.com/TobseF/RoguyIsleMaze-Server)  
+> Only works on the Javascript build 
+Start the game and choose a player by pressing F1-F5. To get updates, you have to set up another player for everyone (every Browser).  
 
 For Windows, change all the `./gradlew` for `gradlew.bat`.
 
