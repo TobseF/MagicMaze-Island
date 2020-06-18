@@ -4,7 +4,7 @@
 
 My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
 
-# [🎮 Start RoguyIsleMaze WebApp](https://tobsef.github.io/RoguyIsleMaze/)
+# [🎮 Start RoguyIsleMaze WebApp](http://tobsefritz.de/java/roguy-isle-maze/)
 
 ## 📖 Story
 Our four heroes wake up after a drunken night and have to find their way home. 
@@ -25,7 +25,7 @@ You win the game if all heroes collected their mask and reached their home befor
 To start a new game, simply reload the browser tab on all clients.
 
 ## 👉 Before Start
- 1. Team up with 2-4 friends. Everybody opens the Game in the browser by its own:  [🎮 RoguyIsleMaze](https://tobsef.github.io/RoguyIsleMaze/)
+ 1. Team up with 2-4 friends. Everybody opens the Game in the browser by its own:  [🎮 RoguyIsleMaze](http://tobsefritz.de/java/roguy-isle-maze/)
  2. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
  3. Open the  **settings** dialog by clicking the gear icon.  
     Adjust _Number of Players_ to the number of total players of the game.  
