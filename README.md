@@ -1,6 +1,6 @@
 # 🎮 🏝 RoguyIsleMaze
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.70-blue.svg?style=flat&logo=kotlin&logoColor=white)](http://kotlinlang.org)
-[![Korge](https://img.shields.io/badge/Korge-1.13.2.4-836DAC.svg)](https://korge.soywiz.com/)
+[![Korge](https://img.shields.io/badge/Korge-1.13.8.3-836DAC.svg)](https://korge.soywiz.com/)
 
 My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
 
@@ -13,25 +13,24 @@ Your task:
   1. Search for all masks - matching every character.
   2. Find the right house for each player.
   
-There are always four figures in the game:
-(yellow, red, purple, black)  
+There are always four figures in the game: yellow, red, purple, black.
 Join a group of up to five players and complete the task. 
 But it is not as easy as it looks. Each player can move any piece at the same time! 
 However, only a limited number of movement options are available to each player! 
-Only as a team can you complete the task!
+You can only complete the task as a team.
 Before you can reach the next part of the map, you have to use your magnifier to discover it:
 Move onto a way marker with a question mark with the same color. Then click the magnifier or press the shortcut space.
-You win the game if all heroes collected their mask and reached their home before the time end.
+You win the game if all heroes have collected their mask and have reached their home before the time ends.
 To start a new game, simply reload the browser tab on all clients.
 
 ## 👉 Before Start
- 1. Team up with 2-4 friends. Everybody opens the Game in the browser by its own:  [🎮 RoguyIsleMaze](http://tobsefritz.de/java/roguy-isle-maze/)
+ 1. Team up with 2-4 friends. Everybody opens the game in the browser on their own:  [🎮 RoguyIsleMaze](http://tobsefritz.de/java/roguy-isle-maze/)
  2. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
  3. Open the  **settings** dialog by clicking the gear icon.  
     Adjust _Number of Players_ to the number of total players of the game.  
     Adjust _Player_ to your player number. Every teammate needs to choose a different one.  
     Choose a _Network Game Channel_ and share it with your teammates, so everyone is in the same channel.  
- 4. Check your available actions. Depending on the number of player, and your chosen player you will have different
+ 4. Check your available actions. Depending on the number of players, and your chosen player you will have different
     actions available (green buttons next to the hero selection).
    
 > To get updates, you have to set up another player for everyone (every Browser).
@@ -44,10 +43,10 @@ To start a new game, simply reload the browser tab on all clients.
 * <kbd>+</kbd><kbd>-</kbd> Zoom the map in or out.
 
 ### 🐞 Troubleshooting
-* All player need a different player, the correct number of players, and the same game channel.
+* All players need a different _player-number_, the correct _number of players_, and the same _game channel_.
   Otherwise it's not possible for the game to sync the game states. Choose the channel wisely, because only
-  your team should use it. If also other players have chosen this channel, the will interact with your game. 
-  Unfortunately, for now there is no possibility to see if a channel was already taken by others.
+  your team should use it. If other players have chosen this channel, they will interact with your game. 
+  Unfortunately, for now there is no possibility to see if a channel is already taken by others.
 
 
 #### 🖼 Used Assets

@@ -10,33 +10,30 @@ import tfr.korge.jam.roguymaze.ChangePlayersCountEvent
 import tfr.korge.jam.roguymaze.ChangeRoomEvent
 import tfr.korge.jam.roguymaze.OpenSettingsEvent
 import tfr.korge.jam.roguymaze.lib.EventBus
-import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
 
-class SettingsComponent(val world: World,resolution: Resolution,  val res: Resources, val rootView: View, val bus: EventBus) : Container() {
+class SettingsComponent(val world: World, val rootView: Stage, res: Resources, val bus: EventBus) : Container() {
 
     companion object {
         val log = Logger("SettingsComponent")
 
         suspend operator fun invoke(injector: AsyncInjector): SettingsComponent {
             injector.mapSingleton {
-                SettingsComponent(get(), get(), get(), get(), get())
+                SettingsComponent(get(), get(), get(), get())
             }
             return injector.get()
         }
     }
 
 
-
     init {
-
         bus.register<OpenSettingsEvent> {
             this.visible = !visible
         }
 
         val settings = image(res.table) {
-            position((resolution.width - res.table.width) / 2, (resolution.height - res.table.height) / 2)
+            centerOn(rootView)
         }
 
 
@@ -48,7 +45,7 @@ class SettingsComponent(val world: World,resolution: Resolution,  val res: Resou
         for (playerCount in 0 until 5) {
             uiText((playerCount + 1).toString(), width = 70.0) {
                 alignTopToBottomOf(labelPlayers, 18.0)
-                alignLeftToLeftOf(labelPlayers, (90 * playerCount))
+                alignLeftToLeftOf(labelPlayers, (90.0 * playerCount))
                 onClick {
                     bus.send(ChangePlayersCountEvent(playerCount + 1))
                 }
@@ -56,7 +53,7 @@ class SettingsComponent(val world: World,resolution: Resolution,  val res: Resou
         }
 
         val labelPlayer = uiText("Player", width = 420.0) {
-            alignTopToBottomOf(labelPlayers, 100)
+            alignTopToBottomOf(labelPlayers, 100.0)
             alignLeftToLeftOf(labelPlayers)
         }
 
