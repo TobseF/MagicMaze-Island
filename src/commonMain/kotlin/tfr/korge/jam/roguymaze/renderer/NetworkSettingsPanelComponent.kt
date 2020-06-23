@@ -25,7 +25,8 @@ class NetworkSettingsPanelComponent(res: Resources, val world: World, bus: Event
             position(248, 17)
         }
 
-        centerXOn(rootView)
+        //centerXOn(rootView) // broken on JS
+        positionX(468)
 
         bus.register<ChangeRoomEvent> {
             room.text = it.roomName
