@@ -73,7 +73,7 @@ class SettingsComponent(val world: World, val rootView: Stage, res: Resources, v
             alignLeftToLeftOf(labelPlayer)
         }
 
-        val rooms = listOf("A", "B", "C", "D", "E", "F", "G", "H", "H")
+        val rooms = listOf("A", "B", "C", "D", "E", "F", "G", "H", "I")
         rooms.forEachIndexed { index, roomName ->
             uiText(roomName, width = 70.0) {
                 alignTopToBottomOf(room, 18.0)

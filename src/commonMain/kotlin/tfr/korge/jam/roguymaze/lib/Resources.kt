@@ -100,6 +100,7 @@ class Resources : AsyncDependency {
     lateinit var uiPanelBottomLeft: Bitmap
     lateinit var uiPanelTopLeft: Bitmap
     lateinit var uiPanelTopRight: Bitmap
+    lateinit var uiPanelTopCenter: Bitmap
 
     lateinit var buttonSettings: Bitmap
     lateinit var buttonInfo: Bitmap
@@ -229,6 +230,7 @@ class Resources : AsyncDependency {
         uiPanelBottomLeft = loadImage("ui_panel_bottom_left.png")
         uiPanelTopLeft = loadImage("ui_panel_top_left.png")
         uiPanelTopRight = loadImage("ui_panel_top_right.png")
+        uiPanelTopCenter = loadImage("ui_panel_top_center.png")
 
         finish1 = loadImage("finish_1.png")
         finish2 = loadImage("finish_2.png")

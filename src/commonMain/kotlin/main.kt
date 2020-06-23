@@ -134,6 +134,7 @@ suspend fun main() = Korge(
 
     addChild(SettingsComponent(injector))
     addChild(FaqComponent(injector))
+    addChild(NetworkSettingsPanelComponent(injector))
 
 
 }
