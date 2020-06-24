@@ -107,6 +107,7 @@ class Resources : AsyncDependency {
 
     lateinit var helpPage1: Bitmap
     lateinit var helpPage2: Bitmap
+    lateinit var helpPage3: Bitmap
 
 
     lateinit var uiMaskEmpty: Bitmap
@@ -180,6 +181,7 @@ class Resources : AsyncDependency {
 
         helpPage1 = loadImage("help_1.png")
         helpPage2 = loadImage("help_2.png")
+        helpPage3 = loadImage("help_3.png")
 
         player1 = loadImage("player_1.png")
         player2 = loadImage("player_2.png")

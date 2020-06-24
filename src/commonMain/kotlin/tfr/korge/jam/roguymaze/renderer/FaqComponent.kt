@@ -34,12 +34,21 @@ class FaqComponent(val world: World, val rootView: Stage, res: Resources, val bu
         val page2 = image(res.helpPage2) {
             centerOn(rootView)
             visible = false
-            onClick {
-                this@FaqComponent.visible = false
-            }
+        }
+        val page3 = image(res.helpPage3) {
+            centerOn(rootView)
+            visible = false
         }
         page1.onClick {
+            page1.visible = false
             page2.visible = true
+        }
+        page2.onClick {
+            page2.visible = false
+            page3.visible = true
+        }
+        page3.onClick {
+            this@FaqComponent.visible = false
         }
 
         bus.register<OpenFaqEvent> {
@@ -47,6 +56,7 @@ class FaqComponent(val world: World, val rootView: Stage, res: Resources, val bu
                 visible = true
                 page1.visible = true
                 page2.visible = false
+                page3.visible = false
             } else {
                 visible = false
             }
