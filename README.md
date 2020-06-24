@@ -1,8 +1,11 @@
 # 🎮 🏝 RoguyIsleMaze
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.70-blue.svg?style=flat&logo=kotlin&logoColor=white)](http://kotlinlang.org)
 [![Korge](https://img.shields.io/badge/Korge-1.13.8.3-836DAC.svg)](https://korge.soywiz.com/)
+[![Itch.io](https://img.shields.io/badge/Itch.io-Released-E93D5A.svg?style=flat&logo=itch.io&logoColor=white)](https://itch.io/game/edit/672094)
 
 My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
+
+[![Screenshot](https://tobsef.github.io/RoguyIsleMaze/image-wiki/screenshot_1.png)](http://tobsefritz.de/java/roguy-isle-maze/)
 
 # [🎮 Start RoguyIsleMaze WebApp](http://tobsefritz.de/java/roguy-isle-maze/)
 
