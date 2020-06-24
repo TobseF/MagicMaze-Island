@@ -108,12 +108,12 @@ data class Room(val id: Int = 0,
         return getBorderTopRelative(absolute.toRelative())
     }
 
-    fun getBorderButtomRelative(relative: Position): Tile {
-        return bordersButtom.getTile(relative)
+    fun getBorderBottomRelative(relative: Position): Tile {
+        return bordersBottom.getTile(relative)
     }
 
-    fun getBorderButtomAbsolute(absolute: Position): Tile {
-        return getBorderButtomRelative(absolute.toRelative())
+    fun getBorderBottomAbsolute(absolute: Position): Tile {
+        return getBorderBottomRelative(absolute.toRelative())
     }
 
 
@@ -170,7 +170,7 @@ data class Room(val id: Int = 0,
     val bordersLeft: GridLayer = GridLayer(size, size)
     val bordersRight: GridLayer = GridLayer(size, size)
     val bordersTop: GridLayer = GridLayer(size, size)
-    val bordersButtom: GridLayer = GridLayer(size, size)
+    val bordersBottom: GridLayer = GridLayer(size, size)
 
     val cache = Cache()
 
@@ -181,7 +181,7 @@ data class Room(val id: Int = 0,
         var bordersLeftData: String? = null
         var bordersRightData: String? = null
         var bordersTopData: String? = null
-        var bordersButtomData: String? = null
+        var bordersBottomData: String? = null
     }
 
     fun loadGround(groundData: String): Room {
@@ -220,9 +220,9 @@ data class Room(val id: Int = 0,
         return this
     }
 
-    fun loadBordersButtom(itemsData: String): Room {
-        cache.bordersButtomData = itemsData
-        GridLayer.fromString(itemsData).copyTo(bordersButtom)
+    fun loadBordersBottom(itemsData: String): Room {
+        cache.bordersBottomData = itemsData
+        GridLayer.fromString(itemsData).copyTo(bordersBottom)
         return this
     }
 

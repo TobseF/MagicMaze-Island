@@ -50,7 +50,7 @@ class GameOverComponent(bus: EventBus, res: Resources, resolution: Resolution) :
             Container() {
 
         init {
-            val texture = res.imageButton
+            val texture = res.messageBox.bmp
             val point1 = texture.centered(point)
             position(point1)
             image(texture = texture) {

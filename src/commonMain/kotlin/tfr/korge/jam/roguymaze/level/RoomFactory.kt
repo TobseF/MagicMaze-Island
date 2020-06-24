@@ -73,7 +73,7 @@ class RoomFactory {
             |[_,D4,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -121,7 +121,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -169,7 +169,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -217,7 +217,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -265,7 +265,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -313,7 +313,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -361,7 +361,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -409,7 +409,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -457,7 +457,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -505,7 +505,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -553,7 +553,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -601,7 +601,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -649,7 +649,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
@@ -697,7 +697,7 @@ class RoomFactory {
             |[_,_,_,_]
             """.trimMargin()
 
-        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersButtom(bordersBottom)
+        return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
                 .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 

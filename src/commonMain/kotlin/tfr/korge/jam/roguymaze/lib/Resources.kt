@@ -1,18 +1,20 @@
 package tfr.korge.jam.roguymaze.lib
 
-import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korge.atlas.Atlas
+import com.soywiz.korge.atlas.readAtlas
+import com.soywiz.korim.bitmap.BmpSlice
 import com.soywiz.korim.bitmap.NinePatchBitmap32
 import com.soywiz.korim.bitmap.readNinePatch
 import com.soywiz.korim.font.BitmapFont
 import com.soywiz.korim.font.readBitmapFont
-import com.soywiz.korim.format.readBitmap
 import com.soywiz.korinject.AsyncDependency
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korio.file.std.resourcesVfs
 
-suspend fun loadImage(fileName: String): Bitmap = resourcesVfs["images/$fileName"].readBitmap()
 
-suspend fun loadWorldImage(fileName: String): Bitmap = resourcesVfs["images/world/$fileName"].readBitmap()
+//suspend fun loadImage(fileName: String): BmpSlice = resourcesVfs["images/$fileName"].readBitmap()
+
+//suspend fun loadWorldImage(fileName: String): BmpSlice = resourcesVfs["images/world/$fileName"].readBitmap()
 
 suspend fun loadFont(fileName: String): BitmapFont = resourcesVfs["fonts/$fileName"].readBitmapFont()
 
@@ -20,168 +22,175 @@ suspend fun loadNinePatch(fileName: String): NinePatchBitmap32 = resourcesVfs["i
 
 class Resources : AsyncDependency {
 
+    fun loadImage(fileName: String): BmpSlice = atlas[fileName]
+
+    fun loadDialogImage(fileName: String): BmpSlice = dialogAtlas[fileName]
+
     companion object {
         operator fun invoke(injector: AsyncInjector) {
             injector.mapSingleton { Resources() }
         }
     }
 
+    lateinit var atlas: Atlas
+    lateinit var dialogAtlas: Atlas
+
     lateinit var fontBubble: BitmapFont
     lateinit var fontSmall: BitmapFont
 
-    lateinit var imageButton: Bitmap
-    lateinit var imageBackground: Bitmap
+    lateinit var imageBackground: BmpSlice
     lateinit var messageBox: NinePatchBitmap32
 
-    lateinit var worldGrass: Bitmap
-    lateinit var worldLand: Bitmap
-    lateinit var worldWater: Bitmap
+    lateinit var worldGrass: BmpSlice
+    lateinit var worldLand: BmpSlice
+    lateinit var worldWater: BmpSlice
 
-    lateinit var table: Bitmap
+    lateinit var table: BmpSlice
 
-    lateinit var player1: Bitmap
-    lateinit var player2: Bitmap
-    lateinit var player3: Bitmap
-    lateinit var player4: Bitmap
+    lateinit var player1: BmpSlice
+    lateinit var player2: BmpSlice
+    lateinit var player3: BmpSlice
+    lateinit var player4: BmpSlice
 
-    lateinit var mask1: Bitmap
-    lateinit var mask2: Bitmap
-    lateinit var mask3: Bitmap
-    lateinit var mask4: Bitmap
+    lateinit var mask1: BmpSlice
+    lateinit var mask2: BmpSlice
+    lateinit var mask3: BmpSlice
+    lateinit var mask4: BmpSlice
 
-    lateinit var home1: Bitmap
-    lateinit var home2: Bitmap
-    lateinit var home3: Bitmap
-    lateinit var home4: Bitmap
+    lateinit var home1: BmpSlice
+    lateinit var home2: BmpSlice
+    lateinit var home3: BmpSlice
+    lateinit var home4: BmpSlice
 
-    lateinit var exit1: Bitmap
-    lateinit var exit2: Bitmap
-    lateinit var exit3: Bitmap
-    lateinit var exit4: Bitmap
-
-
-    lateinit var finish1: Bitmap
-    lateinit var finish2: Bitmap
-    lateinit var finish3: Bitmap
-    lateinit var finish4: Bitmap
+    lateinit var exit1: BmpSlice
+    lateinit var exit2: BmpSlice
+    lateinit var exit3: BmpSlice
+    lateinit var exit4: BmpSlice
 
 
-    lateinit var info: Bitmap
-
-    lateinit var borderLeft: Bitmap
-    lateinit var borderRight: Bitmap
-    lateinit var borderTop: Bitmap
-    lateinit var borderBottom: Bitmap
+    lateinit var finish1: BmpSlice
+    lateinit var finish2: BmpSlice
+    lateinit var finish3: BmpSlice
+    lateinit var finish4: BmpSlice
 
 
-    lateinit var asset1: Bitmap
-    lateinit var asset2: Bitmap
-    lateinit var asset3: Bitmap
-    lateinit var asset4: Bitmap
-    lateinit var asset5: Bitmap
-    lateinit var asset6: Bitmap
-    lateinit var asset7: Bitmap
+    lateinit var info: BmpSlice
 
-    lateinit var uiActionSearch: Bitmap
-    lateinit var uiMapZoomIn: Bitmap
-    lateinit var uiActionMoveDown: Bitmap
-    lateinit var uiMapZoomOut: Bitmap
-    lateinit var uiMap: Bitmap
-    lateinit var uiMapMoveDown: Bitmap
-    lateinit var uiTimer: Bitmap
-
-    lateinit var uiPlayer1: Bitmap
-    lateinit var uiPlayer2: Bitmap
-    lateinit var uiPlayer3: Bitmap
-    lateinit var uiPlayer4: Bitmap
-
-    lateinit var uiCheckDisabled: Bitmap
-    lateinit var uiCheckEnabled: Bitmap
-    lateinit var uiPanelBottomLeft: Bitmap
-    lateinit var uiPanelTopLeft: Bitmap
-    lateinit var uiPanelTopRight: Bitmap
-    lateinit var uiPanelTopCenter: Bitmap
-
-    lateinit var buttonSettings: Bitmap
-    lateinit var buttonInfo: Bitmap
-
-    lateinit var helpPage1: Bitmap
-    lateinit var helpPage2: Bitmap
-    lateinit var helpPage3: Bitmap
+    lateinit var borderLeft: BmpSlice
+    lateinit var borderRight: BmpSlice
+    lateinit var borderTop: BmpSlice
+    lateinit var borderBottom: BmpSlice
 
 
-    lateinit var uiMaskEmpty: Bitmap
-    lateinit var uiMask1: Bitmap
-    lateinit var uiMask2: Bitmap
-    lateinit var uiMask3: Bitmap
-    lateinit var uiMask4: Bitmap
+    lateinit var asset1: BmpSlice
+    lateinit var asset2: BmpSlice
+    lateinit var asset3: BmpSlice
+    lateinit var asset4: BmpSlice
+    lateinit var asset5: BmpSlice
+    lateinit var asset6: BmpSlice
+    lateinit var asset7: BmpSlice
 
-    lateinit var uiHomeEmpty: Bitmap
-    lateinit var uiHome1: Bitmap
-    lateinit var uiHome2: Bitmap
-    lateinit var uiHome3: Bitmap
-    lateinit var uiHome4: Bitmap
+    lateinit var uiActionSearch: BmpSlice
+    lateinit var uiMapZoomIn: BmpSlice
+    lateinit var uiActionMoveDown: BmpSlice
+    lateinit var uiMapZoomOut: BmpSlice
+    lateinit var uiMap: BmpSlice
+    lateinit var uiMapMoveDown: BmpSlice
+    lateinit var uiTimer: BmpSlice
 
-    fun getPlayer(playerNumber: Int): Bitmap {
+    lateinit var uiPlayer1: BmpSlice
+    lateinit var uiPlayer2: BmpSlice
+    lateinit var uiPlayer3: BmpSlice
+    lateinit var uiPlayer4: BmpSlice
+
+    lateinit var uiCheckDisabled: BmpSlice
+    lateinit var uiCheckEnabled: BmpSlice
+    lateinit var uiPanelBottomLeft: BmpSlice
+    lateinit var uiPanelTopLeft: BmpSlice
+    lateinit var uiPanelTopRight: BmpSlice
+    lateinit var uiPanelTopCenter: BmpSlice
+
+    lateinit var buttonSettings: BmpSlice
+    lateinit var buttonInfo: BmpSlice
+
+    lateinit var helpPage1: BmpSlice
+    lateinit var helpPage2: BmpSlice
+    lateinit var helpPage3: BmpSlice
+
+
+    lateinit var uiMaskEmpty: BmpSlice
+    lateinit var uiMask1: BmpSlice
+    lateinit var uiMask2: BmpSlice
+    lateinit var uiMask3: BmpSlice
+    lateinit var uiMask4: BmpSlice
+
+    lateinit var uiHomeEmpty: BmpSlice
+    lateinit var uiHome1: BmpSlice
+    lateinit var uiHome2: BmpSlice
+    lateinit var uiHome3: BmpSlice
+    lateinit var uiHome4: BmpSlice
+
+    fun getPlayer(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> player1
             2 -> player2
             3 -> player3
             4 -> player4
-            else -> throw IllegalArgumentException("Out of range: " + playerNumber)
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
         }
     }
 
-    fun getUiPlayer(playerNumber: Int): Bitmap {
+    fun getUiPlayer(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> uiPlayer1
             2 -> uiPlayer2
             3 -> uiPlayer3
             4 -> uiPlayer4
-            else -> throw IllegalArgumentException("Out of range: " + playerNumber)
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
         }
     }
 
-    fun getUiMask(playerNumber: Int): Bitmap {
+    fun getUiMask(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> uiMask1
             2 -> uiMask2
             3 -> uiMask3
             4 -> uiMask4
-            else -> throw IllegalArgumentException("Out of range: " + playerNumber)
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
         }
     }
 
-    fun getUiHome(playerNumber: Int): Bitmap {
+    fun getUiHome(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> uiHome1
             2 -> uiHome2
             3 -> uiHome3
             4 -> uiHome4
-            else -> throw IllegalArgumentException("Out of range: " + playerNumber)
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
         }
     }
 
-    fun getFinish(playerNumber: Int): Bitmap {
+    fun getFinish(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> finish1
             2 -> finish2
             3 -> finish3
             4 -> finish4
-            else -> throw IllegalArgumentException("Out of range: " + playerNumber)
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
         }
     }
 
     override suspend fun init() {
-        imageButton = loadImage("button.png")
-        table = loadImage("table.png")
+        atlas = resourcesVfs["images.atlas.json"].readAtlas()
+        dialogAtlas = resourcesVfs["window.atlas.json"].readAtlas()
 
         buttonSettings = loadImage("settings.png")
         buttonInfo = loadImage("faq.png")
 
-        helpPage1 = loadImage("help_1.png")
-        helpPage2 = loadImage("help_2.png")
-        helpPage3 = loadImage("help_3.png")
+        table = loadDialogImage("table.png")
+        helpPage1 = loadDialogImage("help_1.png")
+        helpPage2 = loadDialogImage("help_2.png")
+        helpPage3 = loadDialogImage("help_3.png")
 
         player1 = loadImage("player_1.png")
         player2 = loadImage("player_2.png")
@@ -239,25 +248,24 @@ class Resources : AsyncDependency {
         finish3 = loadImage("finish_3.png")
         finish4 = loadImage("finish_4.png")
 
-        info = loadWorldImage("info.png")
+        info = loadImage("world_info.png")
 
-        borderLeft = loadWorldImage("border_left.png")
-        borderRight = loadWorldImage("border_right.png")
-        borderTop = loadWorldImage("border_top.png")
-        borderBottom = loadWorldImage("border_bottom.png")
+        borderLeft = loadImage("world_border_left.png")
+        borderRight = loadImage("world_border_right.png")
+        borderTop = loadImage("world_border_top.png")
+        borderBottom = loadImage("world_border_bottom.png")
 
-        asset1 = loadWorldImage("asset_1.png")
-        asset2 = loadWorldImage("asset_2.png")
-        asset3 = loadWorldImage("asset_3.png")
-        asset4 = loadWorldImage("asset_4.png")
-        asset5 = loadWorldImage("asset_5.png")
-        asset6 = loadWorldImage("asset_6.png")
-        asset7 = loadWorldImage("asset_7.png")
+        asset1 = loadImage("world_asset_1.png")
+        asset2 = loadImage("world_asset_2.png")
+        asset3 = loadImage("world_asset_3.png")
+        asset4 = loadImage("world_asset_4.png")
+        asset5 = loadImage("world_asset_5.png")
+        asset6 = loadImage("world_asset_6.png")
+        asset7 = loadImage("world_asset_7.png")
 
-
-        worldGrass = loadWorldImage("grass.png")
-        worldLand = loadWorldImage("land.png")
-        worldWater = loadWorldImage("water.png")
+        worldGrass = loadImage("world_grass.png")
+        worldLand = loadImage("world_land.png")
+        worldWater = loadImage("world_water.png")
 
         fontBubble = loadFont("bubble.fnt")
         fontSmall = fontBubble

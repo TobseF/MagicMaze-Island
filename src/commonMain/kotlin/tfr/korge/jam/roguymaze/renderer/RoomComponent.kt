@@ -2,7 +2,6 @@ package tfr.korge.jam.roguymaze.renderer
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.View
-import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.BmpSlice
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.Room
@@ -17,7 +16,7 @@ class RoomComponent(val room: Room,
     val borderLeft = BordersSprites(resources) { it.borderLeft }
     val borderRight = BordersSprites(resources) { it.borderRight }
     val borderTop = BordersSprites(resources) { it.borderTop }
-    val borderButtom = BordersSprites(resources) { it.borderBottom }
+    val borderBottom = BordersSprites(resources) { it.borderBottom }
 
     val items = GridLayerComponent(room.items, world, worldSprites, view)
 
@@ -27,15 +26,15 @@ class RoomComponent(val room: Room,
         addChild(GridLayerComponent(room.bordersLeft, world, borderLeft, view))
         addChild(GridLayerComponent(room.bordersRight, world, borderRight, view))
         addChild(GridLayerComponent(room.bordersTop, world, borderTop, view))
-        addChild(GridLayerComponent(room.bordersButtom, world, borderButtom, view))
+        addChild(GridLayerComponent(room.bordersBottom, world, borderBottom, view))
     }
 
-    open class BordersSprites(resources: Resources, val border: (Resources) -> Bitmap) : WorldSprites(resources) {
+    open class BordersSprites(resources: Resources, val border: (Resources) -> BmpSlice) : WorldSprites(resources) {
 
         override fun getTile(tile: Tile): BmpSlice? {
             if (resources != null && tile == Tile.Border) {
 
-                return border.invoke(resources).toBmpSlice()
+                return border.invoke(resources)
             }
             return super.getTile(tile)
         }

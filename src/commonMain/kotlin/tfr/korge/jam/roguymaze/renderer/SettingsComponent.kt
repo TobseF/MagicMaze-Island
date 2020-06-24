@@ -33,7 +33,8 @@ class SettingsComponent(val world: World, val rootView: Stage, res: Resources, v
         }
 
         val settings = image(res.table) {
-            centerOn(rootView)
+            //centerOn(rootView)
+            position(120, 50)
         }
 
 

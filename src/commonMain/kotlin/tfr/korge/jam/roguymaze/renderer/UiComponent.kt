@@ -5,7 +5,7 @@ import com.soywiz.korge.input.onClick
 import com.soywiz.korge.input.onOut
 import com.soywiz.korge.input.onOver
 import com.soywiz.korge.view.*
-import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korim.bitmap.BmpSlice
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.degrees
 import tfr.korge.jam.roguymaze.*
@@ -184,8 +184,10 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
     }
 
 
-    class CheckBox(val base: Bitmap, val checked: Bitmap, action: (CheckBox) -> Unit, adjust: Image.() -> Unit = {}) :
-            Container() {
+    class CheckBox(val base: BmpSlice,
+            val checked: BmpSlice,
+            action: (CheckBox) -> Unit,
+            adjust: Image.() -> Unit = {}) : Container() {
         var checkedState = false
         var enabled = true
 

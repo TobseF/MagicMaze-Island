@@ -192,8 +192,8 @@ class GameFlow(private val world: World,
             Direction.Right -> currentRoom?.getBorderRightAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderLeftAbsolute(nextAbsolutePos) == Tile.Border
             Direction.Up -> currentRoom?.getBorderTopAbsolute(
-                    playerPos) == Tile.Border || nextRoom?.getBorderButtomAbsolute(nextAbsolutePos) == Tile.Border
-            Direction.Down -> currentRoom?.getBorderButtomAbsolute(
+                    playerPos) == Tile.Border || nextRoom?.getBorderBottomAbsolute(nextAbsolutePos) == Tile.Border
+            Direction.Down -> currentRoom?.getBorderBottomAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderTopAbsolute(nextAbsolutePos) == Tile.Border
         }
     }

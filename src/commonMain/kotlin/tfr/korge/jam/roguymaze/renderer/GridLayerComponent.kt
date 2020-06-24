@@ -44,8 +44,9 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
     /**
      * Percentage up or downsizing of the tiles.
      * `1` means no scaling. `0.8` means `80%` image sizes, which creates `20%` padding.
+     * It's 1% scaled to compensate atlas borders.
      */
-    private val tileScale = 1
+    private val tileScale = 1.01
 
     private val tiles = Array(gridLayer.rowSize) {
         Array<WorldImage?>(gridLayer.columnsSize) { null }

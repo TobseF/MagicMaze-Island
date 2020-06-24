@@ -3,7 +3,7 @@ package tfr.korge.jam.roguymaze.renderer
 import com.soywiz.korge.view.Image
 import com.soywiz.korge.view.View
 import com.soywiz.korge.view.anchor
-import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korim.bitmap.BmpSlice
 import tfr.korge.jam.roguymaze.FoundHomeEvent
 import tfr.korge.jam.roguymaze.GameFlow.Direction
 import tfr.korge.jam.roguymaze.lib.EventBus
@@ -15,7 +15,7 @@ class PlayerComponent(val bus: EventBus,
         val step: Int,
         val world: World,
         val view: View,
-        bitmap: Bitmap) : Image(bitmap) {
+        bitmap: BmpSlice) : Image(bitmap) {
 
     init {
         anchor(0.5, 0.5)

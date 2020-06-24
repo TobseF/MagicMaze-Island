@@ -2,7 +2,7 @@ package tfr.korge.jam.roguymaze.renderer
 
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.View
-import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korim.bitmap.BmpSlice
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.math.PositionGrid
@@ -19,7 +19,7 @@ class PlayersComponent(val bus: EventBus,
 
     init {
         for (playerModel in world.players.players) {
-            var image: Bitmap = resources.getPlayer(playerModel.number)
+            var image: BmpSlice = resources.getPlayer(playerModel.number)
             val player = PlayerComponent(bus, playerModel, worldComponent.tileSize, world, view, image)
             val pos = worldComponent.getAbsoluteWorldCoordinate(PositionGrid.Position(playerModel.x, playerModel.y))
             player.x = pos.x
