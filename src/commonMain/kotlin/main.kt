@@ -4,7 +4,7 @@ import com.soywiz.korge.Korge
 import com.soywiz.korge.input.mouse
 import com.soywiz.korge.input.onMouseDrag
 import com.soywiz.korge.view.View
-import com.soywiz.korgw.GameWindow
+import com.soywiz.korgw.GameWindow.Quality.QUALITY
 import com.soywiz.korim.color.Colors
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.Point
@@ -49,9 +49,9 @@ val levelData = RoomFactory().createRoom(1)
 
 
 suspend fun main() = Korge(
-        virtualHeight = virtualResolution.height, virtualWidth = virtualResolution.width,
+        title = "Isle Maze", virtualHeight = virtualResolution.height, virtualWidth = virtualResolution.width,
         width = windowResolution.width, height = windowResolution.height, bgcolor = backgroundColor, debug = debug,
-        quality = GameWindow.Quality.QUALITY) {
+        quality = QUALITY) {
 
     Logger.defaultLevel = Logger.Level.DEBUG
 
@@ -135,7 +135,6 @@ suspend fun main() = Korge(
     addChild(SettingsComponent(injector))
     addChild(FaqComponent(injector))
     addChild(NetworkSettingsPanelComponent(injector))
-
 
 }
 
