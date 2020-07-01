@@ -58,30 +58,30 @@ class KeyBindings(private val stage: Stage,
     }
 
     fun sendPlayerInputEvent(action: Action) {
-        bus.send(InputEvent(action, world.selectedPlayer))
+        bus.send(InputEvent(action, world.selectedHero))
     }
 
 
     private fun onKeyDown(key: Key) {
         when (key) {
             Key.W -> {
-                if (world.getAllowedActions().contains(Action.PlayerUp)) {
-                    sendPlayerInputEvent(Action.PlayerUp)
+                if (world.getAllowedActions().contains(Action.HeroUp)) {
+                    sendPlayerInputEvent(Action.HeroUp)
                 }
             }
             Key.A -> {
-                if (world.getAllowedActions().contains(Action.PlayerLeft)) {
-                    sendPlayerInputEvent(Action.PlayerLeft)
+                if (world.getAllowedActions().contains(Action.HeroLeft)) {
+                    sendPlayerInputEvent(Action.HeroLeft)
                 }
             }
             Key.S -> {
-                if (world.getAllowedActions().contains(Action.PlayerDown)) {
-                    sendPlayerInputEvent(Action.PlayerDown)
+                if (world.getAllowedActions().contains(Action.HeroDown)) {
+                    sendPlayerInputEvent(Action.HeroDown)
                 }
             }
             Key.D -> {
-                if (world.getAllowedActions().contains(Action.PlayerRight)) {
-                    sendPlayerInputEvent(Action.PlayerRight)
+                if (world.getAllowedActions().contains(Action.HeroRight)) {
+                    sendPlayerInputEvent(Action.HeroRight)
                 }
             }
             Key.SPACE -> {
@@ -114,16 +114,16 @@ class KeyBindings(private val stage: Stage,
             }
 
             Key.N1 -> {
-                bus.send(InputEvent(Action.SelectPlayer, playerNumber = 1))
+                bus.send(InputEvent(Action.SelectHero, heroNumber = 1))
             }
             Key.N2 -> {
-                bus.send(InputEvent(Action.SelectPlayer, playerNumber = 2))
+                bus.send(InputEvent(Action.SelectHero, heroNumber = 2))
             }
             Key.N3 -> {
-                bus.send(InputEvent(Action.SelectPlayer, playerNumber = 3))
+                bus.send(InputEvent(Action.SelectHero, heroNumber = 3))
             }
             Key.N4 -> {
-                bus.send(InputEvent(Action.SelectPlayer, playerNumber = 4))
+                bus.send(InputEvent(Action.SelectHero, heroNumber = 4))
             }
 
             else -> {

@@ -8,7 +8,7 @@ class Players(var players: MutableList<Player> = mutableListOf()) {
     operator fun get(playerNumber: Int) = players[playerNumber - 1]
 
     fun isTaken(pos: Position): Boolean {
-        return players.filter { it.pos().equals(pos) }.any()
+        return players.filter { it.pos() == pos }.any()
     }
 
     class Player(val number: Int,

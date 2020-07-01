@@ -6,7 +6,21 @@ import tfr.korge.jam.roguymaze.math.PositionGrid.Position
 
 class World(val rooms: MutableList<Room>, val players: Players, val totalRooms: Int, val factory: WorldFactory) {
 
+    var roomName = "A"
+
+    /**
+     *  Selected hero (1-4).
+     */
+    var selectedHero = 1
+
+    /**
+     * Player out of [playersCount] (Not the hero). Starting with 1.
+     */
     var selectedPlayer = 1
+
+    /**
+     * Total numbers of players
+     */
     var playersCount = 1
 
     fun getPlayer(playerNumber: Int) = players[playerNumber]

@@ -8,11 +8,10 @@ import com.soywiz.korio.net.ws.WebSocketClient
 import com.soywiz.korio.net.ws.readString
 import com.soywiz.korio.util.OS
 import kotlinx.coroutines.CoroutineScope
-import tfr.korge.jam.roguymaze.*
+import tfr.korge.jam.roguymaze.InputEvent
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.World
-import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 
 class NetworkBridge(val bus: EventBus,
         val scope: CoroutineScope,
@@ -26,21 +25,9 @@ class NetworkBridge(val bus: EventBus,
     var host =  publicHost
 
 
-
     val allowedEvents = setOf(
-            Action.PlayerLeft, Action.PlayerRight, Action.PlayerUp, Action.PlayerDown, Action.FoundNextRoom)
+            Action.HeroLeft, Action.HeroRight, Action.HeroUp, Action.HeroDown, Action.FoundNextRoom)
 
-    var roomName = "A"
-
-    /**
-     * 1-5
-     */
-    var playerId = 1
-
-    /**
-     * 1-5
-     */
-    var playersCount = 1
 
     var socket: WebSocketClient? = null
 
@@ -48,18 +35,6 @@ class NetworkBridge(val bus: EventBus,
 
     init {
         bus.register<Update> { handleUpdate(it) }
-        bus.register<ChangeRoomEvent> {
-            roomName = it.roomName
-            log.info { "Changed room to $roomName" }
-        }
-        bus.register<ChangePlayerEvent> {
-            playerId = it.playerId
-            log.info { "Changed player Id to $playerId" }
-        }
-        bus.register<ChangePlayersCountEvent> {
-            playersCount = it.playersCount
-            log.info { "Changed player count to $playersCount" }
-        }
         bus.register<InputEvent> {
             if (!it.isNetworkEvent) {
                 handleInputEvent(it)
@@ -68,19 +43,19 @@ class NetworkBridge(val bus: EventBus,
     }
 
     fun userId(): String {
-        return "$playersCount-$playerId"
+        return "${world.playersCount}-${world.selectedPlayer}"
     }
 
     private suspend fun handleInputEvent(event: InputEvent) {
         if (allowedEvents.contains(event.action)) {
             log.debug { "handleInputEvent$event" }
 
-            broadcastCommand("InputEvent", roomName, userId(), event.toDataString())
+            broadcastCommand("InputEvent", world.roomName, userId(), event.toDataString())
         }
     }
 
     fun InputEvent.toDataString(): String {
-        var data = "${this.action}>${this.playerNumber}"
+        var data = "${this.action}>${this.heroNumber}"
         if (this.roomId != null) {
             data += ";" + this.roomId
         }
@@ -99,7 +74,7 @@ class NetworkBridge(val bus: EventBus,
 
     suspend fun handleUpdate(update: Update) {
         log.debug { "Handle update$update" }
-        broadcastCommand(update.action, roomName, userName, update.playerUpdate())
+        broadcastCommand(update.action, world.roomName, userName, update.playerUpdate())
     }
 
     companion object {
@@ -141,7 +116,7 @@ class NetworkBridge(val bus: EventBus,
         }
     }
 
-    fun nameId() = "$playersCount-$playerId"
+    fun nameId() = "${world.playersCount}-${world.selectedPlayer}"
 
     suspend fun handleData(networkData: String) {
         log.debug { "handleData: $networkData" }

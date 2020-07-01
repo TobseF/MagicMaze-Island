@@ -21,7 +21,7 @@ class WorldFactory {
     init {
         val set1 = ActionSet(1)
         val allEvents = setOf(
-                PlayerLeft, PlayerRight, PlayerDown, PlayerUp, ActionSearch)
+                HeroLeft, HeroRight, HeroDown, HeroUp, ActionSearch)
         for (player in 0..5) {
             set1.addEvents(player, *allEvents.toTypedArray())
         }
@@ -29,28 +29,28 @@ class WorldFactory {
         actionSets[1] = set1
 
         actionSets[2] = ActionSet(2).apply {
-            addEvents(1, PlayerLeft, PlayerRight)
-            addEvents(2, PlayerUp, PlayerDown, ActionSearch)
+            addEvents(1, HeroLeft, HeroRight)
+            addEvents(2, HeroUp, HeroDown, ActionSearch)
         }
 
         actionSets[3] = ActionSet(3).apply {
-            addEvents(1, PlayerLeft, ActionSearch)
-            addEvents(2, PlayerRight)
-            addEvents(3, PlayerUp, PlayerDown)
+            addEvents(1, HeroLeft, ActionSearch)
+            addEvents(2, HeroRight)
+            addEvents(3, HeroUp, HeroDown)
         }
 
         actionSets[4] = ActionSet(4).apply {
-            addEvents(1, PlayerLeft, ActionSearch)
-            addEvents(2, PlayerRight)
-            addEvents(3, PlayerUp)
-            addEvents(4, PlayerDown)
+            addEvents(1, HeroLeft, ActionSearch)
+            addEvents(2, HeroRight)
+            addEvents(3, HeroUp)
+            addEvents(4, HeroDown)
         }
 
         actionSets[5] = ActionSet(5).apply {
-            addEvents(1, PlayerLeft)
-            addEvents(2, PlayerRight)
-            addEvents(3, PlayerUp)
-            addEvents(4, PlayerDown)
+            addEvents(1, HeroLeft)
+            addEvents(2, HeroRight)
+            addEvents(3, HeroUp)
+            addEvents(4, HeroDown)
             addEvents(5, ActionSearch)
         }
 

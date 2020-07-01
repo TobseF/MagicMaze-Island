@@ -29,23 +29,21 @@ class GameFlow(private val world: World,
     init {
         bus.register<DragTileEvent> { it.onDragTileEvent() }
         bus.register<InputEvent> { handleInput(it) }
-        bus.register<ChangePlayersCountEvent> { handleChangePlayerCount(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
+        bus.register<ChangeRoomEvent> {
+            log.info { "Change room to ${it.roomName}" }
+            world.roomName = it.roomName
+        }
     }
 
 
     private fun handleChangePlayerId(event: ChangePlayerEvent) {
-        log.info { "handleChangePlayerId $event" }
+        log.info { "Selected Player: ${event.playerId}" }
         world.selectedPlayer = event.playerId
     }
 
-    private fun handleChangePlayerCount(event: ChangePlayersCountEvent) {
-        log.info { "handleChangePlayerCount $event" }
-        world.playersCount = event.playersCount
-    }
-
     private fun handleInput(inputEvent: InputEvent) {
-        val playerId = inputEvent.playerNumber
+        val playerId = inputEvent.heroNumber
         if (playerId != 0) {
             executeInput(inputEvent, playerId)
         }
@@ -59,11 +57,11 @@ class GameFlow(private val world: World,
             Action.MapMoveRight -> mechanics.moveMapRight()
             Action.MapZoomIn -> mechanics.zoomIn()
             Action.MapZoomOut -> mechanics.zoomOut()
-            Action.SelectPlayer -> selectPlayer(playerId)
-            Action.PlayerLeft -> movePlayer(playerId, Direction.Left)
-            Action.PlayerRight -> movePlayer(playerId, Direction.Right)
-            Action.PlayerUp -> movePlayer(playerId, Direction.Up)
-            Action.PlayerDown -> movePlayer(playerId, Direction.Down)
+            Action.SelectHero -> selectHero(playerId)
+            Action.HeroLeft -> moveHero(playerId, Direction.Left)
+            Action.HeroRight -> moveHero(playerId, Direction.Right)
+            Action.HeroUp -> moveHero(playerId, Direction.Up)
+            Action.HeroDown -> moveHero(playerId, Direction.Down)
             Action.ActionSearch -> findNewRoom()
             Action.FoundNextRoom -> {
                 if (inputEvent.roomId != null && playerId != 0) {
@@ -73,12 +71,12 @@ class GameFlow(private val world: World,
         }
     }
 
-    fun movePlayer(direction: Direction) {
-        movePlayer(world.selectedPlayer, direction)
+    fun moveHero(direction: Direction) {
+        moveHero(world.selectedHero, direction)
     }
 
-    fun selectPlayer(playerNumber: Int) {
-        world.selectedPlayer = playerNumber
+    fun selectHero(selectedHero: Int) {
+        world.selectedHero = selectedHero
     }
 
     companion object {
@@ -148,7 +146,7 @@ class GameFlow(private val world: World,
         Direction.Down -> Position(x, y + 1)
     }
 
-    fun movePlayer(playerNumber: Int, direction: Direction) {
+    fun moveHero(playerNumber: Int, direction: Direction) {
         val playerModel: Player = world.getPlayer(playerNumber)
         val playerComponent = worldComponent.getPlayer(playerModel)
         val playerPos = playerModel.pos()
@@ -218,7 +216,7 @@ class GameFlow(private val world: World,
         rush = 1
     }
 
-    fun findNewRoom(playerNumber: Int = world.selectedPlayer, nextRoomId: Int? = null) {
+    fun findNewRoom(playerNumber: Int = world.selectedHero, nextRoomId: Int? = null) {
         val playerModel: Player = world.getPlayer(playerNumber)
         val playerPos = playerModel.pos()
         val playerItem = world.getItemTileCellAbsolute(playerPos)
@@ -277,7 +275,7 @@ class GameFlow(private val world: World,
         }
         world.rooms += nextRoom
         worldComponent.addRoom(nextRoom)
-        bus.send(InputEvent(Action.FoundNextRoom, playerNumber = playerNumber, roomId = nextRoom.id))
+        bus.send(InputEvent(Action.FoundNextRoom, heroNumber = playerNumber, roomId = nextRoom.id))
     }
 
 }

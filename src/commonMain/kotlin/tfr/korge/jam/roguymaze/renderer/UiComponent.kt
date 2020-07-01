@@ -93,7 +93,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             val playerControl = PlayerControl(playerNumber, playerControls, rootView, res, bus)
             addChild(playerControl)
             playerControls.add(playerControl)
-            if (playerNumber == world.selectedPlayer) {
+            if (playerNumber == world.selectedHero) {
                 playerControl.checkPlayer.select()
             }
         }
@@ -113,7 +113,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             val distance = (playerNumber - 1) * 65.0
 
             checkPlayer = CheckBox(res.uiCheckDisabled, res.uiCheckEnabled, {
-                bus.send(InputEvent(Action.SelectPlayer, playerNumber))
+                bus.send(InputEvent(Action.SelectHero, playerNumber))
             }) {
                 anchor(0.5, 0.0)
                 x = distance
@@ -169,8 +169,8 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
             }
 
             bus.register<InputEvent> {
-                if (it.action == Action.SelectPlayer) {
-                    if (it.playerNumber == playerNumber) {
+                if (it.action == Action.SelectHero) {
+                    if (it.heroNumber == playerNumber) {
                         checkPlayer.select()
                     } else {
                         checkPlayer.uncheck()
@@ -252,37 +252,32 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         }
     }
 
-    fun View.movePosd(x: Int = 0, y: Int = 0) {
-        this.x += x
-        this.y += y
-    }
-
     private fun addMovePlayer() {
         val distance = 0.3
         val movePlayerDown = image(res.uiActionMoveDown) {
             anchor(0.5, distance)
             alignLeftToLeftOf(rootView, 390.0)
             alignBottomToBottomOf(rootView, 30.0)
-            onClick { sendUiEvent(Action.PlayerDown) }
+            onClick { sendUiEvent(Action.HeroDown) }
             anchor(0.5, -distance)
         }
         val movePlayerLeft = image(res.uiActionMoveDown) {
             position(movePlayerDown.pos)
             anchor(0.5, -distance)
             rotation(90.degrees)
-            onClick { sendUiEvent(Action.PlayerLeft) }
+            onClick { sendUiEvent(Action.HeroLeft) }
         }
         val movePlayerUp = image(res.uiActionMoveDown) {
             position(movePlayerDown.pos)
             anchor(0.5, -distance)
             rotation(180.degrees)
-            onClick { sendUiEvent(Action.PlayerUp) }
+            onClick { sendUiEvent(Action.HeroUp) }
         }
         val movePlayerRight = image(res.uiActionMoveDown) {
             position(movePlayerDown.pos)
             anchor(0.5, -distance)
             rotation(270.degrees)
-            onClick { sendUiEvent(Action.PlayerRight) }
+            onClick { sendUiEvent(Action.HeroRight) }
         }
         val actionSearch = image(res.uiActionSearch) {
             alignLeftToRightOf(movePlayerUp, 50.0)
@@ -293,19 +288,17 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
 
         fun updateActions() {
             val newActionSet = world.getAllowedActions()
-            movePlayerDown.visible = newActionSet.contains(Action.PlayerDown)
-            movePlayerLeft.visible = newActionSet.contains(Action.PlayerLeft)
-            movePlayerRight.visible = newActionSet.contains(Action.PlayerRight)
-            movePlayerUp.visible = newActionSet.contains(Action.PlayerUp)
+            movePlayerDown.visible = newActionSet.contains(Action.HeroDown)
+            movePlayerLeft.visible = newActionSet.contains(Action.HeroLeft)
+            movePlayerRight.visible = newActionSet.contains(Action.HeroRight)
+            movePlayerUp.visible = newActionSet.contains(Action.HeroUp)
             actionSearch.visible = newActionSet.contains(Action.ActionSearch)
         }
 
         bus.register<ChangePlayerEvent> {
-            world.selectedPlayer = it.playerId
             updateActions()
         }
         bus.register<ChangePlayersCountEvent> {
-            world.playersCount = it.playersCount
             updateActions()
         }
     }
@@ -342,7 +335,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
 
     fun sendUiEvent(action: Action) {
         log.info { "New UI input Event $action" }
-        bus.send(InputEvent(action, world.selectedPlayer))
+        bus.send(InputEvent(action, world.selectedHero))
     }
 
 
