@@ -137,8 +137,6 @@ class GameFlow(private val world: World,
         }
     }
 
-    var roomNumber = 0
-
     fun Position.move(direction: Direction) = when (direction) {
         Direction.Left -> Position(x - 1, y)
         Direction.Right -> Position(x + 1, y)

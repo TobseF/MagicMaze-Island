@@ -1,6 +1,7 @@
 package tfr.korge.jam.roguymaze.renderer
 
 import com.soywiz.klogger.Logger
+import com.soywiz.korge.input.onMouseDrag
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.View
 import com.soywiz.korinject.AsyncInjector
@@ -32,10 +33,12 @@ class WorldComponent(val bus: EventBus,
 
     companion object {
         val log = Logger("WorldComponent")
-        suspend operator fun invoke(injector: AsyncInjector) {
+
+        suspend operator fun invoke(injector: AsyncInjector): WorldComponent {
             injector.mapSingleton {
                 WorldComponent(get(), get(), get(), get(), get(), get())
             }
+            return injector.get()
         }
     }
 
@@ -46,13 +49,27 @@ class WorldComponent(val bus: EventBus,
     val rooms = mutableListOf<RoomComponent>()
 
     init {
+        addChild(players)
+        addDragListener()
+
         val center = resolution.center()
         x = center.x - roomWidth() / 2
         y = center.y - roomWidth() / 2
         for (room in world.rooms) {
             addRoom(room)
         }
-        addChild(players)
+    }
+
+    private fun addDragListener() {
+        var start: Point = pos.copy()
+        onMouseDrag { info ->
+            if (info.start && !info.end) {
+                start = pos.copy()
+            } else if (!info.start && !info.end) {
+                x = start.x + info.dx
+                y = start.y + info.dy
+            }
+        }
     }
 
     fun getRoom(roomId: Int): RoomComponent? {

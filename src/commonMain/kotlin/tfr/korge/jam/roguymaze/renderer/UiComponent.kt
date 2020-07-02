@@ -14,38 +14,40 @@ import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.World
 
-class UiComponent(val world: World, val res: Resources, val rootView: View, val bus: EventBus) : Container() {
+class UiComponent(val world: World, val res: Resources, val rootView: Stage, val bus: EventBus) {
 
     companion object {
         val log = Logger("UiComponent")
 
-        suspend operator fun invoke(injector: AsyncInjector): UiComponent {
+        suspend operator fun invoke(injector: AsyncInjector) {
             injector.mapSingleton {
                 UiComponent(get(), get(), get(), get())
             }
-            return injector.get()
+            injector.get<UiComponent>()
         }
     }
 
     val playerControls = mutableListOf<PlayerControl>()
 
     init {
-        image(res.uiPanelTopLeft) {
-            image(res.uiMap) {
-                position(20, 7)
+        rootView.apply {
+            image(res.uiPanelTopLeft) {
+                image(res.uiMap) {
+                    position(20, 7)
+                }
             }
-        }
-        addRoomCounter()
-        image(res.uiPanelTopRight) {
-            alignRightToRightOf(rootView)
-            image(res.uiTimer) {
-                position(31, 7)
+            addRoomCounter()
+            image(res.uiPanelTopRight) {
+                alignRightToRightOf(rootView)
+                image(res.uiTimer) {
+                    position(31, 7)
+                }
             }
-        }
-        image(res.uiPanelBottomLeft) {
-            alignBottomToBottomOf(rootView)
-        }
+            image(res.uiPanelBottomLeft) {
+                alignBottomToBottomOf(rootView)
+            }
 
+        }
         addPlayerControls()
 
         addMovePlayer()
@@ -55,11 +57,9 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         addZoomMap()
 
         addRightMenuButtons()
-
-
     }
 
-    private fun addRightMenuButtons() {
+    private fun addRightMenuButtons() = rootView.apply {
         val settingsButton = image(res.buttonSettings) {
             alignRightToRightOf(rootView, 8.0)
             alignTopToTopOf(rootView, 120.0)
@@ -76,7 +76,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         }
     }
 
-    private fun addRoomCounter() {
+    private fun addRoomCounter() = rootView.apply {
         text("1/12", font = res.fontBubble, textSize = 38.0) {
             bus.register<InputEvent> {
                 if (it.action == Action.FoundNextRoom) {
@@ -88,7 +88,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         }
     }
 
-    private fun addPlayerControls() {
+    private fun addPlayerControls() = rootView.apply {
         for (playerNumber in 1..4) {
             val playerControl = PlayerControl(playerNumber, playerControls, rootView, res, bus)
             addChild(playerControl)
@@ -236,7 +236,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
 
     }
 
-    private fun addZoomMap() {
+    private fun addZoomMap() = rootView.apply {
         val zoomOut = image(res.uiMapZoomOut) {
             anchor(0.5, 1.0)
             alignBottomToBottomOf(rootView, 150.0)
@@ -252,7 +252,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         }
     }
 
-    private fun addMovePlayer() {
+    private fun addMovePlayer() = rootView.apply {
         val distance = 0.3
         val movePlayerDown = image(res.uiActionMoveDown) {
             anchor(0.5, distance)
@@ -303,7 +303,7 @@ class UiComponent(val world: World, val res: Resources, val rootView: View, val 
         }
     }
 
-    private fun addMoveMap() {
+    private fun addMoveMap() = rootView.apply {
         val distance = 0.5
         val moveMap = image(res.uiMapMoveDown) {
             anchor(0.5, distance)

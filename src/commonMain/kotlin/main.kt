@@ -1,13 +1,9 @@
 import com.soywiz.klogger.Logger
-import com.soywiz.korev.MouseButton
 import com.soywiz.korge.Korge
-import com.soywiz.korge.input.mouse
-import com.soywiz.korge.input.onMouseDrag
 import com.soywiz.korge.view.View
 import com.soywiz.korgw.GameWindow.Quality.QUALITY
 import com.soywiz.korim.color.Colors
 import com.soywiz.korinject.AsyncInjector
-import com.soywiz.korma.geom.Point
 import kotlinx.coroutines.CoroutineScope
 import tfr.korge.jam.roguymaze.*
 import tfr.korge.jam.roguymaze.audio.JukeBox
@@ -77,9 +73,7 @@ suspend fun main() = Korge(
     val worldSprites = WorldSprites(injector.get())
     injector.mapInstance(worldSprites)
 
-    WorldComponent(injector)
-    val worldComponent: WorldComponent = injector.get()
-    addChild(worldComponent)
+    addChild(WorldComponent(injector))
 
     GameMechanics(injector)
 
@@ -91,32 +85,8 @@ suspend fun main() = Korge(
     injector.mapInstance(islandRenderer)
 
 
-    var landPostStart: Point
-    //worldComponent.draggableOn() // Doesn't support button check
-
-    onMouseDrag { info ->
-        if (mouse.button == MouseButton.RIGHT) {
-            if (info.start) {
-                landPostStart = worldComponent.pos.copy()
-            } else if (info.end) {
-                landPostStart = worldComponent.pos.copy()
-                worldComponent.x = landPostStart.x + info.dx
-                worldComponent.y = landPostStart.y + info.dy
-                println("dragged World" + worldComponent.pos)
-            } else {
-            }
-
-        } else {
-            // Live tracking is buggy
-            //worldComponent.x = landPostStart.x + info.dx
-            //worldComponent.y = landPostStart.y + info.dy
-        }
-
-    }
-
     LevelCheck(injector)
     Scoring(injector)
-
 
     TileAnimator(injector)
 
@@ -127,7 +97,7 @@ suspend fun main() = Korge(
 
     NetworkBridge(injector).userName = userName
 
-    addChild(UiComponent(injector))
+    UiComponent(injector)
 
     addChild(TimerComponent(injector))
     addComponent(injector.get() as TimerComponent)
