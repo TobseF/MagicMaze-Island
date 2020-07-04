@@ -12,8 +12,8 @@ import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.math.PositionGrid
-import tfr.korge.jam.roguymaze.model.Players
 import tfr.korge.jam.roguymaze.model.Room
+import tfr.korge.jam.roguymaze.model.Team
 import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.World
 
@@ -42,9 +42,9 @@ class WorldComponent(val bus: EventBus,
         }
     }
 
-    val players = PlayersComponent(bus, view, world, this, resources)
+    val players = HeroTeamComponent(bus, view, world, this, resources)
 
-    fun getPlayer(playerNumber: Players.Player): PlayerComponent = players.players[playerNumber]!!
+    fun getPlayer(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
 
     val rooms = mutableListOf<RoomComponent>()
 

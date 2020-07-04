@@ -3,8 +3,8 @@ package tfr.korge.jam.roguymaze.level
 import tfr.korge.jam.roguymaze.GameFlow
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.InputEvent.Action.*
-import tfr.korge.jam.roguymaze.model.Players
 import tfr.korge.jam.roguymaze.model.Room
+import tfr.korge.jam.roguymaze.model.Team
 import tfr.korge.jam.roguymaze.model.World
 
 
@@ -72,14 +72,14 @@ class WorldFactory {
         return next
     }
 
-    fun Players.load(players: Int, numberOfTeamMates: Int): Players {
+    fun Team.load(players: Int, numberOfTeamMates: Int): Team {
         (1..players).forEach {
-            val nextPlayer = Players.Player(it)
+            val nextPlayer = Team.Hero(it)
             val allowedSets: MutableMap<Int, MutableSet<Action>>? = actionSets[numberOfTeamMates]?.allowed
             allowedSets?.get(it)?.let { allowedSet: MutableSet<Action> ->
                 nextPlayer.possibleActions.addAll(allowedSet)
             }
-            this.players.add(nextPlayer)
+            this.heroes.add(nextPlayer)
         }
         return this
     }
@@ -88,7 +88,7 @@ class WorldFactory {
      * numberOfTeamMates : 1-5 players
      */
     fun createWorld(numberOfTeamMates: Int): World {
-        val players = Players().load(4, numberOfTeamMates)
+        val players = Team().load(4, numberOfTeamMates)
         players[1].pos(1, 1)
         players[2].pos(1, 2)
         players[3].pos(2, 1)

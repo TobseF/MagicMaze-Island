@@ -51,6 +51,10 @@ class Resources : AsyncDependency {
     lateinit var player2: BmpSlice
     lateinit var player3: BmpSlice
     lateinit var player4: BmpSlice
+    lateinit var player1_Selected: BmpSlice
+    lateinit var player2_Selected: BmpSlice
+    lateinit var player3_Selected: BmpSlice
+    lateinit var player4_Selected: BmpSlice
 
     lateinit var mask1: BmpSlice
     lateinit var mask2: BmpSlice
@@ -140,6 +144,16 @@ class Resources : AsyncDependency {
         }
     }
 
+    fun getPlayerSelected(playerNumber: Int): BmpSlice {
+        return when (playerNumber) {
+            1 -> player1_Selected
+            2 -> player2_Selected
+            3 -> player3_Selected
+            4 -> player4_Selected
+            else -> throw IllegalArgumentException("Out of range: $playerNumber")
+        }
+    }
+
     fun getUiPlayer(playerNumber: Int): BmpSlice {
         return when (playerNumber) {
             1 -> uiPlayer1
@@ -196,6 +210,11 @@ class Resources : AsyncDependency {
         player2 = loadImage("player_2.png")
         player3 = loadImage("player_3.png")
         player4 = loadImage("player_4.png")
+
+        player1_Selected = loadImage("player_1_s.png")
+        player2_Selected = loadImage("player_2_s.png")
+        player3_Selected = loadImage("player_3_s.png")
+        player4_Selected = loadImage("player_4_s.png")
 
         mask1 = loadImage("mask_1.png")
         mask2 = loadImage("mask_2.png")

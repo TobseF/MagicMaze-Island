@@ -7,8 +7,8 @@ import tfr.korge.jam.roguymaze.audio.SoundMachine
 import tfr.korge.jam.roguymaze.level.WorldFactory
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.math.PositionGrid.Position
-import tfr.korge.jam.roguymaze.model.Players.Player
 import tfr.korge.jam.roguymaze.model.Room
+import tfr.korge.jam.roguymaze.model.Team.Hero
 import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.World
 import tfr.korge.jam.roguymaze.model.network.Update
@@ -145,30 +145,30 @@ class GameFlow(private val world: World,
     }
 
     fun moveHero(playerNumber: Int, direction: Direction) {
-        val playerModel: Player = world.getPlayer(playerNumber)
-        val playerComponent = worldComponent.getPlayer(playerModel)
-        val playerPos = playerModel.pos()
+        val heroModel: Hero = world.getPlayer(playerNumber)
+        val playerComponent = worldComponent.getPlayer(heroModel)
+        val playerPos = heroModel.pos()
         val nextAbsolutePos = playerPos.move(direction)
         val nextField = world.getGroundTileCellAbsolute(nextAbsolutePos)
         val currentRoom = world.getRoom(playerPos)
         val nextRoom = world.getRoom(nextAbsolutePos)
         val blockedByWall = isBlockedByWall(direction, currentRoom, playerPos, nextRoom, nextAbsolutePos)
 
-        val takenByPlayer = world.players.isTaken(nextAbsolutePos)
-        if (currentRoom != null && nextField.tile == Tile.Grass && !takenByPlayer && !blockedByWall && !playerModel.inHome) {
-            playerModel.setPos(nextAbsolutePos)
+        val takenByPlayer = world.team.isTaken(nextAbsolutePos)
+        if (currentRoom != null && nextField.tile == Tile.Grass && !takenByPlayer && !blockedByWall && !heroModel.inHome) {
+            heroModel.setPos(nextAbsolutePos)
             playerComponent?.move(direction)
             val currentItem = currentRoom.getItemTileCellRelative(nextField.position)
             if (currentItem.tile.isMask() && playerNumber == currentItem.tile.getPlayerNumber()) {
-                playerModel.collectedMask = true
+                heroModel.collectedMask = true
                 log.info { "Player $playerNumber found mask ${currentItem.tile}!" }
                 currentRoom.removeItem(nextField.position)
                 bus.send(FoundMaskEvent(playerNumber))
             }
-            if (currentItem.tile.isHome() && playerNumber == currentItem.tile.getPlayerNumber() && playerModel.collectedMask) {
-                playerModel.inHome = true
+            if (currentItem.tile.isHome() && playerNumber == currentItem.tile.getPlayerNumber() && heroModel.collectedMask) {
+                heroModel.inHome = true
                 log.info { "Player $playerNumber found a sweet home on ${currentItem.tile}!" }
-                currentRoom.setFinish(nextField.position, playerModel)
+                currentRoom.setFinish(nextField.position, heroModel)
                 bus.send(FoundHomeEvent(playerNumber))
             }
         } else {
@@ -205,9 +205,9 @@ class GameFlow(private val world: World,
         this.items[relativePosition] = tile
     }
 
-    private fun Room.setFinish(relativePosition: Position, player: Player) {
+    private fun Room.setFinish(relativePosition: Position, hero: Hero) {
         removeItem(relativePosition)
-        setItem(relativePosition, Tile.getFinish(player.number))
+        setItem(relativePosition, Tile.getFinish(hero.number))
     }
 
     fun reset() {
@@ -215,8 +215,8 @@ class GameFlow(private val world: World,
     }
 
     fun findNewRoom(playerNumber: Int = world.selectedHero, nextRoomId: Int? = null) {
-        val playerModel: Player = world.getPlayer(playerNumber)
-        val playerPos = playerModel.pos()
+        val heroModel: Hero = world.getPlayer(playerNumber)
+        val playerPos = heroModel.pos()
         val playerItem = world.getItemTileCellAbsolute(playerPos)
         val playerRelativePos = playerItem.position
 
