@@ -10,14 +10,10 @@ import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.Room
 import tfr.korge.jam.roguymaze.model.World
-import tfr.korge.jam.roguymaze.renderer.WorldComponent
-import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 
 class KeyBindings(private val stage: Stage,
         private val bus: EventBus,
         private val world: World,
-        private val worldComponent: WorldComponent,
-        private val animator: TileAnimator,
         private val gameFlow: GameFlow,
         private val levelCheck: LevelCheck,
         private val room: Room) : AsyncDependency {
@@ -28,7 +24,7 @@ class KeyBindings(private val stage: Stage,
 
         suspend operator fun invoke(injector: AsyncInjector): KeyBindings {
             injector.mapSingleton {
-                KeyBindings(get(), get(), get(), get(), get(), get(), get(), get())
+                KeyBindings(get(), get(), get(), get(), get(), get())
             }
             return injector.get()
         }
@@ -46,7 +42,6 @@ class KeyBindings(private val stage: Stage,
     }
 
     private fun resetState() {
-        animator.reset()
         gameFlow.reset()
         levelCheck.reset()
     }

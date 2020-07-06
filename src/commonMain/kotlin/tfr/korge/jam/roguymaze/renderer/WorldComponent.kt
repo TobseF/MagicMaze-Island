@@ -3,26 +3,27 @@ package tfr.korge.jam.roguymaze.renderer
 import com.soywiz.klogger.Logger
 import com.soywiz.korge.input.onMouseDrag
 import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.View
+import com.soywiz.korge.view.Stage
+import com.soywiz.korinject.AsyncDependency
 import com.soywiz.korinject.AsyncInjector
-import com.soywiz.korma.geom.IPoint
 import com.soywiz.korma.geom.Point
-import tfr.korge.jam.roguymaze.GameMechanics
+import tfr.korge.jam.roguymaze.audio.SoundMachine
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.math.PositionGrid
 import tfr.korge.jam.roguymaze.model.Room
 import tfr.korge.jam.roguymaze.model.Team
-import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.World
 
-class WorldComponent(val bus: EventBus,
+class WorldComponent(val injector: AsyncInjector,
+        val bus: EventBus,
         val world: World,
         val resolution: Resolution,
         private val worldSprites: WorldSprites,
         private val resources: Resources,
-        val view: View) : Container() {
+        override val stage: Stage,
+        val soundMachine: SoundMachine) : Container(), AsyncDependency {
 
     /**
      * The size of one tile in px
@@ -36,19 +37,20 @@ class WorldComponent(val bus: EventBus,
 
         suspend operator fun invoke(injector: AsyncInjector): WorldComponent {
             injector.mapSingleton {
-                WorldComponent(get(), get(), get(), get(), get(), get())
+                WorldComponent(get(), get(), get(), get(), get(), get(), get(), get())
             }
             return injector.get()
         }
     }
 
-    val players = HeroTeamComponent(bus, view, world, this, resources)
+    private lateinit var players: HeroTeamComponent
 
     fun getPlayer(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
 
-    val rooms = mutableListOf<RoomComponent>()
+    private val rooms = mutableListOf<RoomComponent>()
 
-    init {
+    override suspend fun init() {
+        players = HeroTeamComponent(injector, bus, stage, world, this, resources, soundMachine)
         addChild(players)
         addDragListener()
 
@@ -59,6 +61,7 @@ class WorldComponent(val bus: EventBus,
             addRoom(room)
         }
     }
+
 
     private fun addDragListener() {
         var start: Point = pos.copy()
@@ -77,7 +80,7 @@ class WorldComponent(val bus: EventBus,
     }
 
     fun addRoom(room: Room) {
-        val roomComponent = RoomComponent(room, this, resources, worldSprites, view)
+        val roomComponent = RoomComponent(room, this, resources, worldSprites, stage)
         val pos = getRelativeWorldCoordinate(room.pos())
         roomComponent.x = pos.x
         roomComponent.y = pos.y
@@ -89,41 +92,5 @@ class WorldComponent(val bus: EventBus,
             this.x + pos.x * tileSize, this.y + pos.y * tileSize)
 
     fun getRelativeWorldCoordinate(pos: PositionGrid.Position): Point = Point(pos.x * tileSize, pos.y * tileSize)
-
-
-    fun getCenterPosition(target: PositionGrid.Position): Point {
-        TODO("Not yet implemented")
-    }
-
-    fun removeTileFromGrid(tile: PositionGrid.Position) {
-        TODO("Not yet implemented")
-    }
-
-    fun move(move: GameMechanics.Move) {
-        TODO("Not yet implemented")
-    }
-
-    fun swapTiles(start: PositionGrid.Position, end: PositionGrid.Position) {
-        TODO("Not yet implemented")
-    }
-
-    fun getTile(position: PositionGrid.Position): WorldImage? {
-        TODO("Not yet implemented")
-    }
-
-    fun hasTile(position: PositionGrid.Position): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    fun addTile(target: PositionGrid.Position, tile: Tile): WorldImage {
-        TODO("Not yet implemented")
-    }
-
-    fun getField(start: IPoint): PositionGrid.Position {
-        TODO("Not yet implemented")
-    }
-
-    fun isOnGrid(start: PositionGrid.Position) = true
-
 
 }

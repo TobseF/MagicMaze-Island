@@ -11,23 +11,19 @@ import tfr.korge.jam.roguymaze.model.Room
 import tfr.korge.jam.roguymaze.model.Team.Hero
 import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.World
-import tfr.korge.jam.roguymaze.model.network.Update
 import tfr.korge.jam.roguymaze.renderer.WorldComponent
-import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 
 /**
- * Global game cycle which reacts on swapped tiles [onDragTileEvent].
+ * Global game cycle
  */
 class GameFlow(private val world: World,
-        val worldFactory: WorldFactory,
+        private val worldFactory: WorldFactory,
         private val worldComponent: WorldComponent,
         private val bus: EventBus,
         private val mechanics: GameMechanics,
-        private val animator: TileAnimator,
         private val soundMachine: SoundMachine) {
 
     init {
-        bus.register<DragTileEvent> { it.onDragTileEvent() }
         bus.register<InputEvent> { handleInput(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
         bus.register<ChangeRoomEvent> {
@@ -35,7 +31,6 @@ class GameFlow(private val world: World,
             world.roomName = it.roomName
         }
     }
-
 
     private fun handleChangePlayerId(event: ChangePlayerEvent) {
         log.info { "Selected Player: ${event.playerId}" }
@@ -84,45 +79,9 @@ class GameFlow(private val world: World,
 
         suspend operator fun invoke(injector: AsyncInjector): GameFlow {
             injector.mapSingleton {
-                GameFlow(get(), get(), get(), get(), get(), get(), get())
+                GameFlow(get(), get(), get(), get(), get(), get())
             }
             return injector.get()
-        }
-    }
-
-    private var rush = 1
-
-    private fun DragTileEvent.onDragTileEvent() {
-        if (animator.isAnimationRunning()) {
-            log.debug { "Skipping drag event because of moving tiles ($start. $end)" }
-        }
-        /*else if (field[posA].isNotTile() || field[posB].isNotTile()) {
-            log.debug { "Skipping drag event because one tile wasn't a tile ($posA. $posB)" }
-        }*/
-        else if (mechanics.isSwapAllowed(start, end)) {
-            swapTiles(start, end)
-            var player = 0
-            val startField = world.rooms.first().ground[start]
-            if (startField.isPlayer()) {
-                player = startField.name.substringAfter("Player").toInt()
-            }
-            val update = Update(listOf(Update.Player(player, Update.Pos(end.x, end.y))))
-            bus.send(update)
-        } else {
-            animator.animateIllegalSwap(start, end)
-            soundMachine.playWrongMove()
-        }
-    }
-
-    /**
-     * Swaps two tiles and triggers the removal of and refill of connected tiles. An illegal swap, will be swapped back.
-     */
-    private fun swapTiles(posA: Position, posB: Position) {
-        // bus.send(SwapTileEvent(posA, posB))
-        //rush = 1
-        mechanics.swapTiles(posA, posB)
-        animator.animateSwap(posA, posB).invokeOnCompletion {
-            soundMachine.playClear()
         }
     }
 
@@ -157,7 +116,7 @@ class GameFlow(private val world: World,
         val takenByPlayer = world.team.isTaken(nextAbsolutePos)
         if (currentRoom != null && nextField.tile == Tile.Grass && !takenByPlayer && !blockedByWall && !heroModel.inHome) {
             heroModel.setPos(nextAbsolutePos)
-            playerComponent?.move(direction)
+            playerComponent.move(direction)
             val currentItem = currentRoom.getItemTileCellRelative(nextField.position)
             if (currentItem.tile.isMask() && playerNumber == currentItem.tile.getPlayerNumber()) {
                 heroModel.collectedMask = true
@@ -171,9 +130,11 @@ class GameFlow(private val world: World,
                 currentRoom.setFinish(nextField.position, heroModel)
                 bus.send(FoundHomeEvent(playerNumber))
             }
+            soundMachine.playDropGround()
         } else {
             val taken = if (takenByPlayer) "taken by player" else ""
             log.info { "Illegal Move: $nextAbsolutePos -> $nextField (taken: $taken, border: $blockedByWall" }
+            playerComponent.moveIllegal(direction)
         }
     }
 
@@ -211,7 +172,6 @@ class GameFlow(private val world: World,
     }
 
     fun reset() {
-        rush = 1
     }
 
     fun findNewRoom(playerNumber: Int = world.selectedHero, nextRoomId: Int? = null) {

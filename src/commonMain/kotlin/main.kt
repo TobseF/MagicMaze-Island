@@ -15,7 +15,6 @@ import tfr.korge.jam.roguymaze.lib.Resolution
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.network.NetworkBridge
 import tfr.korge.jam.roguymaze.renderer.*
-import tfr.korge.jam.roguymaze.renderer.animation.TileAnimator
 import kotlin.random.Random
 
 
@@ -69,6 +68,7 @@ suspend fun main() = Korge(
         mapInstance(virtualResolution)
     }
     Resources(injector)
+    SoundMachine(injector)
 
     val worldSprites = WorldSprites(injector.get())
     injector.mapInstance(worldSprites)
@@ -79,7 +79,6 @@ suspend fun main() = Korge(
 
     JukeBox(injector) { activated = playBackgroundMusic }.play()
 
-    SoundMachine(injector)
 
     val islandRenderer = GridLayerComponent(levelData.ground, injector.get(), injector.get(), injector.get())
     injector.mapInstance(islandRenderer)
@@ -87,8 +86,6 @@ suspend fun main() = Korge(
 
     LevelCheck(injector)
     Scoring(injector)
-
-    TileAnimator(injector)
 
     addChild(GameOverComponent(injector))
 

@@ -18,11 +18,6 @@ data class NewScoreEvent(val score: Int, val multiplicator: Int = 1, val pos: Po
  */
 data class SwapTileEvent(val start: Position, val end: Position)
 
-/**
- * Triggered after the user drags a tile
- */
-data class DragTileEvent(val start: Position, val end: Position)
-
 object GameOverEvent
 
 object ResetGameEvent

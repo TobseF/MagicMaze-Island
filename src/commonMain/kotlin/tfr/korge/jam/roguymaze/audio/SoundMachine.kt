@@ -26,7 +26,7 @@ class SoundMachine : AsyncDependency {
      */
     private var dopGround: NativeSound? = null
 
-    val playSounds = false
+    val playSounds = true
 
     companion object {
         operator fun invoke(injector: AsyncInjector) {

@@ -54,15 +54,6 @@ class GameMechanics(val world: World, val worldComponent: WorldComponent) {
         worldComponent.y -= moveStep
     }
 
-
-    fun swapTiles(a: Position, b: Position) {
-        /*
-        val tileA = player[a]
-        val tileB = player[b]
-        player[a] = tileB
-        player[b] = tileA*/
-    }
-
     fun isSwapAllowed(start: Position, end: Position): Boolean {
         //return gridLayer.get(end) == Tile.Land
         return true

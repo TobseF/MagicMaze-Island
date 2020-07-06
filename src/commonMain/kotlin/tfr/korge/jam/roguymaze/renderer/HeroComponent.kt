@@ -3,27 +3,39 @@ package tfr.korge.jam.roguymaze.renderer
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.BmpSlice
+import com.soywiz.korinject.AsyncInjector
+import com.soywiz.korma.geom.Point
 import tfr.korge.jam.roguymaze.FoundHomeEvent
-import tfr.korge.jam.roguymaze.GameFlow.Direction
+import tfr.korge.jam.roguymaze.GameFlow
 import tfr.korge.jam.roguymaze.InputEvent
 import tfr.korge.jam.roguymaze.InputEvent.Action
 import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.model.Team
 import tfr.korge.jam.roguymaze.model.World
+import tfr.korge.jam.roguymaze.renderer.animation.HeroAnimator
 
 class HeroComponent(val bus: EventBus,
-        private val hero: Team.Hero,
-        /**
-         * Number of pixels to move with one step
-         */
-        private val step: Int,
+        val hero: Team.Hero,
         val world: World,
-        val view: View,
+        val view: Stage,
+        val animator: HeroAnimator,
         bitmap: BmpSlice,
         imageSelected: BmpSlice) : Container() {
 
+    var nextPos: Point? = null
+
     private val defaultImage: Image
     private val selectedImage: Image
+
+    companion object {
+
+        suspend operator fun invoke(injector: AsyncInjector, bitmap: BmpSlice, imageSelected: BmpSlice): HeroComponent {
+            injector.mapSingleton {
+                HeroComponent(get(), get(), get(), get(), get(), bitmap, imageSelected)
+            }
+            return injector.get()
+        }
+    }
 
     init {
         val scale = 0.55
@@ -61,14 +73,11 @@ class HeroComponent(val bus: EventBus,
         defaultImage.visible = !selected
     }
 
-    fun move(direction: Direction) {
-        when (direction) {
-            Direction.Left -> x -= step
-            Direction.Right -> x += step
-            Direction.Up -> y -= step
-            Direction.Down -> y += step
-        }
+    fun move(direction: GameFlow.Direction) = animator.move(direction, this)
+
+    fun moveIllegal(direction: GameFlow.Direction) = animator.moveIllegal(direction, this)
+
+    override fun toString(): String {
+        return "Hero ${hero.number} [${hero.x},${hero.y}] (${x},${y})"
     }
-
-
 }
