@@ -80,14 +80,16 @@ suspend fun main() = Korge(
     JukeBox(injector) { activated = playBackgroundMusic }.play()
 
 
-    val islandRenderer = GridLayerComponent(levelData.ground, injector.get(), injector.get(), injector.get())
-    injector.mapInstance(islandRenderer)
+   /* val islandRenderer = GridLayerComponent(levelData.ground, injector.get(), injector.get(), injector.get() as WorldComponent, {
+        println("Clicked islandRenderer")
+    })
+    injector.mapInstance(islandRenderer)*/
 
 
     LevelCheck(injector)
     Scoring(injector)
 
-    addChild(GameOverComponent(injector))
+    //addChild(GameOverComponent(injector))
 
     GameFlow(injector)
     KeyBindings(injector)

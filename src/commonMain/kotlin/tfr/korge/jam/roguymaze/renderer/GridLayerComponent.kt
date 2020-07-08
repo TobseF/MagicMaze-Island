@@ -5,6 +5,7 @@ import com.soywiz.korev.KeyEvent
 import com.soywiz.korev.MouseEvent
 import com.soywiz.korge.component.KeyComponent
 import com.soywiz.korge.component.MouseComponent
+import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.View
 import com.soywiz.korge.view.Views
@@ -22,24 +23,8 @@ import tfr.korge.jam.roguymaze.model.Tile
 open class GridLayerComponent(private val gridLayer: GridLayer,
         val world: WorldComponent,
         private val worldSprites: WorldSprites,
-        override val view: View) : Container(), MouseComponent, KeyComponent {
-
-
-    override fun onKeyEvent(views: Views, event: KeyEvent) {
-        println("Key: " + event)
-    }
-
-    override fun onMouseEvent(views: Views, event: MouseEvent) {
-
-        //println("scroll: ${event.scrollDeltaX},${event.scrollDeltaY}")
-    }
-
-
-    /**
-     * If `true` the renderer displays the [debugLetters] instead of the [worldSprites]-images.
-     */
-    private var debug = false
-
+        val view: Container,
+        val clickListener :((WorldImage)->Any)?= null)  {
 
     /**
      * Percentage up or downsizing of the tiles.
@@ -67,10 +52,13 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
 
     init {
         updateImagesFromField()
+        if(clickListener == null){
+         //   mouseEnabled = false
+        }
     }
 
     fun updateImagesFromField() {
-        removeChildren()
+       // view.removeChildren()
         resetAllFields()
         gridLayer.forEachIndexed(this::addRow)
     }
@@ -89,7 +77,7 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
 
     fun removeImage(position: Position) {
         val image = getTile(position)
-        removeChild(image)
+        view.removeChild(image)
         removeTileFromGrid(position)
     }
 
@@ -112,10 +100,15 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
             val nextTimeImage = tiles[rowIndex][columnIndex]
             if (nextTimeImage != null && nextTimeImage.tile.isTile()) {
                 log.info { "Adding tile on non empty cell:  ${nextTimeImage.tile} with $tile:  $columnIndex,row:$rowIndex (${gridLayer.columnsSize}-${gridLayer.rowSize}) " }
-                removeChild(nextTimeImage)
+                view.removeChild(nextTimeImage)
             }
             tiles[rowIndex][columnIndex] = image
-            addChild(image)
+            view.addChild(image)
+            if(clickListener != null){
+                image.onClick {
+                    clickListener.invoke(image)
+                }
+            }
         }
     }
 

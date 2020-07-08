@@ -1,6 +1,9 @@
 package tfr.korge.jam.roguymaze
 
+import com.soywiz.korma.geom.Point
+import tfr.korge.jam.roguymaze.math.PositionGrid
 import tfr.korge.jam.roguymaze.math.PositionGrid.Position
+import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.TileCell
 
 /**
@@ -38,6 +41,8 @@ data class ChangeRoomEvent(val roomName: String)
 data class FoundMaskEvent(val playerNumber: Int = 0)
 
 data class FoundHomeEvent(val playerNumber: Int = 0)
+
+data class TileClickedEvent(val tile: Tile, val gridPos: PositionGrid.Position, val position: Point)
 
 
 data class InputEvent(val action: Action,

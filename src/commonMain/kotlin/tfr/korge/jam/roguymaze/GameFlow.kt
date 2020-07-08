@@ -17,18 +17,39 @@ import tfr.korge.jam.roguymaze.renderer.WorldComponent
  * Global game cycle
  */
 class GameFlow(private val world: World,
-        private val worldFactory: WorldFactory,
-        private val worldComponent: WorldComponent,
-        private val bus: EventBus,
-        private val mechanics: GameMechanics,
-        private val soundMachine: SoundMachine) {
+               private val worldFactory: WorldFactory,
+               private val worldComponent: WorldComponent,
+               private val bus: EventBus,
+               private val mechanics: GameMechanics,
+               private val soundMachine: SoundMachine) {
 
     init {
         bus.register<InputEvent> { handleInput(it) }
+        bus.register<TileClickedEvent> { clickedTile(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
         bus.register<ChangeRoomEvent> {
             log.info { "Change room to ${it.roomName}" }
             world.roomName = it.roomName
+        }
+    }
+
+    private fun clickedTile(tileEvent: TileClickedEvent) {
+        val hero = world.getSelectedHero()
+        if (tileEvent.tile == Tile.Grass) {
+            if (tileEvent.gridPos.distance(hero.pos()).toInt() == 1) {
+                val tilePos = tileEvent.gridPos
+                val heroPos = hero.pos()
+
+               if(tilePos.x > heroPos.x && tilePos.y == heroPos.y ){
+                   moveHero( hero.number, Direction.Right)
+               }else if(tilePos.x < heroPos.x && tilePos.y == heroPos.y ){
+                   moveHero( hero.number, Direction.Left)
+               }else if(tilePos.x == heroPos.x && tilePos.y > heroPos.y ){
+                   moveHero( hero.number, Direction.Down)
+               }else if(tilePos.x == heroPos.x && tilePos.y < heroPos.y ){
+                   moveHero( hero.number, Direction.Up)
+               }
+            }
         }
     }
 
@@ -103,9 +124,10 @@ class GameFlow(private val world: World,
         Direction.Down -> Position(x, y + 1)
     }
 
+
     fun moveHero(playerNumber: Int, direction: Direction) {
-        val heroModel: Hero = world.getPlayer(playerNumber)
-        val playerComponent = worldComponent.getPlayer(heroModel)
+        val heroModel: Hero = world.getHero(playerNumber)
+        val playerComponent = worldComponent.getHero(heroModel)
         val playerPos = heroModel.pos()
         val nextAbsolutePos = playerPos.move(direction)
         val nextField = world.getGroundTileCellAbsolute(nextAbsolutePos)
@@ -139,10 +161,10 @@ class GameFlow(private val world: World,
     }
 
     private fun isBlockedByWall(direction: Direction,
-            currentRoom: Room?,
-            playerPos: Position,
-            nextRoom: Room?,
-            nextAbsolutePos: Position): Boolean {
+                                currentRoom: Room?,
+                                playerPos: Position,
+                                nextRoom: Room?,
+                                nextAbsolutePos: Position): Boolean {
         return when (direction) {
             Direction.Left -> currentRoom?.getBorderLeftAbsolute(
                     playerPos) == Tile.Border || nextRoom?.getBorderRightAbsolute(nextAbsolutePos) == Tile.Border
@@ -175,7 +197,7 @@ class GameFlow(private val world: World,
     }
 
     fun findNewRoom(playerNumber: Int = world.selectedHero, nextRoomId: Int? = null) {
-        val heroModel: Hero = world.getPlayer(playerNumber)
+        val heroModel: Hero = world.getHero(playerNumber)
         val playerPos = heroModel.pos()
         val playerItem = world.getItemTileCellAbsolute(playerPos)
         val playerRelativePos = playerItem.position

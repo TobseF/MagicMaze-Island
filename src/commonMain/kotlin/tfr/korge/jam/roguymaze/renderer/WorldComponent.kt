@@ -17,13 +17,13 @@ import tfr.korge.jam.roguymaze.model.Team
 import tfr.korge.jam.roguymaze.model.World
 
 class WorldComponent(val injector: AsyncInjector,
-        val bus: EventBus,
-        val world: World,
-        val resolution: Resolution,
-        private val worldSprites: WorldSprites,
-        private val resources: Resources,
-        override val stage: Stage,
-        val soundMachine: SoundMachine) : Container(), AsyncDependency {
+                     val bus: EventBus,
+                     val world: World,
+                     val resolution: Resolution,
+                     private val worldSprites: WorldSprites,
+                     private val resources: Resources,
+                     override val stage: Stage,
+                     val soundMachine: SoundMachine) : Container(), AsyncDependency {
 
     /**
      * The size of one tile in px
@@ -45,14 +45,14 @@ class WorldComponent(val injector: AsyncInjector,
 
     private lateinit var players: HeroTeamComponent
 
-    fun getPlayer(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
+    fun getHero(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
 
     private val rooms = mutableListOf<RoomComponent>()
 
     override suspend fun init() {
         players = HeroTeamComponent(injector, bus, stage, world, this, resources, soundMachine)
         addChild(players)
-        addDragListener()
+        //addDragListener()
 
         val center = resolution.center()
         x = center.x - roomWidth() / 2
@@ -80,7 +80,7 @@ class WorldComponent(val injector: AsyncInjector,
     }
 
     fun addRoom(room: Room) {
-        val roomComponent = RoomComponent(room, this, resources, worldSprites, stage)
+        val roomComponent = RoomComponent(room, this, bus, resources, worldSprites, stage)
         val pos = getRelativeWorldCoordinate(room.pos())
         roomComponent.x = pos.x
         roomComponent.y = pos.y
