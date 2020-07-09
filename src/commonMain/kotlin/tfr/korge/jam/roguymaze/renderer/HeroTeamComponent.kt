@@ -1,6 +1,5 @@
 package tfr.korge.jam.roguymaze.renderer
 
-import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.Stage
 import com.soywiz.korim.bitmap.BmpSlice
 import com.soywiz.korinject.AsyncInjector
@@ -19,9 +18,9 @@ class HeroTeamComponent(val injector: AsyncInjector,
         val bus: EventBus,
         val view: Stage,
         val world: World,
-        val worldComponent: WorldComponent,
+        worldComponent: WorldComponent,
         val resources: Resources,
-        val soundMachine: SoundMachine) : Container() {
+        soundMachine: SoundMachine) {
 
     val players = mutableMapOf<Team.Hero, HeroComponent>()
     private val animator = HeroAnimator(view, world, worldComponent, soundMachine)
@@ -44,8 +43,8 @@ class HeroTeamComponent(val injector: AsyncInjector,
             val pos = worldComponent.getAbsoluteWorldCoordinate(PositionGrid.Position(heroModel.x, heroModel.y))
             player.x = pos.x
             player.y = pos.y
-            players.put(heroModel, player)
-            addChild(player)
+            players[heroModel] = player
+            worldComponent.addChild(player)
         }
     }
 

@@ -1,16 +1,20 @@
 package tfr.korge.jam.roguymaze.renderer
 
+import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.View
 import com.soywiz.korim.bitmap.BmpSlice
+import tfr.korge.jam.roguymaze.TileClickedEvent
+import tfr.korge.jam.roguymaze.lib.EventBus
 import tfr.korge.jam.roguymaze.lib.Resources
 import tfr.korge.jam.roguymaze.model.Room
 import tfr.korge.jam.roguymaze.model.Tile
 
 class RoomComponent(val room: Room,
         world: WorldComponent,
+        val bus: EventBus,
         val resources: Resources,
-        val worldSprites: WorldSprites,
+        worldSprites: WorldSprites,
         val view: View) : Container() {
 
     val borderLeft = BordersSprites(resources) { it.borderLeft }
@@ -18,15 +22,24 @@ class RoomComponent(val room: Room,
     val borderTop = BordersSprites(resources) { it.borderTop }
     val borderBottom = BordersSprites(resources) { it.borderBottom }
 
-    val items = GridLayerComponent(room.items, world, worldSprites, view)
+    val items: GridLayerComponent
 
     init {
-        addChild(GridLayerComponent(room.ground, world, worldSprites, view))
+        val ground = GridLayerComponent(room.ground, world, worldSprites)
+        addChild(ground)
+        addChild(GridLayerComponent(room.bordersLeft, world, borderLeft))
+        addChild(GridLayerComponent(room.bordersRight, world, borderRight))
+        addChild(GridLayerComponent(room.bordersTop, world, borderTop))
+        addChild(GridLayerComponent(room.bordersBottom, world, borderBottom))
+        items = GridLayerComponent(room.items, world, worldSprites)
         addChild(items)
-        addChild(GridLayerComponent(room.bordersLeft, world, borderLeft, view))
-        addChild(GridLayerComponent(room.bordersRight, world, borderRight, view))
-        addChild(GridLayerComponent(room.bordersTop, world, borderTop, view))
-        addChild(GridLayerComponent(room.bordersBottom, world, borderBottom, view))
+        onClick { e ->
+            ground.listAllImages().firstOrNull { image ->
+                image?.hitTestAny(e.currentPosStage.x, e.currentPosStage.y) ?: false
+            }?.let { image ->
+                bus.send(TileClickedEvent(image.tile, room.getAbsoluteWorldPosition(image.gridPos), image.pos))
+            }
+        }
     }
 
     open class BordersSprites(resources: Resources, val border: (Resources) -> BmpSlice) : WorldSprites(resources) {

@@ -1,6 +1,8 @@
 package tfr.korge.jam.roguymaze
 
+import com.soywiz.korma.geom.Point
 import tfr.korge.jam.roguymaze.math.PositionGrid.Position
+import tfr.korge.jam.roguymaze.model.Tile
 import tfr.korge.jam.roguymaze.model.TileCell
 
 /**
@@ -39,6 +41,8 @@ data class FoundMaskEvent(val playerNumber: Int = 0)
 
 data class FoundHomeEvent(val playerNumber: Int = 0)
 
+data class TileClickedEvent(val tile: Tile, val gridPos: Position, val position: Point)
+
 
 data class InputEvent(val action: Action,
         val heroNumber: Int = 0,
@@ -50,10 +54,10 @@ data class InputEvent(val action: Action,
 
         companion object {
             fun parseValue(actioName: String): Action {
-                try {
-                    return valueOf(actioName)
+                return try {
+                    valueOf(actioName)
                 } catch (e: Exception) {
-                    return Unknown
+                    Unknown
                 }
             }
         }

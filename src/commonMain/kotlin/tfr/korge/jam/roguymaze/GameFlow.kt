@@ -25,12 +25,35 @@ class GameFlow(private val world: World,
 
     init {
         bus.register<InputEvent> { handleInput(it) }
+        bus.register<TileClickedEvent> { clickedTile(it) }
         bus.register<ChangePlayerEvent> { handleChangePlayerId(it) }
         bus.register<ChangeRoomEvent> {
             log.info { "Change room to ${it.roomName}" }
             world.roomName = it.roomName
         }
     }
+
+    private fun clickedTile(tileEvent: TileClickedEvent) {
+        val hero = world.getSelectedHero()
+        if (tileEvent.tile == Tile.Grass) {
+            if (tileEvent.gridPos.distance(hero.pos()).toInt() == 1) {
+                val tilePos = tileEvent.gridPos
+                val heroPos = hero.pos()
+
+                if (tilePos.x > heroPos.x && tilePos.y == heroPos.y && Action.HeroRight.isAllowed()) {
+                    moveHero(hero.number, Direction.Right)
+                } else if (tilePos.x < heroPos.x && tilePos.y == heroPos.y && Action.HeroLeft.isAllowed()) {
+                    moveHero(hero.number, Direction.Left)
+                } else if (tilePos.x == heroPos.x && tilePos.y > heroPos.y && Action.HeroDown.isAllowed()) {
+                    moveHero(hero.number, Direction.Down)
+                } else if (tilePos.x == heroPos.x && tilePos.y < heroPos.y && Action.HeroUp.isAllowed()) {
+                    moveHero(hero.number, Direction.Up)
+                }
+            }
+        }
+    }
+
+    fun Action.isAllowed() = world.getAllowedActions().contains(this)
 
     private fun handleChangePlayerId(event: ChangePlayerEvent) {
         log.info { "Selected Player: ${event.playerId}" }
@@ -63,6 +86,9 @@ class GameFlow(private val world: World,
                     findNewRoom(playerId, inputEvent.roomId)
                 }
             }
+            Action.Unknown -> {
+                log.debug { "What should we do with a drunken sailor?" }
+            }
         }
     }
 
@@ -70,7 +96,7 @@ class GameFlow(private val world: World,
         moveHero(world.selectedHero, direction)
     }
 
-    fun selectHero(selectedHero: Int) {
+    private fun selectHero(selectedHero: Int) {
         world.selectedHero = selectedHero
     }
 
@@ -103,9 +129,10 @@ class GameFlow(private val world: World,
         Direction.Down -> Position(x, y + 1)
     }
 
+
     fun moveHero(playerNumber: Int, direction: Direction) {
-        val heroModel: Hero = world.getPlayer(playerNumber)
-        val playerComponent = worldComponent.getPlayer(heroModel)
+        val heroModel: Hero = world.getHero(playerNumber)
+        val playerComponent = worldComponent.getHero(heroModel)
         val playerPos = heroModel.pos()
         val nextAbsolutePos = playerPos.move(direction)
         val nextField = world.getGroundTileCellAbsolute(nextAbsolutePos)
@@ -175,40 +202,44 @@ class GameFlow(private val world: World,
     }
 
     fun findNewRoom(playerNumber: Int = world.selectedHero, nextRoomId: Int? = null) {
-        val heroModel: Hero = world.getPlayer(playerNumber)
+        val heroModel: Hero = world.getHero(playerNumber)
         val playerPos = heroModel.pos()
         val playerItem = world.getItemTileCellAbsolute(playerPos)
         val playerRelativePos = playerItem.position
 
-        if (playerItem.tile.isDoorForPlayer(playerNumber)) {
-            val currentRoom: Room = world.getRoom(playerPos) ?: throw IllegalStateException("Player outside room")
+        if (playerItem.tile.isDoorForHero(playerNumber)) {
+            val currentRoom: Room = world.getRoom(playerPos) ?: throw IllegalStateException("Hero outside room")
             currentRoom.removeItem(playerRelativePos)
 
             if (playerItem.tile.isExit()) {
-                val exit = currentRoom.getExit(playerPos)
-                val direction = exit.direction()!!
-
-                val nextAbsolutePos = playerPos.move(direction)
-                val nextTile = world.getGroundTileAbsolute(nextAbsolutePos)
-
-                if (nextTile == Tile.OutOfSpace) {
-                    val isNetworkEvent = nextRoomId != null
-                    log.info { "Is Next Room a network event: $isNetworkEvent ($nextRoomId)" }
-                    val nextRoom = if (nextRoomId == null) worldFactory.getUndiscoveredRoom(
-                            direction.opposite()) else worldFactory.getUndiscoveredById(nextRoomId)
-                    if (nextRoom != null) {
-                        addNewRoom(nextRoom, currentRoom, direction, playerNumber)
-                    } else {
-                        log.info { "Failed finding next room for direction: $direction" }
-                    }
-                } else {
-                    log.info { "Next room location is already occupied: $nextAbsolutePos" }
-                }
+                openDoorToNextRoom(currentRoom, playerPos, nextRoomId, playerNumber)
             } else {
                 log.info { "No Exit on the current tile: $playerPos" }
             }
         } else {
             log.info { "Tried to unlock door with wrong player: $playerNumber -> ${playerItem.tile}" }
+        }
+    }
+
+    private fun openDoorToNextRoom(currentRoom: Room, playerPos: Position, nextRoomId: Int?, playerNumber: Int) {
+        val exit = currentRoom.getExit(playerPos)
+        val direction = exit.direction()!!
+
+        val nextAbsolutePos = playerPos.move(direction)
+        val nextTile = world.getGroundTileAbsolute(nextAbsolutePos)
+
+        if (nextTile == Tile.OutOfSpace) {
+            val isNetworkEvent = nextRoomId != null
+            log.info { "Is Next Room a network event: $isNetworkEvent ($nextRoomId)" }
+            val nextRoom = if (nextRoomId == null) worldFactory.getUndiscoveredRoom(
+                    direction.opposite()) else worldFactory.getUndiscoveredById(nextRoomId)
+            if (nextRoom != null) {
+                addNewRoom(nextRoom, currentRoom, direction, playerNumber)
+            } else {
+                log.info { "Failed finding next room for direction: $direction" }
+            }
+        } else {
+            log.info { "Next room location is already occupied: $nextAbsolutePos" }
         }
     }
 

@@ -61,7 +61,7 @@ enum class Tile(private val shortName: String? = null) {
 
     fun isPlayer() = name.contains("Player")
 
-    fun isDoorForPlayer(playerNumber: Int): Boolean {
+    fun isDoorForHero(playerNumber: Int): Boolean {
         return isDoor() && name.last().toString() == playerNumber.toString()
     }
 

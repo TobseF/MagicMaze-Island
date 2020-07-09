@@ -56,31 +56,32 @@ class KeyBindings(private val stage: Stage,
         bus.send(InputEvent(action, world.selectedHero))
     }
 
+    fun Action.isAllowed() = world.getAllowedActions().contains(this)
 
     private fun onKeyDown(key: Key) {
         when (key) {
             Key.W -> {
-                if (world.getAllowedActions().contains(Action.HeroUp)) {
+                if (Action.HeroUp.isAllowed()) {
                     sendPlayerInputEvent(Action.HeroUp)
                 }
             }
             Key.A -> {
-                if (world.getAllowedActions().contains(Action.HeroLeft)) {
+                if (Action.HeroLeft.isAllowed()) {
                     sendPlayerInputEvent(Action.HeroLeft)
                 }
             }
             Key.S -> {
-                if (world.getAllowedActions().contains(Action.HeroDown)) {
+                if (Action.HeroDown.isAllowed()) {
                     sendPlayerInputEvent(Action.HeroDown)
                 }
             }
             Key.D -> {
-                if (world.getAllowedActions().contains(Action.HeroRight)) {
+                if (Action.HeroRight.isAllowed()) {
                     sendPlayerInputEvent(Action.HeroRight)
                 }
             }
             Key.SPACE -> {
-                if (world.getAllowedActions().contains(Action.ActionSearch)) {
+                if (Action.ActionSearch.isAllowed()) {
                     gameFlow.findNewRoom()
                 }
             }

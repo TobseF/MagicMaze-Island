@@ -68,6 +68,9 @@ data class Room(val id: Int = 0,
         return Position(abs(this.x - offsetX), abs(this.y - offsetY))
     }
 
+    fun getAbsoluteWorldPosition(pos: Position): Position = Position(
+            offsetX + pos.x, offsetY + pos.y)
+
     fun getItemTileRelative(position: Position): Tile {
         return items.getTile(position)
     }

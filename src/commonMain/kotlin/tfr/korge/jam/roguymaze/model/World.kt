@@ -23,7 +23,9 @@ class World(val rooms: MutableList<Room>, val team: Team, val totalRooms: Int, v
      */
     var playersCount = 1
 
-    fun getPlayer(playerNumber: Int) = team[playerNumber]
+    fun getHero(playerNumber: Int) = team[playerNumber]
+
+    fun getSelectedHero() = getHero(selectedHero)
 
     fun getGroundTileCell(pos: Position): TileCell {
         return TileCell(getGroundTileAbsolute(pos), pos)

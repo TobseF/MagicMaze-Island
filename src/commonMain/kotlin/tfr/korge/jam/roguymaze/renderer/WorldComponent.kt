@@ -45,13 +45,12 @@ class WorldComponent(val injector: AsyncInjector,
 
     private lateinit var players: HeroTeamComponent
 
-    fun getPlayer(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
+    fun getHero(heroNumber: Team.Hero): HeroComponent = players.players[heroNumber]!!
 
     private val rooms = mutableListOf<RoomComponent>()
 
     override suspend fun init() {
         players = HeroTeamComponent(injector, bus, stage, world, this, resources, soundMachine)
-        addChild(players)
         addDragListener()
 
         val center = resolution.center()
@@ -80,13 +79,14 @@ class WorldComponent(val injector: AsyncInjector,
     }
 
     fun addRoom(room: Room) {
-        val roomComponent = RoomComponent(room, this, resources, worldSprites, stage)
+        val roomComponent = RoomComponent(room, this, bus, resources, worldSprites, stage)
         val pos = getRelativeWorldCoordinate(room.pos())
         roomComponent.x = pos.x
         roomComponent.y = pos.y
         rooms.add(roomComponent)
         addChildAt(roomComponent, 0)
     }
+
 
     fun getAbsoluteWorldCoordinate(pos: PositionGrid.Position): Point = Point(
             this.x + pos.x * tileSize, this.y + pos.y * tileSize)

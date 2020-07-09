@@ -7,7 +7,7 @@ import tfr.korge.jam.roguymaze.model.Team.Hero
 /**
  * A team out of 4 [Hero]s
  */
-class Team(var heroes: MutableList<Hero> = mutableListOf()) {
+data class Team(var heroes: MutableList<Hero> = mutableListOf()) {
 
     operator fun get(playerNumber: Int) = heroes[playerNumber - 1]
 

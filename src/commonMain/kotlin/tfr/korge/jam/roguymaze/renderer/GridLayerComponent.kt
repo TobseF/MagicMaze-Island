@@ -1,13 +1,7 @@
 package tfr.korge.jam.roguymaze.renderer
 
 import com.soywiz.klogger.Logger
-import com.soywiz.korev.KeyEvent
-import com.soywiz.korev.MouseEvent
-import com.soywiz.korge.component.KeyComponent
-import com.soywiz.korge.component.MouseComponent
 import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.View
-import com.soywiz.korge.view.Views
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.Point
 import tfr.korge.jam.roguymaze.GameMechanics
@@ -21,30 +15,12 @@ import tfr.korge.jam.roguymaze.model.Tile
  */
 open class GridLayerComponent(private val gridLayer: GridLayer,
         val world: WorldComponent,
-        private val worldSprites: WorldSprites,
-        override val view: View) : Container(), MouseComponent, KeyComponent {
-
-
-    override fun onKeyEvent(views: Views, event: KeyEvent) {
-        println("Key: " + event)
-    }
-
-    override fun onMouseEvent(views: Views, event: MouseEvent) {
-
-        //println("scroll: ${event.scrollDeltaX},${event.scrollDeltaY}")
-    }
-
-
-    /**
-     * If `true` the renderer displays the [debugLetters] instead of the [worldSprites]-images.
-     */
-    private var debug = false
-
+        private val worldSprites: WorldSprites) : Container() {
 
     /**
      * Percentage up or downsizing of the tiles.
      * `1` means no scaling. `0.8` means `80%` image sizes, which creates `20%` padding.
-     * It's 1% scaled to compensate atlas borders.
+     * It's 1% scaled to compensate a 1px highlighted border.
      */
     private val tileScale = 1.01
 
@@ -52,12 +28,20 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
         Array<WorldImage?>(gridLayer.columnsSize) { null }
     }
 
+    fun listAllImages(): List<WorldImage?> {
+        return (0 until gridLayer.rowSize).flatMap { row ->
+            (0 until gridLayer.columnsSize).map { column ->
+                tiles[row][column]
+            }
+        }
+    }
+
     companion object {
         val log = Logger("GameFieldRenderer")
 
         suspend operator fun invoke(injector: AsyncInjector): GridLayerComponent {
             injector.run {
-                val renderer = GridLayerComponent(get(), get(), get(), get())
+                val renderer = GridLayerComponent(get(), get(), get())
                 mapInstance(renderer)
                 return renderer
             }
@@ -69,7 +53,7 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
         updateImagesFromField()
     }
 
-    fun updateImagesFromField() {
+    private fun updateImagesFromField() {
         removeChildren()
         resetAllFields()
         gridLayer.forEachIndexed(this::addRow)
@@ -99,7 +83,7 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
 
     fun addTile(columnIndex: Int, rowIndex: Int, tile: Tile) {
         val gridPos = Position(columnIndex, rowIndex)
-        var pos = Point(world.tileSize * columnIndex, world.tileSize * rowIndex)
+        val pos = Point(world.tileSize * columnIndex, world.tileSize * rowIndex)
 
         val bitmap = worldSprites.getTile(tile)
         if (bitmap != null) {
@@ -163,7 +147,5 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
         setTile(tile, move.target)
         setTile(null, move.tile)
     }
-
-    fun isEqualWithField() = toString() == gridLayer.toString()
 
 }

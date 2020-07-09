@@ -7,9 +7,9 @@ class TileTest {
 
     @Test
     fun testIsPlayer() {
-        assertTrue(Tile.Door1.isDoorForPlayer(1))
-        assertFalse(Tile.Door2.isDoorForPlayer(1))
-        assertFalse(Tile.Door1.isDoorForPlayer(0))
-        assertFalse(Tile.Door1.isDoorForPlayer(5))
+        assertTrue(Tile.Door1.isDoorForHero(1))
+        assertFalse(Tile.Door2.isDoorForHero(1))
+        assertFalse(Tile.Door1.isDoorForHero(0))
+        assertFalse(Tile.Door1.isDoorForHero(5))
     }
 }
