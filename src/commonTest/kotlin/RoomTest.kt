@@ -9,13 +9,18 @@ class RoomTest {
 
     @Test
     fun testRoomUp() {
+        val room1 = Room(offsetX = 0, offsetY = 0)
+        assertTrue(room1.contains(Position(0, 0)))
+        assertTrue(room1.contains(Position(3, 0)))
+        assertFalse(room1.contains(Position(4, 0)))
+        assertFalse(room1.contains(Position(0, 4)))
+
         val room = Room(offsetX = 4, offsetY = 0)
         assertTrue(room.contains(Position(4, 0)))
         assertTrue(room.contains(Position(5, 0)))
-
-        val room1 = Room(offsetX = 0, offsetY = 0)
-        assertTrue(room1.contains(Position(3, 0)))
         assertFalse(room1.contains(Position(4, 0)))
+        assertFalse(room1.contains(Position(0, 4)))
+        assertFalse(room1.contains(Position(0, 8)))
     }
 
     @Test
