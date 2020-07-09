@@ -34,8 +34,9 @@ class RoomComponent(val room: Room,
         items = GridLayerComponent(room.items, world, worldSprites)
         addChild(items)
         onClick { e ->
+            val clickPos = localToGlobal(e.currentPosLocal)
             ground.listAllImages().firstOrNull { image ->
-                image?.hitTestAny(e.currentPosStage.x, e.currentPosStage.y) ?: false
+                image?.hitTestAny(clickPos.x, clickPos.y) ?: false
             }?.let { image ->
                 bus.send(TileClickedEvent(image.tile, room.getAbsoluteWorldPosition(image.gridPos), image.pos))
             }
