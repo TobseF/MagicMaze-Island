@@ -1,13 +1,15 @@
-# 🎮 🏝 RoguyIsleMaze
+# 🎮 🏝 MagicMaze-Island
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.70-blue.svg?style=flat&logo=kotlin&logoColor=white)](http://kotlinlang.org)
 [![Korge](https://img.shields.io/badge/Korge-1.13.8.3-836DAC.svg)](https://korge.soywiz.com/)
 [![Itch.io](https://img.shields.io/badge/Itch.io-Released-E93D5A.svg?style=flat&logo=itch.io&logoColor=white)](https://itch.io/game/edit/672094)
 
-My contribution for the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1)
+An adaption of the [Magic-Maze](https://pegasusshop.de/Sortiment/Spiele/Familienspiele/25/Magic-Maze-deutsche-Ausgabe-Nominiert-Spiel-des-Jahres-2017) board game. 
+A cooperative multiplayer browser game with quick rounds for 1-6 players.   
+🏆 Contributed to the first [KorGE](https://korge.org/) - [GameJam](https://itch.io/jam/korge-gamejam-1) and honored with the [special price](https://blog.korge.org/winners-of-1st-korge-gamejam/).
 
-[![Screenshot](https://tobsef.github.io/RoguyIsleMaze/image-wiki/screenshot_1.png)](http://tobsefritz.de/java/roguy-isle-maze/)
+[![Screenshot](https://tobsef.github.io/MagicMaze-Island/image-wiki/screenshot_1.png)](http://tobsefritz.de/java/roguy-isle-maze/)
 
-# [🎮 Start RoguyIsleMaze WebApp](http://tobsefritz.de/java/roguy-isle-maze/)
+# [🎮 Start MagicMaze-Island WebApp](http://tobsefritz.de/java/roguy-isle-maze/)
 
 ## 📖 Story
 Our four heroes wake up after a drunken night and have to find their way home. 
@@ -27,7 +29,7 @@ You win the game if all heroes have collected their mask and have reached their 
 To start a new game, simply reload the browser tab on all clients.
 
 ## 👉 Before Start
- 1. Team up with 2-4 friends. Everybody opens the game in the browser on their own:  [🎮 RoguyIsleMaze](http://tobsefritz.de/java/roguy-isle-maze/)
+ 1. Team up with 2-4 friends. Everybody opens the game in the browser on their own:  [🎮 MagicMaze](http://tobsefritz.de/games/magic-maze/)
  2. Open the **help** dialog by clicking the question mark icon on the right side. It will also explain the controls!
  3. Open the  **settings** dialog by clicking the gear icon.  
     Adjust _Number of Players_ to the number of total players of the game.  

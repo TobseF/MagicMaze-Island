@@ -23,8 +23,8 @@ apply<KorgeGradlePlugin>()
 
 korge {
     id = "tfr.korge.game.islemaze"
-    name = "Isle Maze"
-    exeBaseName = "Isle Maze"
+    name = "MagicMaze"
+    exeBaseName = "Magic Maze"
     description = "Cooperative multiplayer browser game, based on the Magic Maze board game."
     gameCategory = GameCategory.BOARD
 
