@@ -23,6 +23,7 @@ suspend fun loadNinePatch(fileName: String): NinePatchBitmap32 = resourcesVfs["i
 class Resources : AsyncDependency {
 
     fun loadImage(fileName: String): BmpSlice = atlas[fileName]
+    fun loadImage(fileName: String, number: Int): BmpSlice = atlas[fileName + "_" + (number + 1)]
 
     fun loadDialogImage(fileName: String): BmpSlice = dialogAtlas[fileName]
 
@@ -85,7 +86,6 @@ class Resources : AsyncDependency {
     lateinit var borderTop: BmpSlice
     lateinit var borderBottom: BmpSlice
 
-
     lateinit var asset1: BmpSlice
     lateinit var asset2: BmpSlice
     lateinit var asset3: BmpSlice
@@ -93,6 +93,10 @@ class Resources : AsyncDependency {
     lateinit var asset5: BmpSlice
     lateinit var asset6: BmpSlice
     lateinit var asset7: BmpSlice
+    lateinit var asset8: BmpSlice
+    lateinit var asset9: BmpSlice
+    lateinit var asset10: BmpSlice
+    lateinit var asset11: BmpSlice
 
     lateinit var uiActionSearch: BmpSlice
     lateinit var uiMapZoomIn: BmpSlice
@@ -281,6 +285,10 @@ class Resources : AsyncDependency {
         asset5 = loadImage("world_asset_5.png")
         asset6 = loadImage("world_asset_6.png")
         asset7 = loadImage("world_asset_7.png")
+        asset8 = loadImage("world_asset_8.png")
+        asset9 = loadImage("world_asset_9.png")
+        asset10 = loadImage("world_asset_10.png")
+        asset11 = loadImage("world_asset_11.png")
 
         worldGrass = loadImage("world_grass.png")
         worldLand = loadImage("world_land.png")

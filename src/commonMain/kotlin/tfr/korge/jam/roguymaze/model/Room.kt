@@ -41,11 +41,16 @@ data class Room(val id: Int = 0,
     }
 
     fun getExit(pos: Position) = Exit(pos.toRelative())
+
     fun pos() = Position(offsetX, offsetY)
 
     fun hasExit(direction: Direction): Boolean {
+        return getExit(direction) != null
+    }
+
+    fun getExit(direction: Direction): Exit? {
         return items.listAllCells().filter { it.tile.isExit() }.map { Exit(it.position) }
-                .any { it.direction() == direction }
+            .firstOrNull { it.direction() == direction }
     }
 
     data class Exit(val pos: Position) {

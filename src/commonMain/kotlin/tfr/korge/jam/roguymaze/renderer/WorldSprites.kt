@@ -11,117 +11,47 @@ import tfr.korge.jam.roguymaze.model.Tile
 open class WorldSprites(val resources: Resources? = null) {
 
     open fun getTile(tile: Tile): BmpSlice? {
-
-        if (resources != null) {
-            if (tile == Tile.Land) {
-                return resources.worldLand
+        resources?.apply {
+            return when (tile) {
+                Tile.Land -> worldLand
+                Tile.Grass -> worldGrass
+                Tile.Water -> worldWater
+                Tile.Player1 -> player1
+                Tile.Player2 -> player2
+                Tile.Player3 -> player3
+                Tile.Player4 -> player4
+                Tile.Mask1 -> mask1
+                Tile.Mask2 -> mask2
+                Tile.Mask3 -> mask3
+                Tile.Mask4 -> mask4
+                Tile.Home1 -> home1
+                Tile.Home2 -> home2
+                Tile.Home3 -> home3
+                Tile.Home4 -> home4
+                Tile.Door1 -> exit1
+                Tile.Door2 -> exit2
+                Tile.Door3 -> exit3
+                Tile.Door4 -> exit4
+                Tile.A1 -> asset1
+                Tile.A2 -> asset2
+                Tile.A3 -> asset3
+                Tile.A4 -> asset4
+                Tile.A5 -> asset5
+                Tile.A6 -> asset6
+                Tile.A7 -> asset7
+                Tile.A8 -> asset8
+                Tile.A9 -> asset9
+                Tile.A10 -> asset10
+                Tile.A11 -> asset11
+                Tile.Finish1 -> finish1
+                Tile.Finish2 -> finish2
+                Tile.Finish3 -> finish3
+                Tile.Finish4 -> finish4
+                Tile.Info -> info
+                else -> null
             }
-            if (tile == Tile.Grass) {
-                return resources.worldGrass
-            }
-            if (tile == Tile.Water) {
-                return resources.worldWater
-            }
-            if (tile == Tile.Player1) {
-                return resources.player1
-            }
-            if (tile == Tile.Player2) {
-                return resources.player2
-            }
-            if (tile == Tile.Player3) {
-                return resources.player3
-            }
-            if (tile == Tile.Player4) {
-                return resources.player4
-            }
-
-            if (tile == Tile.Mask1) {
-                return resources.mask1
-            }
-            if (tile == Tile.Mask2) {
-                return resources.mask2
-            }
-            if (tile == Tile.Mask3) {
-                return resources.mask3
-            }
-            if (tile == Tile.Mask4) {
-                return resources.mask4
-            }
-
-            if (tile == Tile.Home1) {
-                return resources.home1
-            }
-            if (tile == Tile.Home2) {
-                return resources.home2
-            }
-            if (tile == Tile.Home3) {
-                return resources.home3
-            }
-            if (tile == Tile.Home4) {
-                return resources.home4
-            }
-
-            if (tile == Tile.Door1) {
-                return resources.exit1
-            }
-            if (tile == Tile.Door2) {
-                return resources.exit2
-            }
-            if (tile == Tile.Door3) {
-                return resources.exit3
-            }
-            if (tile == Tile.Door4) {
-                return resources.exit4
-            }
-
-            if (tile == Tile.A1) {
-                return resources.asset1
-            }
-            if (tile == Tile.A2) {
-                return resources.asset2
-            }
-            if (tile == Tile.A2) {
-                return resources.asset2
-            }
-            if (tile == Tile.A3) {
-                return resources.asset3
-            }
-            if (tile == Tile.A4) {
-                return resources.asset4
-            }
-            if (tile == Tile.A5) {
-                return resources.asset5
-            }
-            if (tile == Tile.A6) {
-                return resources.asset6
-            }
-            if (tile == Tile.A7) {
-                return resources.asset7
-            }
-            if (tile == Tile.Finish1) {
-                return resources.finish1
-            }
-            if (tile == Tile.Finish2) {
-                return resources.finish2
-            }
-            if (tile == Tile.Finish3) {
-                return resources.finish3
-            }
-            if (tile == Tile.Finish4) {
-                return resources.finish4
-            }
-
-
-            if (tile == Tile.Info) {
-                return resources.info
-            }
-
         }
-
-
         return null
     }
-
-
 
 }

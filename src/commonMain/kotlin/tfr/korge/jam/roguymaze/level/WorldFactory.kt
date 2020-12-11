@@ -11,7 +11,7 @@ import tfr.korge.jam.roguymaze.model.World
 class WorldFactory {
 
     val undiscoveredRooms = mutableListOf<Room>()
-    val maxRooms = 12
+    val maxRooms = 13
 
     /**
      * Number of players -> ActionSet
@@ -21,7 +21,8 @@ class WorldFactory {
     init {
         val set1 = ActionSet(1)
         val allEvents = setOf(
-                HeroLeft, HeroRight, HeroDown, HeroUp, ActionSearch)
+            HeroLeft, HeroRight, HeroDown, HeroUp, ActionSearch
+        )
         for (player in 0..5) {
             set1.addEvents(player, *allEvents.toTypedArray())
         }
@@ -56,23 +57,27 @@ class WorldFactory {
 
     }
 
-    fun getUndiscoveredById(nextRoomId: Int): Room? {
-        val next = undiscoveredRooms.firstOrNull { it.id == nextRoomId }
-        if (next != null) {
-            undiscoveredRooms.remove(next)
+    fun discoverNextRommById(nextRoomId: Int): Room? {
+        return undiscoveredRooms.firstOrNull { it.id == nextRoomId }.apply {
+            remove()
         }
-        return next
     }
 
-    fun getUndiscoveredRoom(enterDirection: GameFlow.Direction): Room? {
-        val next = undiscoveredRooms.firstOrNull { it.hasExit(enterDirection) }
-        if (next != null) {
-            undiscoveredRooms.remove(next)
+    fun discoverNextRoom(enterDirection: GameFlow.Direction): Room? {
+        return undiscoveredRooms.firstOrNull { it.hasExit(enterDirection) }.apply {
+            remove()
         }
-        return next
     }
 
-    fun Team.load(players: Int, numberOfTeamMates: Int): Team {
+    fun discoverNextRoom(): Room? {
+        return undiscoveredRooms.firstOrNull().apply {
+            remove()
+        }
+    }
+
+    private fun Room?.remove() = this?.let { undiscoveredRooms.remove(it) }
+
+    private fun Team.load(players: Int, numberOfTeamMates: Int): Team {
         (1..players).forEach {
             val nextPlayer = Team.Hero(it)
             val allowedSets: MutableMap<Int, MutableSet<Action>>? = actionSets[numberOfTeamMates]?.allowed
@@ -88,20 +93,27 @@ class WorldFactory {
      * numberOfTeamMates : 1-5 players
      */
     fun createWorld(numberOfTeamMates: Int): World {
-        val players = Team().load(4, numberOfTeamMates)
-        players[1].pos(1, 1)
-        players[2].pos(1, 2)
-        players[3].pos(2, 1)
-        players[4].pos(2, 2)
+        val players = createPlayers(numberOfTeamMates)
 
         val roomFactory = RoomFactory()
-        for (roomNumber in 1 until 12) {
+        for (roomNumber in 1 until maxRooms) {
             undiscoveredRooms += roomFactory.createRoom(roomNumber)
         }
-        undiscoveredRooms.shuffle()
         val start = roomFactory.createRoom(0)
         return World(mutableListOf(start), players, maxRooms, factory = this)
     }
+
+    fun shuffle() {
+        undiscoveredRooms.shuffle()
+    }
+
+    private fun createPlayers(numberOfTeamMates: Int) = Team().load(4, numberOfTeamMates).apply {
+        this[1].pos(1, 1)
+        this[2].pos(1, 2)
+        this[3].pos(2, 1)
+        this[4].pos(2, 2)
+    }
+
 
     fun getActionSet(playersCount: Int): ActionSet = actionSets[playersCount] ?: actionSets[0]!!
 

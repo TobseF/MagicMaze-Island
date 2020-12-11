@@ -26,6 +26,11 @@ import kotlin.random.Random
  */
 
 const val debug = false
+
+/**
+ * Shows all map tiles on start. Useful for map editing.
+ */
+const val startWithOpenMap = false
 const val playBackgroundMusic = false
 
 /**
@@ -54,6 +59,10 @@ suspend fun main() = Korge(
 
     val worldFactory = WorldFactory()
     val world = worldFactory.createWorld(1)
+
+    if (!startWithOpenMap) {
+        world.shuffleUndiscoveredTiles()
+    }
 
     val injector = AsyncInjector().run {
         mapInstance(this@Korge)
@@ -84,7 +93,11 @@ suspend fun main() = Korge(
     Scoring(injector)
 
 
-    GameFlow(injector)
+    val gameFlow = GameFlow(injector)
+    if (startWithOpenMap) {
+        gameFlow.addAllRooms()
+    }
+
     KeyBindings(injector)
 
     NetworkBridge(injector).userName = userName

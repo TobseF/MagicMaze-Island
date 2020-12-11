@@ -7,7 +7,7 @@ enum class Tile(private val shortName: String? = null) {
     A, B, C, D,
 
     //Assets
-    A1("A1"), A2("A2"), A3("A3"), A4("A4"), A5("A5"), A6("A6"), A7("A7"),
+    A1("A1"), A2("A2"), A3("A3"), A4("A4"), A5("A5"), A6("A6"), A7("A7"), A8("A8"), A9("A9"), A10("A10"), A11("A11"),
 
     //Home
     Home1("E1"), Home2("E2"), Home3("E3"), Home4("E4"),

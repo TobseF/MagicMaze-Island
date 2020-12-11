@@ -60,6 +60,11 @@ class World(val rooms: MutableList<Room>, val team: Team, val totalRooms: Int, v
     }
 
     fun getActionSet() = factory.getActionSet(this.playersCount)
+
+    fun shuffleUndiscoveredTiles() = factory.shuffle()
+
     fun getAllowedActions() = getActionSet().getAllowedActions(this.selectedPlayer)
+
+    fun getFirstRoom() = rooms.first()
 
 }

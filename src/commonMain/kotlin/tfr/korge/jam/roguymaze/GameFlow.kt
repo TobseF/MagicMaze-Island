@@ -16,12 +16,14 @@ import tfr.korge.jam.roguymaze.renderer.WorldComponent
 /**
  * Global game cycle
  */
-class GameFlow(private val world: World,
-        private val worldFactory: WorldFactory,
-        private val worldComponent: WorldComponent,
-        private val bus: EventBus,
-        private val mechanics: GameMechanics,
-        private val soundMachine: SoundMachine) {
+class GameFlow(
+    private val world: World,
+    private val worldFactory: WorldFactory,
+    private val worldComponent: WorldComponent,
+    private val bus: EventBus,
+    private val mechanics: GameMechanics,
+    private val soundMachine: SoundMachine
+) {
 
     init {
         bus.register<InputEvent> { handleInput(it) }
@@ -165,20 +167,22 @@ class GameFlow(private val world: World,
         }
     }
 
-    private fun isBlockedByWall(direction: Direction,
-            currentRoom: Room?,
-            playerPos: Position,
-            nextRoom: Room?,
-            nextAbsolutePos: Position): Boolean {
+    private fun isBlockedByWall(
+        direction: Direction, currentRoom: Room?, playerPos: Position, nextRoom: Room?, nextAbsolutePos: Position
+    ): Boolean {
         return when (direction) {
             Direction.Left -> currentRoom?.getBorderLeftAbsolute(
-                    playerPos) == Tile.Border || nextRoom?.getBorderRightAbsolute(nextAbsolutePos) == Tile.Border
+                playerPos
+            ) == Tile.Border || nextRoom?.getBorderRightAbsolute(nextAbsolutePos) == Tile.Border
             Direction.Right -> currentRoom?.getBorderRightAbsolute(
-                    playerPos) == Tile.Border || nextRoom?.getBorderLeftAbsolute(nextAbsolutePos) == Tile.Border
+                playerPos
+            ) == Tile.Border || nextRoom?.getBorderLeftAbsolute(nextAbsolutePos) == Tile.Border
             Direction.Up -> currentRoom?.getBorderTopAbsolute(
-                    playerPos) == Tile.Border || nextRoom?.getBorderBottomAbsolute(nextAbsolutePos) == Tile.Border
+                playerPos
+            ) == Tile.Border || nextRoom?.getBorderBottomAbsolute(nextAbsolutePos) == Tile.Border
             Direction.Down -> currentRoom?.getBorderBottomAbsolute(
-                    playerPos) == Tile.Border || nextRoom?.getBorderTopAbsolute(nextAbsolutePos) == Tile.Border
+                playerPos
+            ) == Tile.Border || nextRoom?.getBorderTopAbsolute(nextAbsolutePos) == Tile.Border
         }
     }
 
@@ -212,7 +216,9 @@ class GameFlow(private val world: World,
             currentRoom.removeItem(playerRelativePos)
 
             if (playerItem.tile.isExit()) {
-                openDoorToNextRoom(currentRoom, playerPos, nextRoomId, playerNumber)
+                openDoorToNextRoom(currentRoom, playerPos, nextRoomId)?.let { nextRoom ->
+                    bus.send(InputEvent(Action.FoundNextRoom, heroNumber = playerNumber, roomId = nextRoom.id))
+                }
             } else {
                 log.info { "No Exit on the current tile: $playerPos" }
             }
@@ -221,7 +227,7 @@ class GameFlow(private val world: World,
         }
     }
 
-    private fun openDoorToNextRoom(currentRoom: Room, playerPos: Position, nextRoomId: Int?, playerNumber: Int) {
+    private fun openDoorToNextRoom(currentRoom: Room, playerPos: Position, nextRoomId: Int?): Room? {
         val exit = currentRoom.getExit(playerPos)
         val direction = exit.direction()!!
 
@@ -231,23 +237,26 @@ class GameFlow(private val world: World,
         if (nextTile == Tile.OutOfSpace) {
             val isNetworkEvent = nextRoomId != null
             log.info { "Is Next Room a network event: $isNetworkEvent ($nextRoomId)" }
-            val nextRoom = if (nextRoomId == null) worldFactory.getUndiscoveredRoom(
-                    direction.opposite()) else worldFactory.getUndiscoveredById(nextRoomId)
+            val nextRoom = if (nextRoomId == null) worldFactory.discoverNextRoom(
+                direction.opposite()
+            ) else worldFactory.discoverNextRommById(nextRoomId)
             if (nextRoom != null) {
-                addNewRoom(nextRoom, currentRoom, direction, playerNumber)
+                addNewRoom(nextRoom, currentRoom, direction)
+                nextRoom.removeExit(direction.opposite())
+                return nextRoom
             } else {
                 log.info { "Failed finding next room for direction: $direction" }
             }
         } else {
             log.info { "Next room location is already occupied: $nextAbsolutePos" }
         }
+        return null
     }
 
-    private fun addNewRoom(nextRoom: Room, currentRoom: Room, direction: Direction, playerNumber: Int) {
+    private fun addNewRoom(nextRoom: Room, currentRoom: Room, direction: Direction) {
         log.info { "Adding new room to map: ${nextRoom.id}" }
         nextRoom.offsetX = currentRoom.offsetX
         nextRoom.offsetY = currentRoom.offsetY
-        nextRoom.removeExit(direction.opposite())
         when (direction) {
             Direction.Up -> {
                 nextRoom.offsetY -= Room.size
@@ -264,7 +273,30 @@ class GameFlow(private val world: World,
         }
         world.rooms += nextRoom
         worldComponent.addRoom(nextRoom)
-        bus.send(InputEvent(Action.FoundNextRoom, heroNumber = playerNumber, roomId = nextRoom.id))
+    }
+
+    fun addAllRooms() {
+        var currentRoom: Room = world.getFirstRoom()
+        val directions = listOf(
+            Direction.Right,
+            Direction.Right,
+            Direction.Right,
+            Direction.Down,
+            Direction.Left,
+            Direction.Left,
+            Direction.Left,
+            Direction.Down,
+            Direction.Right,
+            Direction.Right,
+            Direction.Right,
+            Direction.Right
+        )
+        directions.forEachIndexed { i, nextDirection ->
+            worldFactory.discoverNextRoom()?.let { nextRoom ->
+                addNewRoom(nextRoom, currentRoom, nextDirection)
+                currentRoom = nextRoom
+            }
+        }
     }
 
 }

@@ -10,19 +10,19 @@ class RoomFactory {
         log.info { "Generating room $tile" }
 
         return when (tile) {
-            0 -> createLevel0()
-            1 -> createLevel1()
-            2 -> createLevel2()
-            3 -> createLevel3()
-            4 -> createLevel4()
-            5 -> createLevel5()
-            6 -> createLevel6()
-            7 -> createLevel7()
-            8 -> createLevel8()
-            9 -> createLevel9()
-            10 -> createLevel10()
-            11 -> createLevel11()
-            12 -> createLevel12()
+            0 -> createRoom0()
+            1 -> createRoom1()
+            2 -> createRoom2()
+            3 -> createRoom3()
+            4 -> createRoom4()
+            5 -> createRoom5()
+            6 -> createRoom6()
+            7 -> createRoom7()
+            8 -> createRoom8()
+            9 -> createRoom9()
+            10 -> createRoom10()
+            11 -> createRoom11()
+            12 -> createRoom12()
             else -> createDemoRoom(99)
         }
     }
@@ -74,12 +74,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel0(): Room {
-        val tile = 0
-        // [W]ater, [G]rass, [L]and
+    fun createRoom0(): Room {
+        val tile = 0 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[W,W,G,W]
             |[G,G,G,G]
@@ -87,12 +86,12 @@ class RoomFactory {
             |[L,L,G,L]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,D2,_]
             |[D1,_,_,D3]
             |[_,_,_,_]
-            |[_,_,D4,_]
+            |[A3,_,D4,_]
             """.trimMargin()
 
         // Borders [H]
@@ -122,12 +121,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel1(): Room {
-        val tile = 1
-        // [W]ater, [G]rass, [L]and
+    fun createRoom1(): Room {
+        val tile = 1 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[W,W,G,W]
             |[G,G,G,G]
@@ -135,12 +133,12 @@ class RoomFactory {
             |[L,G,G,L]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,D4,_]
             |[D3,_,_,D1]
-            |[_,_,_,_]
-            |[_,_,_,_]
+            |[A1,_,_,_]
+            |[_,_,_,A2]
             """.trimMargin()
 
         // Borders [H]
@@ -170,12 +168,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel2(): Room {
-        val tile = 2
-        // [W]ater, [G]rass, [L]and
+    fun createRoom2(): Room {
+        val tile = 2 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[W,L,G,G]
             |[G,G,G,G]
@@ -183,9 +180,9 @@ class RoomFactory {
             |[L,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,_,_,_]
+            |[_,A1,_,_]
             |[D2,_,_,D3]
             |[_,_,_,_]
             |[_,_,_,M2]
@@ -218,12 +215,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel3(): Room {
-        val tile = 3
-        // [W]ater, [G]rass, [L]and
+    fun createRoom3(): Room {
+        val tile = 3 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[G,G,L,L]
             |[G,W,W,G]
@@ -231,9 +227,9 @@ class RoomFactory {
             |[G,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,M1,_,_]
+            |[_,M1,A2,A4]
             |[D1,_,_,D2]
             |[_,_,_,_]
             |[_,_,_,_]
@@ -266,12 +262,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel4(): Room {
-        val tile = 4
-        // [W]ater, [G]rass, [L]and
+    fun createRoom4(): Room {
+        val tile = 4 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[G,G,G,L]
             |[G,L,G,G]
@@ -279,11 +274,11 @@ class RoomFactory {
             |[L,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,_,_]
-            |[D4,_,_,D1]
-            |[_,_,_,_]
+            |[D4,A7,_,D1]
+            |[A8,A3,_,_]
             |[_,E3,_,_]
             """.trimMargin()
 
@@ -314,12 +309,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel5(): Room {
-        val tile = 5
-        // [W]ater, [G]rass, [L]and
+    fun createRoom5(): Room {
+        val tile = 5 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[W,W,G,L]
             |[G,G,G,G]
@@ -327,11 +321,11 @@ class RoomFactory {
             |[W,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,D3,_]
             |[D4,_,_,_]
-            |[E4,_,_,_]
+            |[E4,_,A9,_]
             |[_,_,_,_]
             """.trimMargin()
 
@@ -362,12 +356,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel6(): Room {
-        val tile = 6
-        // [W]ater, [G]rass, [L]and
+    fun createRoom6(): Room {
+        val tile = 6 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[G,G,G,L]
             |[G,W,G,G]
@@ -375,12 +368,12 @@ class RoomFactory {
             |[L,L,G,L]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,D3,_]
             |[_,_,M3,D1]
             |[_,_,_,_]
-            |[_,_,D2,_]
+            |[_,A10,D2,_]
             """.trimMargin()
 
         // Borders [H]
@@ -410,12 +403,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel7(): Room {
-        val tile = 7
-        // [W]ater, [G]rass, [L]and
+    fun createRoom7(): Room {
+        val tile = 7 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[L,G,G,L]
             |[G,G,G,W]
@@ -423,11 +415,11 @@ class RoomFactory {
             |[W,L,G,L]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,E2,D4,_]
             |[D1,_,_,_]
-            |[_,_,_,_]
+            |[_,A6,_,_]
             |[_,_,D2,_]
             """.trimMargin()
 
@@ -458,12 +450,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel8(): Room {
-        val tile = 8
-        // [W]ater, [G]rass, [L]and
+    fun createRoom8(): Room {
+        val tile = 8 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[L,L,G,G]
             |[G,L,G,G]
@@ -471,9 +462,9 @@ class RoomFactory {
             |[L,L,G,L]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,_,D3,_]
+            |[A7,_,D3,_]
             |[D2,_,_,_]
             |[_,_,_,_]
             |[_,_,D4,_]
@@ -506,12 +497,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel9(): Room {
-        val tile = 9
-        // [W]ater, [G]rass, [L]and
+    fun createRoom9(): Room {
+        val tile = 9 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[L,L,G,G]
             |[L,G,G,G]
@@ -519,9 +509,9 @@ class RoomFactory {
             |[W,W,G,W]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,_,D3,_]
+            |[A5,_,D3,_]
             |[_,_,_,_]
             |[_,_,_,_]
             |[_,_,D2,_]
@@ -554,12 +544,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel10(): Room {
-        val tile = 10
-        // [W]ater, [G]rass, [L]and
+    fun createRoom10(): Room {
+        val tile = 10 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[L,L,G,W]
             |[G,G,G,W]
@@ -567,12 +556,12 @@ class RoomFactory {
             |[L,G,G,W]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,_,D4,_]
+            |[_,A5,D4,_]
             |[M4,_,_,_]
             |[_,_,_,_]
-            |[_,_,D1,_]
+            |[A6,_,D1,_]
             """.trimMargin()
 
         // Borders [H]
@@ -602,12 +591,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel11(): Room {
-        val tile = 11
-        // [W]ater, [G]rass, [L]and
+    fun createRoom11(): Room {
+        val tile = 11 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[L,L,G,W]
             |[G,G,G,W]
@@ -615,7 +603,7 @@ class RoomFactory {
             |[W,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
             |[_,_,D4,_]
             |[D2,_,_,_]
@@ -650,12 +638,11 @@ class RoomFactory {
             """.trimMargin()
 
         return Room(tile).loadGround(groundData).loadItems(itemData).loadBordersBottom(bordersBottom)
-                .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
+            .loadBordersRight(bordersRight).loadBordersLeft(bordersLeft).loadBordersTop(bordersTop)
     }
 
-    fun createLevel12(): Room {
-        val tile = 12
-        // [W]ater, [G]rass, [L]and
+    fun createRoom12(): Room {
+        val tile = 12 // [W]ater, [G]rass, [L]and
         val groundData = """
             |[G,G,G,L]
             |[G,G,W,G]
@@ -663,9 +650,9 @@ class RoomFactory {
             |[G,G,G,G]
             """.trimMargin()
 
-        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A8]
+        // Exit-Info [I], Exit-Doors [E1-E4], Mask1 [M1-4], Asset [A1-A11]
         val itemData = """
-            |[_,_,D3,_]
+            |[_,_,D3,A11]
             |[_,_,_,D2]
             |[_,_,_,_]
             |[_,_,_,_]
