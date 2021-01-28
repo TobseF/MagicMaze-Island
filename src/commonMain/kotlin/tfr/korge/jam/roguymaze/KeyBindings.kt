@@ -2,7 +2,7 @@ package tfr.korge.jam.roguymaze
 
 import com.soywiz.klogger.Logger
 import com.soywiz.korev.Key
-import com.soywiz.korge.input.onKeyDown
+import com.soywiz.korge.input.keys
 import com.soywiz.korge.view.Stage
 import com.soywiz.korinject.AsyncDependency
 import com.soywiz.korinject.AsyncInjector
@@ -36,9 +36,7 @@ class KeyBindings(private val stage: Stage,
     }
 
     private fun bindKeys() {
-        stage.onKeyDown {
-            onKeyDown(it.key)
-        }
+        stage.keys { down { onKeyDown(it.key) } }
     }
 
     private fun resetState() {

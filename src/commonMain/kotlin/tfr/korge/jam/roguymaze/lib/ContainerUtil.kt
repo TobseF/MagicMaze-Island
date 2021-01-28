@@ -12,8 +12,8 @@ fun Container.textCentered(text: String, textSize: Double = 16.0, font: BitmapFo
     }
 }
 
-fun Container.ninePatch(ninePatch: com.soywiz.korim.bitmap.NinePatchBitmap32,
-        size: Size,
-        callback: @ViewsDslMarker (NinePatchEx.() -> Unit) = {}) {
+fun Container.ninePatch(
+    ninePatch: com.soywiz.korim.bitmap.NinePatchBitmap32, size: Size, callback: (NinePatchEx.() -> Unit) = {}
+) {
     this.ninePatch(ninePatch = ninePatch, width = size.width, height = size.height, callback = callback)
 }

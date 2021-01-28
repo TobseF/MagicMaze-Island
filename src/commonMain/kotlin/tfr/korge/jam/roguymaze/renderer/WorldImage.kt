@@ -9,18 +9,23 @@ import com.soywiz.korma.geom.Point
 import tfr.korge.jam.roguymaze.math.PositionGrid
 import tfr.korge.jam.roguymaze.model.Tile
 
-class WorldImage(tileSize: Number,
-        val position: Point,
-        val image: BmpSlice,
-        val tile: Tile,
-        val gridPos: PositionGrid.Position) : Image(image) {
+class WorldImage(
+    tileSize: Double,
+    val position: Point,
+    val bitmap: BmpSlice,
+    val tile: Tile,
+    val gridPos: PositionGrid.Position,
+    val image: Image = Image(bitmap)
+) {
     init {
-        anchor(0.5, 0.5)
-        size(tileSize, tileSize)
-        position(position)
+        image.apply {
+            anchor(0.5, 0.5)
+            size(tileSize, tileSize)
+            position(position)
+        }
     }
 
     override fun toString(): String {
-        return "\n\n $tile: ($x,$y) [$gridPos]"
+        return "\n\n $tile: ($image.x,$image.y) [$gridPos]"
     }
 }

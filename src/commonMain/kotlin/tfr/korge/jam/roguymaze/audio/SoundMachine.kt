@@ -1,6 +1,6 @@
 package tfr.korge.jam.roguymaze.audio
 
-import com.soywiz.korau.sound.NativeSound
+import com.soywiz.korau.sound.Sound
 import com.soywiz.korau.sound.readSound
 import com.soywiz.korinject.AsyncDependency
 import com.soywiz.korinject.AsyncInjector
@@ -14,17 +14,17 @@ class SoundMachine : AsyncDependency {
     /**
      * Removing tiles from the field
      */
-    private var clear: NativeSound? = null
+    private var clear: Sound? = null
 
     /**
      * Wrong tile move, which will be toggled back
      */
-    private var wrongMove: NativeSound? = null
+    private var wrongMove: Sound? = null
 
     /**
      * Tile git's the ground. Used for now.
      */
-    private var dopGround: NativeSound? = null
+    private var dopGround: Sound? = null
 
     val playSounds = true
 

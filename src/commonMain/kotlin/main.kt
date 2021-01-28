@@ -43,7 +43,7 @@ val virtualResolution = Resolution(width = 1280, height = 800)
  */
 val windowResolution = virtualResolution
 
-val backgroundColor = Colors["#2b2b2b"]
+val backgroundColor = Colors.LIGHTGRAY //Colors["#2b2b2b"]
 
 val levelData = RoomFactory().createRoom(1)
 

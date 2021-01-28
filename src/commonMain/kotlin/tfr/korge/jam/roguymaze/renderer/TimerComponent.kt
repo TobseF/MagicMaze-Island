@@ -1,5 +1,6 @@
 package tfr.korge.jam.roguymaze.renderer
 
+import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.component.UpdateComponentWithViews
 import com.soywiz.korge.view.*
 import com.soywiz.korinject.AsyncInjector
@@ -31,19 +32,19 @@ class TimerComponent(res: Resources, override val view: View) : Container(), Upd
         }
     }
 
-    override fun update(views: Views, ms: Double) {
-        lastUpdate += ms
-        if (lastUpdate > 500) {
-            updateTimer()
-        }
-    }
-
     fun updateTimer() {
         timerText.text = getTime()
     }
 
     fun getTime(): String {
         return formatter.getFormattedTimeAsString(stopWatch.getTime())
+    }
+
+    override fun update(views: Views, dt: TimeSpan) {
+        lastUpdate += dt.milliseconds
+        if (lastUpdate > 500) {
+            updateTimer()
+        }
     }
 
 }

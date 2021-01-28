@@ -52,8 +52,8 @@ class PositionGrid(val x: Int = 0, val y: Int = 0, val columns: Int, val rows: I
      */
     fun getField(position: IPoint): Position {
         val relativePosition = position.minus(Point(x, y))
-        val column = relativePosition._x / tileSize
-        val row = relativePosition._y / tileSize
+        val column = relativePosition.x / tileSize
+        val row = relativePosition.y / tileSize
         return Position(column.toInt(), row.toInt())
     }
 
@@ -97,10 +97,6 @@ class PositionGrid(val x: Int = 0, val y: Int = 0, val columns: Int, val rows: I
 
         fun top(steps: Int = 1): Position {
             return Position(this.x, this.y - steps)
-        }
-
-        fun moveToStart(): Position {
-            return Position(this.x, -1)
         }
 
         fun bottom(steps: Int = 1): Position {

@@ -1,9 +1,9 @@
 package tfr.korge.jam.roguymaze.audio
 
 import com.soywiz.klock.seconds
-import com.soywiz.korau.sound.NativeSound
-import com.soywiz.korau.sound.NativeSoundChannel
-import com.soywiz.korau.sound.readNativeSound
+import com.soywiz.korau.sound.Sound
+import com.soywiz.korau.sound.SoundChannel
+import com.soywiz.korau.sound.readSound
 import com.soywiz.korge.view.Stage
 import com.soywiz.korinject.AsyncDependency
 import com.soywiz.korinject.AsyncInjector
@@ -16,8 +16,8 @@ import com.soywiz.korio.file.std.resourcesVfs
  */
 class JukeBox(val stage: Stage) : AsyncDependency {
 
-    private var playing: NativeSoundChannel? = null
-    private val playList = mutableListOf<NativeSound>()
+    private var playing: SoundChannel? = null
+    private val playList = mutableListOf<Sound>()
     private var started = false
     var activated = false
 
@@ -49,7 +49,7 @@ class JukeBox(val stage: Stage) : AsyncDependency {
     private suspend fun loopMusicPlaylist() {
         started = true
         while (started) {
-            val nextSong: NativeSound = playList.random()
+            val nextSong: Sound = playList.random()
             playing = nextSong.play()
             delay(nextSong.length.coerceAtLeast(2.seconds))
             playing?.stop()
@@ -64,5 +64,6 @@ class JukeBox(val stage: Stage) : AsyncDependency {
 
 }
 
-private suspend fun newMusic(fileName: String): NativeSound = resourcesVfs["music/$fileName"].readNativeSound(
-        streaming = true)
+private suspend fun newMusic(fileName: String): Sound = resourcesVfs["music/$fileName"].readSound(
+    streaming = true
+)

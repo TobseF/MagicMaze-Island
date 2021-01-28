@@ -36,9 +36,9 @@ class RoomComponent(val room: Room,
         onClick { e ->
             val clickPos = localToGlobal(e.currentPosLocal)
             ground.listAllImages().firstOrNull { image ->
-                image?.hitTestAny(clickPos.x, clickPos.y) ?: false
+                image?.image?.hitTestAny(clickPos.x, clickPos.y) ?: false
             }?.let { image ->
-                bus.send(TileClickedEvent(image.tile, room.getAbsoluteWorldPosition(image.gridPos), image.pos))
+                bus.send(TileClickedEvent(image.tile, room.getAbsoluteWorldPosition(image.gridPos), image.image.pos))
             }
         }
     }

@@ -12,7 +12,7 @@ suspend fun View.move(point: IPoint, settings: AnimationSettings) {
 }
 
 suspend fun View.move(point: IPoint, time: TimeSpan, easing: Easing) {
-    return this.tween(this::x[point._x], this::y[point._y], time = time, easing = easing)
+    return this.tween(this::x[point.x], this::y[point.y], time = time, easing = easing)
 }
 
 

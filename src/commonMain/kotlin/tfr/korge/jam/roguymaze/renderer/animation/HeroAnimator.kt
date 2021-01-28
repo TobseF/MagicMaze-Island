@@ -1,8 +1,8 @@
 package tfr.korge.jam.roguymaze.renderer.animation
 
 import com.soywiz.klock.milliseconds
-import com.soywiz.korge.tween.moveTo
 import com.soywiz.korge.view.Stage
+import com.soywiz.korge.view.tween.moveTo
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korio.async.launch
 import com.soywiz.korma.geom.Point

@@ -73,7 +73,7 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
 
     fun removeImage(position: Position) {
         val image = getTile(position)
-        removeChild(image)
+        removeChild(image?.image)
         removeTileFromGrid(position)
     }
 
@@ -96,10 +96,10 @@ open class GridLayerComponent(private val gridLayer: GridLayer,
             val nextTimeImage = tiles[rowIndex][columnIndex]
             if (nextTimeImage != null && nextTimeImage.tile.isTile()) {
                 log.info { "Adding tile on non empty cell:  ${nextTimeImage.tile} with $tile:  $columnIndex,row:$rowIndex (${gridLayer.columnsSize}-${gridLayer.rowSize}) " }
-                removeChild(nextTimeImage)
+                removeChild(nextTimeImage.image)
             }
             tiles[rowIndex][columnIndex] = image
-            addChild(image)
+            addChild(image.image)
         }
     }
 

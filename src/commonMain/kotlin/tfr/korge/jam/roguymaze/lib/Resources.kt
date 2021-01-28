@@ -1,7 +1,7 @@
 package tfr.korge.jam.roguymaze.lib
 
-import com.soywiz.korge.atlas.Atlas
-import com.soywiz.korge.atlas.readAtlas
+import com.soywiz.korim.atlas.Atlas
+import com.soywiz.korim.atlas.readAtlas
 import com.soywiz.korim.bitmap.BmpSlice
 import com.soywiz.korim.bitmap.NinePatchBitmap32
 import com.soywiz.korim.bitmap.readNinePatch
